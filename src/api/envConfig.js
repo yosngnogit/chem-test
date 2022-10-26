@@ -1,10 +1,3 @@
-/*
- * @Author: zly
- * @Date: 2021-09-17 09:32:00
- * @LastEditTime: 2021-09-17 21:42:27
- * @LastEditors: zly
- * @Description: 获取登录信息
- */
 export const getEnvConfig = () => {
   const hostStr = window.location.hostname
   let env = ''

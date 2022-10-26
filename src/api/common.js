@@ -1,12 +1,6 @@
-/*
- * @Author: zenglinquan
- * @Date: 2022-08-19 10:33:28
- * @LastEditors: zenglinquan
- * @LastEditTime: 2022-09-27 14:10:43
- * @Description: 
- */
 import http from "../utils/http";
 
+// 字典
 export const getDictListByName = (name) => {
   return http.request({
     url: '/help/user/sys/dict/dictListByName',
@@ -16,25 +10,24 @@ export const getDictListByName = (name) => {
   })
 }
 
-export const findNation = () => {
-  return http.request({
-    url: '/front/user/sys/sysDict/findNation',
-    method: 'post'
-  })
-}
-
+// 省
 export const getProvinceList = () => {
   return http.request({
     url: '/front/sys/sysProvince/provinceList',
   })
 }
 
-export const getUserInfoJwt = () => {
+// 所属行业
+export const getIndustryTree = () => {
   return http.request({
-    url: '/front/s2b/getUserInfoJwt',
+    method: 'post',
+    url: '/front/user/sys/custIndustry/queryList',
   })
 }
-// 埋点
-export function adhibitionPoint (params) {
-  http.post(`/front/user/sys/sysAccessApplicationLog/save `, params)
+
+// 省/市/区 树
+export const getRegionTree = () => {
+  return http.request({
+    url: '/front/sys/sysProvince/queryAddressList',
+  })
 }

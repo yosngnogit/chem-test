@@ -5,7 +5,7 @@ import { appCode, SmsTemplate } from "../config";
 import { getCookie, setCookie, clearCookie } from '@/utils'
 const token = getCookie('access_token')
 
-// 方式1：登录
+// 登录
 export const login = async (data) => {
   let res = await http.request({
     url: '/auth/login',
@@ -22,25 +22,6 @@ export const login = async (data) => {
   setTimeout(() => {
     window.location.href = window.loginPreviousHref || '/'
   }, 200);
-  return res
-}
-
-// 方式2:二维码登录
-export const getQrCodeStatus = async (params) => {
-  const { statusCode, uuid } = params
-  let res = await http.request({
-    url: `/auth/getQrCodeStatus`,
-    params: {
-      currentStatus: statusCode,
-      uuid
-    }
-  })
-  if (res.data.statusCode === 30000) {
-    setCookie('access_token', res.data.access_token)
-    setCookie('username', res.data.username)
-    await Promise.all([getUserInfo(), getEntCode()])
-    window.location.href = window.loginPreviousHref || '/'
-  }
   return res
 }
 
@@ -70,12 +51,6 @@ export const getLoginSms = (phone) => {
   return http.request({
     url: `/front/message/sendSms/loginRegisterSendVerificationCode?templateCode=${SmsTemplate}&mobile=` + phone,
     method: 'post'
-  })
-}
-
-export const getQrCode = (userType) => {
-  return http.request({
-    url: `/auth/getQrCodeImg?userType=${userType}`
   })
 }
 
@@ -150,15 +125,6 @@ export const forgetPassword = (data) => {
   return http.request({
     url: '/front/consumer/forgetPassword',
     method: 'post',
-    data
-  })
-}
-
-// 后台管理getUserInfoByToken
-export const getUserInfoByToken = (data) => {
-  return http.request({
-    url: '/front/consumer/getUserInfoByToken',
-    method: 'get',
     data
   })
 }
