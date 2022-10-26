@@ -592,7 +592,7 @@ module.exports = function (webpackEnv) {
       new HtmlWebpackPlugin(
         Object.assign(
           {
-            title: '化工产业大脑'
+            title: '企业安全自诊断平台'
           },
           {
             inject: true,
