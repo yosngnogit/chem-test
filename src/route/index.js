@@ -14,6 +14,13 @@ const routes = [
       component: () => import("../page/login"),
     }),
   },
+  {
+    path: "/answerEntrance",
+    name: "answerEntrance",
+    component: dynamicRoute({
+      component: () => import("../page/answerEntrance"),
+    }),
+  },
   
 ];
 export default routes;

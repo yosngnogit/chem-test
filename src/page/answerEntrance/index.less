@@ -1,0 +1,303 @@
+.answerEntrance {
+  background: #fff;
+ width:1920px;
+ margin:auto;
+  .header {
+    font-size: 17px;
+    height: 42px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    box-sizing: border-box;
+    width: 100%; 
+    z-index: 9;
+    background: linear-gradient(
+      263.91deg,
+      rgba(64, 116, 255, 0.86) 17.25%,
+      #4472ec 105.19%
+    );
+  }
+
+  .answer-main {
+   
+    width: 1440px;
+    margin:auto;
+    background: #F8F8FA;
+    .answer-perfect{
+      height: 21px;
+      font-family: 'PingFang SC';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 130%;
+      margin:20px 0;
+      text-align: center;
+    }
+    .answer-main-list {
+      .answer-cards {
+        display: flex;
+        justify-content: space-between;
+        height: 83px;
+       margin:0 25px 25px 20px;
+        .card-free,
+        .card-notfree {
+          width: 686px;
+          height:100%;
+          display: flex;
+          // flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          // gap: 6px;
+
+          padding: 12px 8px;
+          gap: 6px;
+          background: #E4E9F5;
+          /* Elevation_Grey 2 */
+
+          box-shadow: 0px 4px 8px rgba(142, 141, 208, 0.16);
+          border-radius: 10px;  
+
+          /* Inside auto layout */
+
+          flex: none;
+          order: 0;
+          flex-grow: 0;
+        }
+
+        .card-notfree {
+        background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);
+        /* Elevation_Grey 2 */
+        box-shadow: 0px 4px 8px rgba(142, 141, 208, 0.16);
+        border-radius: 10px;
+        color:#fff;
+          .free-tip {
+            .free-tip-p {
+              font-family: 'PingFang SC';
+              font-style: normal;
+              font-weight: 400;
+              font-size: 20px;
+              /* identical to box height, or 26px */              
+              text-transform: uppercase;              
+              color: #EFFDFE;
+              margin-bottom: 5px;
+              display: flex;
+              align-items: center;
+            }
+            .tip-span{
+              font-family: 'PingFang SC';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 130%;
+                color: #EFFDFE;
+            }
+          }
+        }
+
+        .free-tip {
+          .free-tip-p {
+            font-family: 'PingFang SC';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 130%;
+            /* identical to box height, or 26px */
+            text-transform: uppercase;
+            /* Main/Blue3 */
+            color: #4074FF;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            span {
+              display: inline-block;
+              margin-right: 5px;
+            }
+          }
+
+          .tip-span {
+            font-family: 'PingFang SC';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 130%;
+            /* or 18px */
+            text-transform: uppercase;
+
+            /* Text/Black2 */
+
+            color: #3A3E43;
+          }
+        }
+      }
+
+      .answer-list {
+        li {
+          box-sizing: border-box;
+          padding: 13.5px 17px;
+          background: linear-gradient(0deg, #ffffff, #ffffff), #e4e9f5;
+          border-bottom: 0.5px solid rgba(0, 0, 0, 0.12);
+          /* Elevation_Grey 2 */
+          box-shadow: 0px 4px 8px rgba(142, 141, 208, 0.16);
+          border-radius: 8px;
+          margin-top: 12px;
+        }
+
+        .list-top {
+          display: flex;
+          align-items: flex-end;
+
+          .list-title-true {
+            width: 80%;
+
+            p {
+              font-family: "SF Pro Display";
+              font-style: normal;
+              font-weight: 400;
+              font-size: 16px;
+              color: #1f2229;
+            }
+          }
+
+          .list-title-false {
+            width: 60%;
+
+            p {
+              font-family: "SF Pro Display";
+              font-style: normal;
+              font-weight: 400;
+              font-size: 16px;
+              color: #1f2229;
+            }
+          }
+
+          .title-tip-true {
+            // height: 19px;
+            display: inline-block;
+            padding: 3px 6px;
+            background: linear-gradient(
+                0deg,
+                rgba(1, 73, 152, 0.1),
+                rgba(1, 73, 152, 0.1)
+              ),
+              #ffffff;
+            border-radius: 50px;
+            font-family: "SF Pro Display";
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            color: #5c6e7c;
+            transform: scale(0.83333);
+            transform-origin: 0 0;
+          }
+
+          .title-tip-false {
+            display: inline-block;
+            padding: 3px 6px;
+            background: linear-gradient(0deg, #4472ec, #4472ec), #ffffff;
+            border-radius: 50px;
+            font-family: "SF Pro Display";
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            color: #fff;
+            transform: scale(0.83333);
+            transform-origin: 0 0;
+          }
+
+          .evaluate {
+            flex: 1;
+            display: flex;
+
+            justify-content: flex-end;
+
+            .list-pro {
+              span {
+                font-size: 13px;
+                color: #7a93c8;
+              }
+            }
+
+            .list-sorce {
+              color: #26a8ab;
+            }
+
+            .list-level {
+              span {
+                font-size: 13px;
+                font-weight: 600;
+                display: inline-block;
+                margin-left: 10px;
+                color: #5c6e7c;
+              }
+            }
+          }
+        }
+
+        .list-bottom {
+          display: flex;
+          align-items: center;
+          margin-top: 3px;
+
+          p {
+            font-size: 12px;
+            color: #999da6;
+            margin-right: 14px;
+          }
+
+          .list-status {
+            font-size: 12px;
+            color: #f05e41;
+          }
+        }
+      }
+    }
+  }
+
+  .answer-footer {
+    position: fixed;
+    bottom: 30px;
+    width: 100%;
+    padding: 0 17px;
+    box-sizing: border-box;
+  }
+
+  .answer-button {
+    /* 自动布局 */
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 48px;
+    background: linear-gradient(90deg, #4074ff -0.34%, #4472ec 99.66%);
+    box-shadow: 0px 16px 24px rgba(100, 103, 107, 0.24);
+    border-radius: 36px;
+    font-family: "SF Pro Display";
+    font-weight: 600;
+    font-size: 16px;
+    color: #fff;
+  }
+}
+
+.pay-confirm {
+  .adm-space-vertical > .adm-space-item:last-child {
+    margin-bottom: 10px;
+  }
+  .adm-space-item {
+    .adm-modal-button {
+      background: linear-gradient(
+        263.91deg,
+        rgba(64, 116, 255, 0.86) 17.25%,
+        #4472ec 105.19%
+      );
+      border-radius: 36px;
+      font-size: 16px;
+      padding: 6px;
+    }
+  }
+  .adm-auto-center-content {
+    font-family: "SF Pro Text";
+  }
+}
