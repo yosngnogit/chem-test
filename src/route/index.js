@@ -21,6 +21,14 @@ const routes = [
       component: () => import("../page/answerEntrance"),
     }),
   },
+  // 答题详情
+  {
+    path: "/answerDetail",
+    name: "answerDetail",
+    component: dynamicRoute({
+      component: () => import("../page/answerDetail"),
+    }),
+  },
   
 ];
 export default routes;
