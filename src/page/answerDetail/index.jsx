@@ -1,20 +1,146 @@
 import React, { Component } from 'react'
+import { Menu ,Message} from 'antd';
 import './index.less'
 import { withRouter } from "react-router-dom";
-
+import { getDirectory, getQuestionInfo, markedQuestion, nextMarked, nextNotAnswered, saveQuestion, submitModule } from "../../api/answer";
 
 class AnswerDetail extends Component {
 
+  state={
+    openKeys:['sub1'],
+    directory: [],
+    collapsed:false,
+    quesInfo: {},
+    checkMap: {},
+  }
+  
   scoreMap = {
     '完全满足': "allSatisfyScore", //全部满足得分
     '部分满足': "partSatisfyScore", //部分满足得分
     '不满足': "dissatisfyScore", //不满足得分
     '不适用': "notSuitScore", //不适用得分
   }
+  paperType='1'
+  moduleId='1585461768679092225'
 
+  componentDidMount(){ 
 
+    // 获取左侧menu
+      getDirectory({
+        paperType: this.paperType,
+        moduleId: this.moduleId,
+      }).then(res => {
+        this.setState({ directory: res.data })
+      });
+      this.getInfo(undefined, 'now');
+   
+  }
+  nextNotAnswered = () => {
+    nextNotAnswered({ paperType: this.paperType, moduleId: this.moduleId, quesId: this.leafId }).then(res => {
+      if (!res.data.answerPage) {
+       Message.info('已答问所有题目')
+        return;
+      }
+      this.setState({ quesInfo: res.data.answerPage })
+    })
+  }
+  nextMarked = () => {
+    nextMarked({ paperType: this.paperType, moduleId: this.moduleId, quesId: this.leafId }).then(res => {
+      if (!res.data.answerPage) {
+        Message.info('没有标记的题目')
+        return
+      }
+      this.setState({ quesInfo: res.data.answerPage })
+    })
+  }
+  submit = () => {
+    submitModule({ moduleId: this.moduleId }).then(res => {
+      if (res.code === 0) this.goSchedule()
+    })
+  }
+
+  onChange = (item, v) => {
+    const { checkMap } = this.state;
+    this.setState({ checkMap: { ...checkMap, [item.quesNo]: v } })
+    const oldChoice = (this.state.checkMap[item.quesNo] || item.check);
+    saveQuestion({
+      paperId: this.paperId,
+      moduleId: this.moduleId,
+      quesId: item.quesId,
+      oldChoice,
+      oldScore: item[this.scoreMap[oldChoice]],
+      newChoice: v,
+      newScore: item[this.scoreMap[v]]
+    }).then(res => {
+      if (res.data) console.log(1);
+      else console.log(0);
+    })
+  }
+  marked = (item) => {
+    const { quesId, marked } = item;
+    const { markMap } = this.state;
+    const newMark = (markMap[item.quesNo] !== undefined ? markMap[item.quesNo] : marked) ? 0 : 1
+    this.setState({ markMap: { ...markMap, [item.quesNo]: newMark } })
+    markedQuestion({ marked: newMark, quesId }).then(res => {
+      if (res.code === 0) Message.info({ content: `${newMark ? '' : '取消'}标记成功` })
+    })
+  }
+  goPrev = () => this.getInfo(this.quesId, 'up')
+
+  goNext = () => this.getInfo(this.quesId, 'down')
+
+  save = () => {
+    Message.info({ content: '保存成功' })
+    this.getInfo(this.quesId, 'now');
+  }
+  getInfo = (quesId, status) => {
+    getQuestionInfo({
+      paperType: this.paperType,
+      moduleId: this.moduleId,
+      quesId,
+      "operation": status
+    }).then(res => {
+      console.log(res.data)
+      if (!res.data.factorInfo) {
+        Message.info({ content: `已经是${status === 'up' ? '第' : '最后'}一页了` })
+        return;
+      }
+      this.setState({ quesInfo: res.data })
+    })
+  }
+  chooseOrder = (quesId) => {
+    this.getInfo(quesId, 'now');
+  }
+  renderItem = (item, index) => {
+    
+    const { markMap } = this.state;
+    return <div key={index} className='question'>
+      <p className='second-title'>{item.quesNo}&nbsp;&nbsp;{item.subjectContent}</p>
+      <div className='result'>
+        <p onClick={() => { this.marked(item) }}>
+       
+        <img
+            src={(item.marked)
+              ? require('@/assets/img/answerDetail/star.png')
+              : require('@/assets/img/answerDetail/unStar.png')}
+            alt=''
+          />
+        </p>
+        <div className='options'>
+          {['完全满足', '部分满足', '不满足', '不适用'].map(v =>
+            <span
+              key={v}
+               className={v === (this.state.checkMap[item.quesNo] || item.check) ? 'active' : ''}
+              onClick={() => this.onChange(item, v)}
+            >{v}</span>
+          )}
+        </div>
+      </div>
+    </div>
+  }
+  
   render() {
-    // const {  quesInfo } = this.state;
+    const {  quesInfo, directory,collapsed} = this.state;
     return (
       <div className='answer-detail' >
         <div>header</div>
@@ -28,7 +154,7 @@ class AnswerDetail extends Component {
                 </div>
                 <span className='tip-span'>题数：78</span>
               </div>
-              <div className='top-botton'>提交</div>
+              <div className='top-botton'  onClick={this.submit}>提交</div>
             </div>
             <div className='top-right'>
               <div onClick={this.nextNotAnswered} className='top-botton'>下一未回答</div>
@@ -56,13 +182,47 @@ class AnswerDetail extends Component {
               </div>
             </div>
           </div>
-          <div className='bottom'></div>
-          {/* {(quesInfo.factorInfo || []).map(info => {
-          return <div key={info.factorNo}>
-            <div className='center'>
-              <p>{info.factorNo}&nbsp;&nbsp;{info.factorContent}</p>
-              <span className='order'><b>{info.answeredQuesNum}</b>/{info.quesNum}</span>
+          <div className='bottom'>
+            <div className='bottom-left'>
+            
+            {directory.map((dir, index) => {
+              return (
+                <Menu
+                mode="inline"
+                inlineCollapsed={collapsed}
+                key={index}
+                >
+                <Menu.SubMenu
+                  key={index}
+                  title={
+                    <div className="item">
+                  <span className='item-content'>{dir.factorNo}&nbsp;&nbsp;{dir.factorContent}</span>
+                  <span className='item-order'><b>{dir.answeredQuesNum}</b>/{dir.quesNum}</span>
+                </div>
+                  }
+                >
+                  {dir.entCatalogueQuesVos?
+                    dir.entCatalogueQuesVos.map((v,i) => (
+                      <Menu.Item
+                        key={i}
+                        style={{paddingLeft:'7px'}}
+                      >
+                      <div key={i} className={v.check ? 'active' : ''}  style={{paddingLeft:'7px'}}onClick={() => {this.chooseOrder(v.quesId)}} > 
+                      {v.quesNo} <b>{v.answeredQuesNum?`v.answeredQuesNum/`:''}</b>{v.quesNum?v.quesNum:''}</div>
+                        
+                      </Menu.Item>
+                    ))
+                    : ""}
+                </Menu.SubMenu>
+                </Menu>
+              )
+            })}
+          
             </div>
+            <div className='bottom-right'>
+            <div className='bottom-right-content'>
+            {(quesInfo.factorInfo || []).map(info => {
+          return <div key={info.factorNo}>
             {this.paperType === '1' ? (info.quesInfo || []).map((item, index) => {
               this.quesId = item.quesId;
               this.leafId = item.quesId;
@@ -79,7 +239,19 @@ class AnswerDetail extends Component {
                 </div>
               })}
           </div>
-        })} */}
+        })}
+            
+            </div>
+            <div className='bottom-right-footer'>
+            <div className='footer'>
+        <div><div className='btn' onClick={this.goPrev} >上一页</div></div>
+        <div><div className='btn two' onClick={this.save}>保存</div></div>
+        <div><div className='btn' onClick={this.goNext}>下一页</div></div>
+      </div>
+            </div>
+          </div>
+          </div>
+
         </div>
       </div>
     )
