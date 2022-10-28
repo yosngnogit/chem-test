@@ -1,5 +1,6 @@
 .answerEntrance {
   background: #fff;
+
   .header {
     font-size: 17px;
     height: 42px;
@@ -9,40 +10,41 @@
     align-items: center;
     padding: 0 16px;
     box-sizing: border-box;
-    width: 100%; 
+    width: 100%;
     z-index: 9;
-    background: linear-gradient(
-      263.91deg,
-      rgba(64, 116, 255, 0.86) 17.25%,
-      #4472ec 105.19%
-    );
+    background: linear-gradient(263.91deg,
+        rgba(64, 116, 255, 0.86) 17.25%,
+        #4472ec 105.19%);
   }
 
   .answer-main {
-   
+
     width: 1440px;
-    margin:auto;
+    margin: auto;
     background: #F8F8FA;
-    .answer-perfect{
+
+    .answer-perfect {
       height: 21px;
       font-family: 'PingFang SC';
       font-style: normal;
       font-weight: 400;
       font-size: 16px;
       line-height: 130%;
-      margin:20px 0;
+      margin: 20px 0;
       text-align: center;
     }
+
     .answer-main-list {
       .answer-cards {
         display: flex;
         justify-content: space-between;
         height: 83px;
-       margin:0 25px 25px 20px;
+        margin: 0 25px 25px 20px;
+
         .card-free,
         .card-notfree {
           width: 686px;
-          height:100%;
+          height: 100%;
           display: flex;
           // flex-direction: row;
           align-items: center;
@@ -55,7 +57,7 @@
           /* Elevation_Grey 2 */
 
           box-shadow: 0px 4px 8px rgba(142, 141, 208, 0.16);
-          border-radius: 10px;  
+          border-radius: 10px;
 
           /* Inside auto layout */
 
@@ -65,31 +67,33 @@
         }
 
         .card-notfree {
-        background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);
-        /* Elevation_Grey 2 */
-        box-shadow: 0px 4px 8px rgba(142, 141, 208, 0.16);
-        border-radius: 10px;
-        color:#fff;
+          background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);
+          /* Elevation_Grey 2 */
+          box-shadow: 0px 4px 8px rgba(142, 141, 208, 0.16);
+          border-radius: 10px;
+          color: #fff;
+
           .free-tip {
             .free-tip-p {
               font-family: 'PingFang SC';
               font-style: normal;
               font-weight: 400;
               font-size: 20px;
-              /* identical to box height, or 26px */              
-              text-transform: uppercase;              
+              /* identical to box height, or 26px */
+              text-transform: uppercase;
               color: #EFFDFE;
               margin-bottom: 5px;
               display: flex;
               align-items: center;
             }
-            .tip-span{
+
+            .tip-span {
               font-family: 'PingFang SC';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 14px;
-                line-height: 130%;
-                color: #EFFDFE;
+              font-style: normal;
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 130%;
+              color: #EFFDFE;
             }
           }
         }
@@ -108,6 +112,7 @@
             margin-bottom: 4px;
             display: flex;
             align-items: center;
+
             span {
               display: inline-block;
               margin-right: 5px;
@@ -133,13 +138,13 @@
       .answer-list {
         li {
           box-sizing: border-box;
-          padding: 13.5px 17px;
-          background: linear-gradient(0deg, #ffffff, #ffffff), #e4e9f5;
-          border-bottom: 0.5px solid rgba(0, 0, 0, 0.12);
-          /* Elevation_Grey 2 */
-          box-shadow: 0px 4px 8px rgba(142, 141, 208, 0.16);
-          border-radius: 8px;
-          margin-top: 12px;
+          padding: 0px 25px;
+          gap: 24px;
+         width: 1440px;
+          height: 75px;
+          background: #FFFFFF;
+          border-bottom: 1px solid #EEEEEE;
+
         }
 
         .list-top {
@@ -174,11 +179,9 @@
             // height: 19px;
             display: inline-block;
             padding: 3px 6px;
-            background: linear-gradient(
-                0deg,
+            background: linear-gradient(0deg,
                 rgba(1, 73, 152, 0.1),
-                rgba(1, 73, 152, 0.1)
-              ),
+                rgba(1, 73, 152, 0.1)),
               #ffffff;
             border-radius: 50px;
             font-family: "SF Pro Display";
@@ -235,26 +238,27 @@
 
         .list-bottom {
           display: flex;
-          
+           justify-content: space-between;
           align-items: center;
           margin-top: 3px;
-          .ant-progress-outer{
-            width:200px;
+
+          .ant-progress-outer {
+            width: 200px;
           }
 
           p {
             font-size: 12px;
             color: #999da6;
             margin-right: 14px;
-            
+
           }
 
           .list-status {
             font-size: 12px;
             color: #f05e41;
-           
+
           }
-          
+
 
         }
       }
@@ -288,21 +292,21 @@
 }
 
 .pay-confirm {
-  .adm-space-vertical > .adm-space-item:last-child {
+  .adm-space-vertical>.adm-space-item:last-child {
     margin-bottom: 10px;
   }
+
   .adm-space-item {
     .adm-modal-button {
-      background: linear-gradient(
-        263.91deg,
-        rgba(64, 116, 255, 0.86) 17.25%,
-        #4472ec 105.19%
-      );
+      background: linear-gradient(263.91deg,
+          rgba(64, 116, 255, 0.86) 17.25%,
+          #4472ec 105.19%);
       border-radius: 36px;
       font-size: 16px;
       padding: 6px;
     }
   }
+
   .adm-auto-center-content {
     font-family: "SF Pro Text";
   }

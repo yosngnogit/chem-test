@@ -95,14 +95,14 @@ function AnswerEntrance(props) {
                 return <li key={index} onClick={() => { goSchedule(item) }}>
                   <div className="list-top">
                     <div className={item.free ? "list-title-true" : "list-title-false"}>
-                      <p>
+                      <div>
                         <span className={item.paperType === '1' ? "title-tip-true" : "title-tip-false"}>{item.paperType === '1' ? '免费版' : '付费版'}</span>                      
-                      </p>
+                      </div>
                     </div>                  
                   </div>
                   <div className="list-bottom">
-                    <p>{item.paperName}</p>
-                    <p>开始时间：{item.beginTime}</p>
+                    <div>{item.paperName}</div>
+                    <div>开始时间：{item.beginTime}</div>
                     <span className="list-status">{item.paperStatus === '1' ? '已完成' : '进行中'}</span>
                     <Progress percent={item.overallProgress} strokeWidth={6}/>
                     <div className="evaluate">
@@ -112,8 +112,7 @@ function AnswerEntrance(props) {
                           <span>{item.scoreLevel}</span>
                           {/* <RightOutline color='#DCDCDC' /> */}
                         </span> :
-                          <span className="list-pro">
-                            <span>{item.overallProgress}%</span>
+                          <span className="list-pro">                         
                             {/* <RightOutline color='#DCDCDC' /> */}
                           </span>
                       }
