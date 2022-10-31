@@ -37,6 +37,14 @@ const routes = [
       component: () => import("../page/answerSchedule"),
     }),
   },
+  // 报告页
+  {
+    path: "/report",
+    name: "report",
+    component: dynamicRoute({
+      component: () => import("../page/report"),
+    }),
+  },
   
 ];
 export default routes;

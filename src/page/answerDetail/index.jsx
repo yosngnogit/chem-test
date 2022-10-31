@@ -1,44 +1,54 @@
 import React, { Component } from 'react'
-import { Menu ,Message} from 'antd';
+import { Menu, Message } from 'antd';
+import { query, getCookie } from '@/utils';
 import './index.less'
 import { withRouter } from "react-router-dom";
 import { getDirectory, getQuestionInfo, markedQuestion, nextMarked, nextNotAnswered, saveQuestion, submitModule } from "../../api/answer";
+import { createWebSocket } from '@/utils/socket';
+
 
 class AnswerDetail extends Component {
 
-  state={
-    openKeys:['sub1'],
+  state = {
     directory: [],
-    collapsed:false,
+    collapsed: false,
     quesInfo: {},
     checkMap: {},
+    markMap: {}
   }
-  
+
+  urlObj = query()
+
+  paperType = this.urlObj.paperType;
+
+  moduleId = this.urlObj.moduleId;
+
+  paperId = this.urlObj.paperId;
   scoreMap = {
     '完全满足': "allSatisfyScore", //全部满足得分
     '部分满足': "partSatisfyScore", //部分满足得分
     '不满足': "dissatisfyScore", //不满足得分
     '不适用': "notSuitScore", //不适用得分
   }
-  paperType='1'
-  moduleId='1585461768679092225'
 
-  componentDidMount(){ 
+  componentDidMount() {
+    const entCode = getCookie('entCode');
+    this.ws = createWebSocket(`${entCode}/${this.moduleId}`);
 
     // 获取左侧menu
-      getDirectory({
-        paperType: this.paperType,
-        moduleId: this.moduleId,
-      }).then(res => {
-        this.setState({ directory: res.data })
-      });
-      this.getInfo(undefined, 'now');
-   
+    getDirectory({
+      paperType: this.paperType,
+      moduleId: this.moduleId,
+    }).then(res => {
+      this.setState({ directory: res.data })
+    });
+    this.getInfo(undefined, 'now');
+
   }
   nextNotAnswered = () => {
     nextNotAnswered({ paperType: this.paperType, moduleId: this.moduleId, quesId: this.leafId }).then(res => {
       if (!res.data.answerPage) {
-       Message.info('已答问所有题目')
+        Message.info('已答问所有题目')
         return;
       }
       this.setState({ quesInfo: res.data.answerPage })
@@ -58,11 +68,12 @@ class AnswerDetail extends Component {
       if (res.code === 0) this.goSchedule()
     })
   }
+  goSchedule = () => this.props.history.replace(`/answerSchedule?paperId=${this.paperId}`)
 
   onChange = (item, v) => {
     const { checkMap } = this.state;
     this.setState({ checkMap: { ...checkMap, [item.quesNo]: v } })
-    const oldChoice = (this.state.checkMap[item.quesNo] || item.check);
+    const oldChoice = (this.state.checkMap[item.quesNo] || item.check)
     saveQuestion({
       paperId: this.paperId,
       moduleId: this.moduleId,
@@ -75,6 +86,7 @@ class AnswerDetail extends Component {
       if (res.data) console.log(1);
       else console.log(0);
     })
+    console.log(this.paperId, this.moduleId)
   }
   marked = (item) => {
     const { quesId, marked } = item;
@@ -105,22 +117,26 @@ class AnswerDetail extends Component {
         Message.info({ content: `已经是${status === 'up' ? '第' : '最后'}一页了` })
         return;
       }
-      this.setState({ quesInfo: res.data })
+      const { data: { factorInfo = [] } } = res;
+      this.setState({
+        quesInfo: res.data || {},
+        activeKey: factorInfo[0].factorNo
+      })
     })
   }
   chooseOrder = (quesId) => {
     this.getInfo(quesId, 'now');
   }
   renderItem = (item, index) => {
-    
+
     const { markMap } = this.state;
     return <div key={index} className='question'>
       <p className='second-title'>{item.quesNo}&nbsp;&nbsp;{item.subjectContent}</p>
       <div className='result'>
         <p onClick={() => { this.marked(item) }}>
-       
-        <img
-            src={(item.marked)
+
+          <img
+            src={(markMap[item.quesNo] !== undefined ? markMap[item.quesNo] : item.marked)
               ? require('@/assets/img/answerDetail/star.png')
               : require('@/assets/img/answerDetail/unStar.png')}
             alt=''
@@ -130,7 +146,7 @@ class AnswerDetail extends Component {
           {['完全满足', '部分满足', '不满足', '不适用'].map(v =>
             <span
               key={v}
-               className={v === (this.state.checkMap[item.quesNo] || item.check) ? 'active' : ''}
+              className={v === (this.state.checkMap[item.quesNo] || item.check) ? 'active' : ''}
               onClick={() => this.onChange(item, v)}
             >{v}</span>
           )}
@@ -138,9 +154,9 @@ class AnswerDetail extends Component {
       </div>
     </div>
   }
-  
+
   render() {
-    const {  quesInfo, directory,collapsed} = this.state;
+    const { quesInfo, directory, collapsed } = this.state;
     return (
       <div className='answer-detail' >
         <div>header</div>
@@ -154,7 +170,7 @@ class AnswerDetail extends Component {
                 </div>
                 <span className='tip-span'>题数：78</span>
               </div>
-              <div className='top-botton'  onClick={this.submit}>提交</div>
+              <div className='top-botton' onClick={this.submit}>提交</div>
             </div>
             <div className='top-right'>
               <div onClick={this.nextNotAnswered} className='top-botton'>下一未回答</div>
@@ -171,9 +187,9 @@ class AnswerDetail extends Component {
                   </div>
 
                 </div>
-                <div className='right-item' style={{borderRight:'0',paddingRight:'0'}}>
+                <div className='right-item' style={{ borderRight: '0', paddingRight: '0' }}>
                   <div className='right-div-star'>
-                  <img src={require('@/assets/img/answerDetail/star.png')} width={18} height={18} style={{marginRight:'12px'}} fit='fill' />
+                    <img src={require('@/assets/img/answerDetail/star.png')} width={18} height={18} style={{ marginRight: '12px' }} fit='fill' />
                   </div>
                   <div className='right-font'>已标记  <div className='right-num'>3</div>
                   </div>
@@ -184,72 +200,74 @@ class AnswerDetail extends Component {
           </div>
           <div className='bottom'>
             <div className='bottom-left'>
-            
-            {directory.map((dir, index) => {
-              return (
-                <Menu
-                mode="inline"
-                inlineCollapsed={collapsed}
-                key={index}
-                >
-                <Menu.SubMenu
-                  key={index}
-                  title={
-                    <div className="item">
-                  <span className='item-content'>{dir.factorNo}&nbsp;&nbsp;{dir.factorContent}</span>
-                  <span className='item-order'><b>{dir.answeredQuesNum}</b>/{dir.quesNum}</span>
-                </div>
-                  }
-                >
-                  {dir.entCatalogueQuesVos?
-                    dir.entCatalogueQuesVos.map((v,i) => (
-                      <Menu.Item
-                        key={i}
-                        style={{paddingLeft:'7px'}}
-                      >
-                      <div key={i} className={v.check ? 'active' : ''}  style={{paddingLeft:'7px'}}onClick={() => {this.chooseOrder(v.quesId)}} > 
-                      {v.quesNo} <b>{v.answeredQuesNum?`v.answeredQuesNum/`:''}</b>{v.quesNum?v.quesNum:''}</div>
-                        
-                      </Menu.Item>
-                    ))
-                    : ""}
-                </Menu.SubMenu>
-                </Menu>
-              )
-            })}
-          
+
+              {directory.map((dir, index) => {
+                return (
+                  <Menu
+                    mode="inline"
+                    inlineCollapsed={collapsed}
+                    key={index}
+                  >
+                    <Menu.SubMenu
+                    key={dir.factorNo}
+                      title={
+                        <div className="item">
+                          <span className='item-content'>{dir.factorNo}&nbsp;&nbsp;{dir.factorContent}</span>
+                          <span className='item-order'><b>{dir.answeredQuesNum}</b>/{dir.quesNum}</span>
+                        </div>
+                      }
+                    >
+                      {dir.entCatalogueQuesVos ?
+                        dir.entCatalogueQuesVos.map((v, i) => (
+                          <Menu.Item
+                            key={i}
+                            style={{ paddingLeft: '7px' }}
+                          >
+                            <div className={v.check ? 'active' : ''} style={{ paddingLeft: '7px' }} onClick={() => { this.chooseOrder(v.quesId) }} >
+                              {v.quesNo} <b>{v.answeredQuesNum ? `v.answeredQuesNum/` : ''}</b>{v.quesNum ? v.quesNum : ''}</div>
+
+                          </Menu.Item>
+                        ))
+                        : ""}
+                    </Menu.SubMenu>
+                  </Menu>
+                )
+              })}
+
             </div>
             <div className='bottom-right'>
-            <div className='bottom-right-content'>
-            {(quesInfo.factorInfo || []).map(info => {
-          return <div key={info.factorNo}>
-            {this.paperType === '1' ? (info.quesInfo || []).map((item, index) => {
-              this.quesId = item.quesId;
-              this.leafId = item.quesId;
-              return this.renderItem(item, index)
-            }) :
-              (info.quesInfo || []).map(prop => {
-                this.quesId = prop.quesId;
-                return <div className='bottom' key={prop.quesNo}>
-                  <p className='first-title'>{prop.quesNo}&nbsp;&nbsp;{prop.subjectContent}</p>
-                  {(prop.childQues || []).map((child, index) => {
-                    this.leafId = prop.childQues[0].quesId;
-                    return this.renderItem(child, index)
-                  })}
+              <div className='bottom-right-content'>
+                {(quesInfo.factorInfo || []).map(info => {
+                  return <div key={info.factorNo}>
+                    {this.paperType === '1' ? (info.quesInfo || []).map((item, index) => {
+                      this.quesId = item.quesId;
+                      this.leafId = item.quesId;
+
+                      return this.renderItem(item, index)
+
+                    }) :
+                      (info.quesInfo || []).map(prop => {
+                        this.quesId = prop.quesId;
+                        return <div className='bottom' key={prop.quesNo}>
+                          <p className='first-title'>{prop.quesNo}&nbsp;&nbsp;{prop.subjectContent}</p>
+                          {(prop.childQues || []).map((child, index) => {
+                            this.leafId = prop.childQues[0].quesId;
+                            return this.renderItem(child, index)
+                          })}
+                        </div>
+                      })}
+                  </div>
+                })}
+
+              </div>
+              <div className='bottom-right-footer'>
+                <div className='footer'>
+                  <div><div className='btn' onClick={this.goPrev} >上一页</div></div>
+                  <div><div className='btn two' onClick={this.save}>保存</div></div>
+                  <div><div className='btn' onClick={this.goNext}>下一页</div></div>
                 </div>
-              })}
-          </div>
-        })}
-            
+              </div>
             </div>
-            <div className='bottom-right-footer'>
-            <div className='footer'>
-        <div><div className='btn' onClick={this.goPrev} >上一页</div></div>
-        <div><div className='btn two' onClick={this.save}>保存</div></div>
-        <div><div className='btn' onClick={this.goNext}>下一页</div></div>
-      </div>
-            </div>
-          </div>
           </div>
 
         </div>
