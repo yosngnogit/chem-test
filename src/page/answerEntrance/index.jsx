@@ -1,7 +1,6 @@
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
-import { Modal,Progress  } from 'antd'
-// import { RightOutline } from 'antd-mobile-icons'
+import { Modal, Progress } from 'antd'
 import { getVersionInfo, getRecordInfo } from "../../api/answer";
 import { getCookie } from '@/utils'
 import './index.less'
@@ -68,10 +67,10 @@ function AnswerEntrance(props) {
 
           <div className="answer-cards">
             <div className="card-free" onClick={() => { goSchedule({ versionNo: info.versionNo, paperType: '1', quesNum: info.free.quesNum }) }}>
-              <img src={require('@/assets/img/answerEntrance/free.png')} width={38} height={44} fit='fill'/>
+              <img src={require('@/assets/img/answerEntrance/free.png')} width={38} height={44} fit='fill' />
               <div className="free-tip">
                 <div className="free-tip-p">
-                  <span>免费版</span>                
+                  <span>免费版</span>
                 </div>
                 <span className='tip-span'>{info.free.quesNum}题，普通诊断</span>
               </div>
@@ -80,15 +79,16 @@ function AnswerEntrance(props) {
               <img src={require('@/assets/img/answerEntrance/notfree.png')} width={46} height={46} fit='fill' />
               <div className="free-tip">
                 <div>
-                  <div className="free-tip-p">  <img src={require('@/assets/img/answerEntrance/Vectorunlock.png')} width={13} height={15} style={{marginRight:'6px'}} fit='fill' />
+                  <div className="free-tip-p">  <img src={require('@/assets/img/answerEntrance/Vectorunlock.png')} width={13} height={15} style={{ marginRight: '6px' }} fit='fill' />
                     <span>付费版</span>
-                   </div>
+                  </div>
                 </div>
                 <span className='tip-span'> {info.pay.quesNum}题，精确诊断</span>
               </div>
             </div>
 
           </div>
+          <div className='answer-tips'> <span>Tips:</span> 请联系当地中控5S店解锁付费版，获得更精准的诊断结果</div>
           <ul className="answer-list">
             {
               listData.map((item, index) => {
@@ -96,26 +96,32 @@ function AnswerEntrance(props) {
                   <div className="list-top">
                     <div className={item.free ? "list-title-true" : "list-title-false"}>
                       <div>
-                        <span className={item.paperType === '1' ? "title-tip-true" : "title-tip-false"}>{item.paperType === '1' ? '免费版' : '付费版'}</span>                      
+                        <span className={item.paperType === '1' ? "title-tip-true" : "title-tip-false"}>{item.paperType === '1' ? '免费版' : '付费版'}</span>
                       </div>
-                    </div>                  
+                    </div>
                   </div>
+                 
                   <div className="list-bottom">
-                    <div>{item.paperName}</div>
-                    <div>开始时间：{item.beginTime}</div>
-                    <span className="list-status">{item.paperStatus === '1' ? '已完成' : '进行中'}</span>
-                    <Progress percent={item.overallProgress} strokeWidth={6}/>
+                    <div className='list-bottom-name'>{item.paperName}</div>
+                    <div className='list-bottom-time'>开始时间：{item.beginTime}</div>
+                    <div className="list-status">{item.paperStatus === '1' ? '已完成' : '进行中'}</div>
+                    <div>
+                      <Progress percent={item.overallProgress} strokeWidth={6} />
+                    </div>
                     <div className="evaluate">
                       {
-                        item.paperStatus === '1' ? <span className="list-level">
-                          <div className="list-sorce">{item.score || 0}分</div>
-                          <span>{item.scoreLevel}</span>
-                          {/* <RightOutline color='#DCDCDC' /> */}
-                        </span> :
-                          <span className="list-pro">                         
-                            {/* <RightOutline color='#DCDCDC' /> */}
+                        item.paperStatus === '1' ? <div className="list-level">
+                          <div className="list-sorce">{item.score || 0}分,</div>
+                          <div className='list-price'>{item.scoreLevel ? item.scoreLevel : '暂无'}</div>
+                        </div> :
+                          <span className="list-pro">
                           </span>
                       }
+                    </div>
+                    <div className='list-button'>
+                      {item.paperStatus === '1' ? <div className='list-button-look'>查看报告</div> :<div style={{width:'84px',height:'32px'}}></div>}
+                      <div className='list-button-con'>{item.paperStatus === '1' ? '重启答题' : '继续答题'}</div>
+                      <div className='list-button-del'>删除记录</div>
                     </div>
                   </div>
                 </li>
@@ -124,11 +130,8 @@ function AnswerEntrance(props) {
             }
           </ul>
         </div>
-
+       
       </div>
-      {/* <div className="answer-footer" onClick={goInfo}>
-        <div className="answer-button">完善企业基本信息</div>
-      </div> */}
     </div>
   )
 }

@@ -43,8 +43,16 @@ const routes = [
     name: "baseInfoDetails",
     component: dynamicRoute({
       component: () => import("../page/baseInfoDetails"),
+    })
+  },
+  // 答题进度页
+  {
+    path: "/answerSchedule",
+    name: "answerSchedule",
+    component: dynamicRoute({
+      component: () => import("../page/answerSchedule"),
     }),
   },
-  
+
 ];
 export default routes;
