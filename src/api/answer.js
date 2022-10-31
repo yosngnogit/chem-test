@@ -97,3 +97,11 @@ export const submitModule = (params) => {
     params
   })
 }
+// 提交试卷
+export const submitPaper = (params) => {
+  return http.request({
+    url: '/front/maintain/DiagnosticEntrance/submitPaper',
+    method: 'get',
+    params
+  })
+}

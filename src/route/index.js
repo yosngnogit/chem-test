@@ -29,6 +29,14 @@ const routes = [
       component: () => import("../page/answerDetail"),
     }),
   },
+  // 答题进度页
+  {
+    path: "/answerSchedule",
+    name: "answerSchedule",
+    component: dynamicRoute({
+      component: () => import("../page/answerSchedule"),
+    }),
+  },
   
 ];
 export default routes;
