@@ -29,6 +29,22 @@ const routes = [
       component: () => import("../page/answerDetail"),
     }),
   },
+  // 企业信息入口
+  {
+    path: "/baseInfo",
+    name: "baseInfo",
+    component: dynamicRoute({
+      component: () => import("../page/baseInfo"),
+    }),
+  },
+  // 完善企业信息
+  {
+    path: "/baseInfoDetails",
+    name: "baseInfoDetails",
+    component: dynamicRoute({
+      component: () => import("../page/baseInfoDetails"),
+    }),
+  },
   
 ];
 export default routes;
