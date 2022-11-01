@@ -1,18 +1,28 @@
-import { Button, Form, Input, Table, Select, DatePicker } from 'antd';
+import { Button, Form, Input, Table, Select } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   PlusOutlined
 } from '@ant-design/icons';
 // import moment from 'moment';
 import 'moment/locale/zh-cn';
-import locale from 'antd/es/date-picker/locale/zh_CN';
+// import locale from 'antd/es/date-picker/locale/zh_CN';
 const EditableContext = React.createContext(null);
 // const { Option } = Select;
 // const { DatePicker } = DatePicker;
-const options = ['关键环节机器换人', '“平台+APPs”场景改造', '5G+工业互联网/AI 等场景应用', '成套自动化（智能化）生产线', '车间级数字化改造', '工厂级数字化改造', '特点环节/企业级/产业链级工业互联网平台']
+const options = [
+  {
+    label: '是',
+    value: true
+  },
+  {
+    label: '否',
+    value: false
+  }
+]
 
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
+
   return (
     <Form form={form} component={false}>
       <EditableContext.Provider value={form}>
@@ -34,19 +44,21 @@ const EditableCell = ({
 }) => {
   const [editing, setEditing] = useState(false);
   const inputRef = useRef(null);
-  const timeRef = useRef(null);
-  const monthFormat = ['YYYY-MM-DD'];
+  const selectRef = useRef(null);
+  // const monthFormat = ['YYYY-MM-DD'];
 
   const form = useContext(EditableContext);
+  const [status, setStatus] = useState('')
 
-  const [timeOpen, setTimeOpen] = useState(true);
+
+  // const [timeOpen, setTimeOpen] = useState(true);
   useEffect(() => {
     if (editing) {
-      if (dataIndex === 'investScale') {
+      if (dataIndex === 'holdCertificate') {
+        selectRef.current.focus();
+
+      } else {
         inputRef.current.focus();
-      }
-      if (dataIndex === 'timeList') {
-        timeRef.current.focus();
       }
     }
   }, [editing]);
@@ -66,26 +78,45 @@ const EditableCell = ({
     } catch (errInfo) {
     }
   };
-  const changeTime = (val) => {
-    setTimeOpen(val)
-  }
   let childNode = children;
   if (editable) {
     childNode = editing ? (
       <Form.Item name={dataIndex} style={{ margin: 0 }}>
         {
-          dataIndex === 'timeList' ?
-            <DatePicker locale={locale}
-              ref={timeRef} autoFocus={true}
-              open={timeOpen}
-              format={monthFormat}
-              onChange={(e) => onTimeChange(e, dataIndex, index)}
-              onOpenChange={changeTime}
-            />
+          dataIndex === 'holdCertificate' ?
+            <Select
+              autoFocus={true}
+              open={editing}
+              onBlur={save}
+              ref={selectRef}
+              style={{
+                width: 150,
+              }}
+            >{
+                options.map((item, index) => {
+                  return <Select.Option key={index} value={item.value}>{item.label}</Select.Option>
+                })
+              }
+            </Select>
             :
-            <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-
-
+            (
+              dataIndex === 'personNumber' ? <Input style={{
+                width: 150,
+              }} ref={inputRef}
+                onPressEnter={save}
+                onBlur={save}
+                onChange={(e) => onInputChange(e, dataIndex)}
+                placeholder='请输入正整数'
+                status={status}
+              /> : <Input style={{
+                width: 150,
+              }} ref={inputRef}
+                onPressEnter={save}
+                onBlur={save}
+                maxLength='64'
+                onChange={(e) => onInputChange(e, dataIndex)}
+              />
+            )
         }
       </Form.Item>
     ) : (
@@ -94,21 +125,27 @@ const EditableCell = ({
       </div>
     );
   }
-  const onTimeChange = async (e, type, ind) => {
-    try {
-      const values = await form.validateFields();
-      handleSave({ ...record, ...values });
-    } catch (errInfo) {
-      // console.log('Save failed:', errInfo);
+  const onInputChange = (e, type) => {
+    if (type === 'personNumber') {
+      const reg = /^[1-9]([0-9])*$/;
+      // console.log(reg.test(e.target.value))
+      let inputValue = e.target.value
+      if (reg.test(inputValue) || inputValue === '') {
+        setStatus('')
+        form.setFieldValue(type, inputValue)
+      } else {
+        setStatus('error')
+        form.setFieldValue(type, '')
+      }
     }
   }
-
   return <td {...restProps}>{childNode}</td>;
 };
 
 const AnswerTable = (props) => {
   const [dataSource, setDataSource] = useState(props.dataSource);
   const [count, setCount] = useState(1);
+
   const defaultColumns = [
     {
       title: '序号',
@@ -120,36 +157,43 @@ const AnswerTable = (props) => {
     },
     {
       title: '主要工种名称',
-      dataIndex: 'projectType',
+      dataIndex: 'mainWorkTypeName',
       editable: true,
       align: 'center',
 
       render: (text, record, index) =>
-        <Input value={record.projectType} />
+        <Input style={{
+          width: 150,
+        }} value={record.mainWorkTypeName} />
     },
     {
       title: '人数',
-      dataIndex: 'investScale',
+      dataIndex: 'personNumber',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
-        <Input value={record.investScale} />
+        <Input style={{
+          width: 150,
+        }} placeholder='请输入正整数' value={record.personNumber} />
     },
     {
-      title: '发证日期',
-      dataIndex: 'timeList',
+      title: '持证情况',
+      dataIndex: 'holdCertificate',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
-        <DatePicker value={record.timeList} />
-    },
-    {
-      title: '持证情况（持证人数）',
-      dataIndex: 'qqq',
-      editable: true,
-      align: 'center',
-      render: (text, record, index) =>
-        <Input value={record.qqq} />
+        <Select
+          value={record.holdCertificate}
+          style={{
+            width: 150,
+          }}
+        >
+          {
+            options.map((item, index) => {
+              return <Select.Option key={index} value={item.value}>{item.label}</Select.Option>
+            })
+          }
+        </Select>
     },
     {
       title: '操作',
@@ -165,9 +209,9 @@ const AnswerTable = (props) => {
   const handleAdd = () => {
     const newData = {
       key: count,
-      sysName: '',
-      investScale: '',
-      timeList: '',
+      mainWorkTypeName: '',
+      personNumber: '',
+      holdCertificate: '',
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1)

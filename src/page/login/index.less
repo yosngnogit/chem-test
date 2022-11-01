@@ -1,0 +1,389 @@
+// 父组件
+#login {
+  position: relative;
+  background-color: #fff;
+  height: 100%;
+  .footer-right {
+    padding: 0;
+    font-family: "SF Pro Text";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    // background-color: #247fe0;
+    border-radius: 10px;
+  }
+}
+
+// 子组件
+.login-box {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  // 登录
+  .login {
+    width: 1440px;
+    margin:auto;
+    height: 1024px;
+    background-image: url("~@/assets/img/login/LEFT.png");
+    background-size: 1440px 1024px;
+    background-repeat: no-repeat;
+    background-blend-mode: lighten;
+    position: relative;
+
+    .login-title {
+     position:absolute;
+     top:74px;
+     left:97px;
+     font-family: 'PingFang SC';
+     font-style: normal;
+     font-weight: 600;
+     font-size: 24px;
+     line-height: 28px;
+     color: #FFFFFF;
+    
+    }
+    .login-content {
+      position: absolute;
+      width: 350px;
+      height: 494px;
+      left: 715px;
+      top: 282px;
+      border-radius: 5px;
+      letter-spacing: 2px;
+      background-color: rgba(0, 0, 0, 0);
+      user-select: none;
+
+      .login-content-title{
+        font-weight: 600;
+        font-size: 28px;
+        line-height: 39px;
+        color: #2F3367;
+        margin-bottom: 24px;
+      }
+  
+     
+    }
+    .user-login {
+      .user-login-bottom{
+        width: 328px;
+        height: 48px;
+        background: linear-gradient(90deg, #4074FF -0.34%, #4472EC 99.66%);
+        box-shadow: 0px 16px 24px rgba(100, 103, 107, 0.24);
+        border-radius: 36px;
+        font-family: 'SF Pro Display';
+          font-style: normal;
+          font-weight: 600;
+          font-size: 16px;
+          line-height: 48px;
+          text-align: center;
+          color: #FBFBFB;
+
+      }
+      .remember {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-right: 12px;
+        height: 30px;
+
+     
+      }
+
+      .register {
+        text-align: end;
+        font-size: 16px;
+        height: 100%;
+        padding-top: 40px;
+        &_tip {
+          font-weight: 500;
+          font-size: 16px;
+          color: #393D6E;         
+        }
+
+        &_btn {
+          font-weight: 400;
+          font-size: 16px;
+          color: #007DFA;
+        }
+      }
+    }
+
+    // antd样式重写
+    .user-login {
+
+      #userLogin{
+        border-bottom: 1px solid #C4C5CA;
+      }
+     .ant-form-item{
+        margin-bottom: 11px;
+        .ant-col .ant-form-item-label{
+          font-family: 'PingFang SC';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 20px;
+          color: #3A3E43;
+          padding-bottom: 10px;
+        }
+        .ant-input{
+          height: 50px;
+          background: #F5F5F7;
+          border-radius: 50px;
+        }
+        #userLogin_username{
+          font-family: 'PingFang SC';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          color: #8B8FA8;
+        }
+        #userLogin_password{
+          background: rgba(0, 0, 0, 0);
+          border: 3px solid #4472EC;
+          border-radius: 50px;
+        }
+        .ant-col-offset-8{
+          margin-left: 0 !important;
+                    }
+        #userLogin_remember{
+          width: 65px;
+          height: 18px;
+          .ant-checkbox-wrapper .ant-checkbox-wrapper-in-form-item{
+            width:100%;
+
+          }
+          .remember-me{
+            width:70px;
+          }
+          span{
+            display:block;
+           
+          }
+          .ant-checkbox-inner{
+            background:rgba(0, 0, 0, 0);
+            width: 15px;
+            height: 15px;
+            border: 1px solid #999DA6;
+            border-radius: 2px;
+            
+          }
+          .ant-checkbox-input{
+            background-color:rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(15px);
+          }
+                  
+        }
+
+     }
+     .user-login-bottom{
+      width:350px;
+      margin:28px 0 44px;
+      border-bottom: 1px solid #C4C5CA;
+     }
+    }
+  }
+
+  // 注册
+  .register {
+    height: 100%;
+    &_nav {
+      padding: 12px;
+      padding-left: 20px;
+      &-step {
+        display: flex;
+        justify-content: space-around;
+        & > img {
+          width: 120px;
+          object-fit: contain;
+          &:nth-child(2) {
+            transform: scale(1.2) translate(4px, -2px);
+          }
+        }
+      }
+    }
+
+    &_content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: calc(100% - 120px);
+      .input {
+        &-tip {
+          display: block;
+          width: 100%;
+          color: #cccccc;
+          font-size: 14px;
+          text-align: right;
+        }
+        &-value {
+          display: block;
+          width: 100%;
+          color: #333333;
+          font-size: 14px;
+          text-align: right;
+          white-space: nowrap;
+        }
+      }
+      .footer-btn {
+        display: flex;
+        justify-content: space-around;
+        .footer-right {
+          width: 150px;
+          height: 48px;
+          line-height: 48px;
+          font-weight: 600;
+          font-size: 16px;
+          text-align: center;
+          border-radius: 20px !important;
+          color:#fff;
+          background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);
+          box-shadow: 0px 8px 16px rgba(30, 104, 234, 0.12);
+        }
+        .footer-left {
+          width: 150px;
+          height: 48px;
+          line-height: 48px;
+          font-weight: 600;
+          font-size: 16px;
+          text-align: center;
+          color: #646B73;
+          border-radius: 20px !important;
+          background: #FFFFFF;
+          box-shadow: 0px 8px 16px rgba(30, 104, 234, 0.12);
+        }
+      }
+
+      .ant-steps-horizontal {
+        padding: 20px 0;
+      }
+    }
+
+    &-step1 {
+      flex: 1;
+      .ant-form {
+        height: 100%;
+      }
+      .ant-list {
+        min-height: 80%;
+      }
+    }
+
+    &-step2 {
+      flex: 1;
+      .register_captcha {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        & > img {
+          margin-left: 12px;
+          width: 82px;
+          height: 30px;
+        }
+
+        .anticon {
+          font-size: 16px;
+          color: #aaa;
+          cursor: pointer;
+        }
+      }
+      .extra-part {
+        border-left: solid 1px #eeeeee;
+        padding-left: 12px;
+        font-size: 15px;
+        line-height: 22px;
+        color: #278eff;
+      }
+      .ant-form {
+        height: 100%;
+      }
+      .ant-list {
+        min-height: 80%;
+      }
+    }
+
+    &-step3 {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 10vh;
+      background: #fff;
+
+      &_tip {
+        text-align: center;
+
+        & > img {
+          width: 300px;
+        }
+
+        & > p {
+          font-size: 22px;
+          transform: translateY(-20px);
+        }
+      }
+
+      &_agreement {
+        margin: 24px 0;
+      }
+
+      &_back {
+        font-size: 13px;
+        color: #333333;
+        & > span {
+          color: #4472ec;
+        }
+      }
+    }
+
+    // antd样式重写
+    &_content {
+      .ant-input-element {
+        text-align: right;
+        font-size: 14px;
+        // padding-right: 24px;
+      }
+      .ant-list-item-description {
+        text-align: right;
+        // padding-right: 24px;
+      }
+     
+      .ant-form-item-label {
+        font-size: 14px;
+        white-space: nowrap;
+      }
+      .ant-form-item-explain-error {
+        position: absolute;
+        right: 28px;
+        top: 6px;
+      }
+      .ant-input-affix-wrapper {
+        z-index: 99;
+      }
+      .ant-btn-default {
+        width: 150px;
+        background-color: #f5f7fa;
+        color: #909399;
+
+        &:hover {
+          border-color: #d9d9d9;
+        }
+
+        &:active {
+          border-color: #d9d9d9;
+        }
+
+        &:focus {
+          border-color: #d9d9d9;
+        }
+      }
+     
+      .ant-input-group {
+        .ant-form-item {
+          width: calc(100% - 150px);
+        }
+      }
+    }
+  }
+}
