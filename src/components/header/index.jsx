@@ -5,8 +5,8 @@ import { Dropdown, Menu, message } from 'antd';
 
 import './index.less'
 
-export default function Header() {
-  const [ tranparent, setTransparent ]  = useState(false)
+export default function Header(props) {
+  const { transparent = false } = props
 
   const onClick = ({ key }) => {
     message.info(`Click on item ${key}`);
@@ -33,7 +33,7 @@ export default function Header() {
   );
 
   return (
-    <div className={tranparent ? 'header_transparent' : 'header'}>
+    <div className={transparent ? 'header_transparent' : 'header'}>
       <div className="header-left">
         <div className="header-title">企业安全自诊断平台</div>
       </div>

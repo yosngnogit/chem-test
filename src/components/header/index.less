@@ -1,5 +1,6 @@
 .header{
   position: fixed;
+  z-index: 9999;
   top: 0;
   display: flex;
   justify-content: space-between;
@@ -7,7 +8,9 @@
   width: 100vw;
   height: 60px;
   padding: 16px 24px;
-  background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);
+  background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, 
+  #4472EC 105.19%);
+  transition: all .2s ease .2s;
   &-title{
     font-size: 20px;
     color: #FFFFFF;
@@ -49,6 +52,7 @@
 
 .header_transparent{
   position: fixed;
+  z-index: 9999;
   top: 0;
   display: flex;
   justify-content: space-between;
@@ -57,6 +61,7 @@
   height: 60px;
   padding: 16px 24px;
   background: transparent;
+  transition: all .2s ease .2s;
   .header-user-btn{
     color: #FFFFFF;
     background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);

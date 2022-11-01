@@ -3,12 +3,8 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   PlusOutlined
 } from '@ant-design/icons';
-// import moment from 'moment';
-import 'moment/locale/zh-cn';
-// import locale from 'antd/es/date-picker/locale/zh_CN';
+// import 'moment/locale/zh-cn';
 const EditableContext = React.createContext(null);
-// const { Option } = Select;
-// const { DatePicker } = DatePicker;
 const options = [
   {
     label: '是',
@@ -19,10 +15,8 @@ const options = [
     value: false
   }
 ]
-
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
-
   return (
     <Form form={form} component={false}>
       <EditableContext.Provider value={form}>
@@ -31,7 +25,6 @@ const EditableRow = ({ index, ...props }) => {
     </Form>
   );
 };
-
 const EditableCell = ({
   title,
   index,
@@ -45,13 +38,8 @@ const EditableCell = ({
   const [editing, setEditing] = useState(false);
   const inputRef = useRef(null);
   const selectRef = useRef(null);
-  // const monthFormat = ['YYYY-MM-DD'];
-
   const form = useContext(EditableContext);
   const [status, setStatus] = useState('')
-
-
-  // const [timeOpen, setTimeOpen] = useState(true);
   useEffect(() => {
     if (editing) {
       if (dataIndex === 'holdCertificate') {
@@ -61,7 +49,7 @@ const EditableCell = ({
         inputRef.current.focus();
       }
     }
-  }, [editing]);
+  }, [editing, dataIndex]);
 
   const toggleEdit = () => {
     setEditing(!editing);
@@ -128,7 +116,6 @@ const EditableCell = ({
   const onInputChange = (e, type) => {
     if (type === 'personNumber') {
       const reg = /^[1-9]([0-9])*$/;
-      // console.log(reg.test(e.target.value))
       let inputValue = e.target.value
       if (reg.test(inputValue) || inputValue === '') {
         setStatus('')
@@ -228,7 +215,6 @@ const AnswerTable = (props) => {
     const item = newData[index];
     newData.splice(index, 1, { ...item, ...row });
     setDataSource(newData);
-
     props.setTableData(newData)
   };
 
