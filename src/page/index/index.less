@@ -1,342 +1,168 @@
-.main-min-height {
-  min-height: calc(100vh - 285px);
-}
-.ant-layout {
-  background: #fff;
-}
-.lay-header {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  position: fixed;
-  width: 100%;
-  background: #fff !important;
-  z-index: 9;
-  padding: 0 24px;
-  .ant-menu-title-content {
-    height: 60px;
-    line-height: 60px;
-    font-size: 18px;
-    .first-menu {
-      display: inline-block;
-      height: 60px;
-      line-height: 60px;
-      font-size: 18px;
-    }
+.index{
+  position: relative;
+  font-family: 'PingFang SC';
+  .section{
+    width: 100vw;
+    height: 100vh;
+    padding-bottom: 200px;
   }
-  .ant-dropdown-trigger {
+  &-carousel{
+    width: 100vw;
+    height: 100vh;
+  }
+  &-arrow{
+    position: fixed;
+    z-index: 99;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    width: 88px;
+    height: 88px;
+    cursor: pointer;
+  }
+}
+
+.section1{
+  &-top{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
-  &-welcome {
-    background: transparent !important;
-    color: #fff !important;
-    border-bottom: 1px solid rgba(256, 256, 256, 0.1);
-    .ant-menu {
-      background: transparent !important;
-      color: #fff !important;
+    height: 40%;
+    background: url('~@/assets/img/index/section1-top-bg.png') no-repeat;
+    background-size: 100%;
+    &-title{
+      font-weight: 400;
+      font-size: 42px;
+      color: #FFFFFF;
     }
-  }
-  .header {
-    &-wrapper {
-      position: relative;
-      width: 100%;
-      min-width: 1200px;
-      max-width: 1600px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    &-desc{
+      margin: 18px 0 36px 0;
+      font-weight: 400;
+      font-size: 18px;
+      text-align: center;
+      color: #FFFFFF;
     }
-    &-logo {
-      display: flex;
-      align-items: center;
-      width: 200px;
-      cursor: pointer;
-      z-index: 99;
-      img {
-        width: 50px;
-        height: 30px;
-        margin-right: 12px;
-      }
-      .text {
-        user-select: none;
-        float: right;
-        .name {
-          white-space: nowrap;
-          font-weight: 600;
-          font-size: 20px;
-        }
-        .subname {
-          font-size: 12px;
-        }
-      }
-    }
-    &-menu {
-      .menu {
-        height: 64px;
-        width: 300%;
-        margin-left: 20px;
-        border: none;
-      }
-    }
-    &-login {
-      width: 150px;
-    }
-    &-msg {
+    &-btn{
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-    &-notice {
-      margin-right: 24px;
-      cursor: pointer;
-      .btns {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #f0f0f0;
-        padding-bottom: 12px;
-        .ant-btn-sm {
-          font-size: 12px;
-        }
-      }
-      .list {
-        height: 400px;
-        overflow: hidden;
-        font-size: 12px;
-        #scrollableDiv {
-          height: 400px;
-          overflow: auto;
-          padding: 0 16px;
-          padding-right: 30px;
-        }
-        .item {
-          position: relative;
-          margin-bottom: 6px;
-          padding-bottom: 6px;
-          width: 100%;
-          border-bottom: 1px solid #ebebeb;
-          cursor: pointer;
-          &_title {
-            font-size: 12px;
-            font-family: Microsoft YaHei;
-            font-weight: bold;
-            color: #444444;
-            line-height: 28px;
-            &_dot {
-              margin-right: 4px;
-              border: 1px solid #fff;
-              height: 8px;
-              width: 8px;
-              background-color: #f56c6c;
-              border-radius: 50%;
-              display: inline-block;
-              text-align: center;
-              white-space: nowrap;
-            }
-          }
-          &_content {
-            padding-bottom: 24px;
-            font-size: 12px;
-            font-family: Microsoft YaHei;
-            font-weight: 400;
-            color: #444444;
-            line-height: 18px;
-          }
-          &_time {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            font-size: 12px;
-            font-family: Microsoft YaHei;
-            font-weight: 400;
-            color: #999999;
-            line-height: 28px;
-          }
-        }
-      }
-      #scrollableDiv {
-        padding: 0 !important;
-        padding-right: 40px !important;
-        width: 110%;
-      }
-      .ant-list-empty-text {
-        display: none;
-      }
-      .ant-popover-arrow {
-        display: none !important ;
-      }
-      .ant-tabs-nav::after {
-        border-bottom: 2px solid #f0f0f0 !important;
-      }
-      .ant-tabs-tab {
-        .ant-badge {
-          font-size: 14px;
-        }
-        &-active {
-          .ant-badge {
-            color: #1890ff;
-          }
-        }
-      }
-      .ant-tabs-tab + .ant-tabs-tab {
-        margin: 0 0 0 80px !important;
-      }
-      .ant-modal-footer {
-        border: none !important;
-      }
+      padding: 12px 16px 12px 17px;
+      width: 192px;
+      height: 64px;
+      background: linear-gradient(90deg, #4074FF -0.34%, #4472EC 99.66%);
+      border-radius: 36px;
+      font-weight: 600;
+      font-size: 24px;
+      color: #FBFBFB;  
+      cursor: pointer;      
     }
   }
-}
-.lay-header-transparent {
-  background: transparent !important;
-  color: #fff !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  .menu {
-    background: transparent;
-    color: #fff;
-    transition: none !important;
-  }
-  &:hover {
-    background: #fff !important;
-    color: #444 !important;
-    .menu {
-      background: #fff;
-      color: #444 !important;
-      transition: none !important;
+  &-bottom{
+    height: 40%;
+    &-title{
+      margin: 40px;
+      font-weight: 400;
+      font-size: 36px;
+      text-align: center;
+      color: #1F2229;
     }
   }
-}
-.lay-content {
-  margin-top: 64px;
-}
-.personal-con {
-  background: rgb(247, 248, 250);
-}
-.user-name {
-  cursor: pointer;
-  margin-right: 30px;
-}
-.user-dropdown {
-  border-radius: 6px;
-  width: 100px;
-  text-align: center;
-  .ant-dropdown-arrow {
-    top: 0;
-  }
-  .ant-dropdown-menu {
-    top: -10px;
-  }
-  .ant-dropdown-menu-item {
-    padding: 8px 20px;
-    &:hover {
-      color: #1890ff;
+  &-carousel{
+    &-item{
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
+    }
+    &-card{
+      margin: 12px;
+      width: 340px;
+      height: 340px;
+      &-img{
+        width: 100%;
+        height: 160px;
+      }
+      &-title{
+        margin: 16px 0 8px 0;
+        padding: 0 12px;
+        font-weight: 400;
+        font-size: 22px;
+        color: #1F2229;
+      }
+      &-desc{
+        padding: 0 12px;
+        white-space: break-spaces;
+        font-weight: 400;
+        font-size: 14px;
+        color: #3A3E43;
+      }
     }
   }
 }
 
-.propoverDiv {
-  .ant-tabs-content {
-    flex-direction: column;
-  }
-  .msg_option {
-    display: flex;
-    justify-content: space-between;
-  }
-  .ant-radio-button-wrapper {
-    border: none;
-    &:active {
-      border: none;
-    }
-    &:hover {
-      border: none;
-    }
-    &:focus {
-      border: none;
-    }
-  }
-  .ant-radio-button-wrapper-checked {
-    border: none;
-    box-shadow: none;
-  }
-  .ant-radio-button-wrapper:not(:first-child):before {
-    height: 0;
-  }
+.section2{
+  background: olivedrab;
 }
 
-// menu
-@media screen and (max-width: 1200px) {
-  .ant-menu-submenu {
-    padding: 0 12px !important;
-  }
+.section3{
+  background: aqua;
+  
 }
-.ant-menu-submenu-popup {
-  position: fixed;
-  top: 64px !important;
-  padding: 0 48px;
-  width: 100%;
-  box-shadow: none;
-  color: #fff;
-  background-color: rgba(38, 67, 218, 0.9) !important;
-  transition: none;
-  .ant-menu {
-    display: flex;
-    flex-wrap: wrap;
-    margin: auto;
-    width: 80%;
-    color: #fff;
-    font-size: 16px;
-    background-color: transparent;
-    box-shadow: none;
-    transition: none;
-    .ant-menu-item {
-      margin: 0 1%;
-      padding: 24px;
-      width: 30%;
-      height: auto;
-      border-right: 1px solid rgba(256, 256, 256, 0.3);
-      &:hover {
-        color: #fff;
-        cursor: default;
-      }
-      &:active {
-        background: none;
-      }
-      &:nth-child(3n) {
-        border-right: none;
-      }
-      .second-menu {
-        padding: 0 0 0 48px;
-        width: 80%;
-        &_group {
-          font-size: 18px;
-        }
-        &_item {
-          display: flex;
-          flex-direction: column;
-          margin-top: 8px;
-          font-size: 14px;
-          font-weight: 300;
-          & > span {
-            margin: 6px 0px;
-          }
-        }
-      }
-      .menu-hover {
-        &:hover {
-          cursor: pointer;
-          text-decoration: underline;
-        }
-      }
+
+.section4{
+  background: palevioletred;
+}
+
+// antd
+.index{
+  .slick-dots{
+    right: 40px;
+    li{
+      margin: 6px;
+      height: auto !important;
+      width: auto !important;
     }
-    .ant-menu-item-selected {
-      background-color: transparent !important;
-      color: #fff !important;
+    button{
+      width: 10px !important;
+      height: 10px !important;
+      border-radius: 10px !important;
+      background: #C3D6FB !important;
+      box-shadow: 0px 0px 8px 0px #4472EC;
+    }
+    .slick-active{
+      button{
+        width: 10px !important;
+        height: 24px !important;
+        border-radius: 10px !important;
+        background: #4472EC !important;
+      }
     }
   }
 }
-.ant-menu{
-  user-select: none;
-  transition: none !important;
+.section1{
+  .slick-dots{
+    top: auto;
+    left: 50%;
+    flex-direction:row;
+    li{
+      margin: 6px;
+      height: auto !important;
+      width: auto !important;
+    }
+    button{
+      width: 10px !important;
+      height: 10px !important;
+      border-radius: 10px !important;
+      background: #C3D6FB !important;
+      box-shadow: 0px 0px 8px 0px transparent;
+    }
+    .slick-active{
+      button{
+        width: 24px !important;
+        height: 10px !important;
+        border-radius: 10px !important;
+        background: #4472EC !important;
+      }
+    }
+  }
 }
