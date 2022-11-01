@@ -111,6 +111,9 @@ function BaseInfoDetails(props) {
     let res = await getBaseInfo(getCookie('entCode'))
     form.setFieldsValue({ entRegisterName: res.data.entRegisterName })
     form.setFieldsValue({ legalPerson: res.data.legalPerson })
+    form.setFieldsValue({ produceName: '生产安全许可证' })
+    form.setFieldsValue({ businessName: '企业工商营业执照' })
+    form.setFieldsValue({ dangerName: '危化品经营许可证' })
     if (!res.data.id) return
     let {
       id,
@@ -238,7 +241,7 @@ function BaseInfoDetails(props) {
             >
               <Form.Item label='企业注册名称' name='entRegisterName'
                 rules={[{ required: true }]}>
-                <Input placeholder='请输入' maxLength='128' disabled />
+                <Input maxLength='128' disabled />
               </Form.Item>
 
               <Form.Item label='经济类型' name='economicType'
@@ -276,7 +279,7 @@ function BaseInfoDetails(props) {
                   { required: true },
                   { pattern: positiveIntegerReg, message: '请输入正确的数值' },
                 ]}>
-                <Input placeholder='请输入' maxLength='9999999' />
+                <Input placeholder='请输入企业职工人数' maxLength='9999999' />
               </Form.Item>
 
               <Form.Item label='厂区面积（㎡）' name='plantArea'
@@ -285,15 +288,15 @@ function BaseInfoDetails(props) {
                   { pattern: positiveIntegerRegPoint, message: '请输入正确的数值' },
                 ]}
               >
-                <Input placeholder='请输入' maxLength='99999999' />
+                <Input placeholder='请输入厂区面积' maxLength='99999999' />
               </Form.Item>
               <Form.Item label='企业法定代表人名称' name='legalPerson'
                 rules={[{ required: true }]}>
-                <Input placeholder='请输入' maxLength='64' disabled />
+                <Input maxLength='64' disabled />
               </Form.Item>
               <Form.Item label='使用主要化工原料名称' name='useMainMaterialName'
                 rules={[{ required: true }]}>
-                <Input placeholder='请输入' maxLength='200' />
+                <Input placeholder='请输入使用主要化工原料名称' maxLength='200' />
               </Form.Item>
               <Form.Item label='主要危险工序化学反应类型' name='mainDangerChemicalReactionType'
               >
@@ -350,7 +353,7 @@ function BaseInfoDetails(props) {
                 </Radio.Group>
               </Form.Item>
               <Form.Item label='生产过程存在的危险有害因素' name='productionFactorsDanger'>
-                <TextArea placeholder='请输入' maxLength='200' showCount />
+                <TextArea placeholder='请输入生产过程存在的危险有害因素' maxLength='200' showCount />
               </Form.Item>
             </Form>
           </Panel>
@@ -361,9 +364,13 @@ function BaseInfoDetails(props) {
                 <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                   {...formItemLayout}
                   className='base-form'>
+                  <Form.Item label='证件名称' name='businessName'
+                  >
+                    <Input disabled />
+                  </Form.Item>
                   <Form.Item label='发证单位' name='businessLicenseUnit'
                     rules={[{ required: true }]}>
-                    <Input placeholder='请输入' maxLength='128' />
+                    <Input placeholder='请输入发证单位' maxLength='128' />
                   </Form.Item>
                   <Form.Item label='发证日期' name='businessLicenseDate'
                     rules={[{ required: true }]}
@@ -382,11 +389,11 @@ function BaseInfoDetails(props) {
                       { required: true },
                       { pattern: cardNumberRge, message: '请输入正确的证件号码' },
                     ]}>
-                    <Input placeholder='请输入' />
+                    <Input placeholder='请输入证件号码' />
                   </Form.Item>
                   <Form.Item label='许可证生产经营范围(生产规模)' name='businessLicenseArea'
                     rules={[{ required: true }]}>
-                    <TextArea placeholder='请输入' maxLength='200' showCount />
+                    <TextArea placeholder='请输入许可证生产经营范围(生产规模)' maxLength='200' showCount />
                   </Form.Item>
                 </Form>
               </Panel>
@@ -394,9 +401,13 @@ function BaseInfoDetails(props) {
                 <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                   {...formItemLayout}
                   className='base-form'>
+                  <Form.Item label='证件名称' name='produceName'
+                  >
+                    <Input disabled />
+                  </Form.Item>
                   <Form.Item label='发证单位' name='produceLicenseUnit'
                     rules={[{ required: true }]}>
-                    <Input placeholder='请输入' maxLength='128' />
+                    <Input placeholder='请输入发证单位' maxLength='128' />
                   </Form.Item>
                   <Form.Item label='发证日期' name='produceLicenseDate'
                     rules={[{ required: true }]}
@@ -415,11 +426,11 @@ function BaseInfoDetails(props) {
                       { required: true },
                       { pattern: cardNumberRge, message: '请输入正确的证件号码' },
                     ]}>
-                    <Input placeholder='请输入' />
+                    <Input placeholder='请输入证件号码' />
                   </Form.Item>
                   <Form.Item label='许可证生产经营范围(生产规模)' name='produceLicenseArea'
                     rules={[{ required: true }]}>
-                    <TextArea placeholder='请输入' maxLength='200' showCount />
+                    <TextArea placeholder='请输入许可证生产经营范围(生产规模)' maxLength='200' showCount />
                   </Form.Item>
                 </Form>
               </Panel>
@@ -427,9 +438,13 @@ function BaseInfoDetails(props) {
                 <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                   {...formItemLayout}
                   className='base-form'>
+                  <Form.Item label='证件名称' name='dangerName'
+                  >
+                    <Input disabled />
+                  </Form.Item>
                   <Form.Item label='发证单位' name='dangerLicenseUnit'
                     rules={[{ required: true }]}>
-                    <Input placeholder='请输入' maxLength='128' />
+                    <Input placeholder='请输入发证单位' maxLength='128' />
                   </Form.Item>
                   <Form.Item label='发证日期' name='dangerLicenseDate'
                     rules={[{ required: true }]}
@@ -448,11 +463,11 @@ function BaseInfoDetails(props) {
                       { required: true },
                       { pattern: cardNumberRge, message: '请输入正确的证件号码' },
                     ]}>
-                    <Input placeholder='请输入' />
+                    <Input placeholder='请输入证件号码' />
                   </Form.Item>
                   <Form.Item label='许可证生产经营范围(生产规模)' name='dangerLicenseArea'
                     rules={[{ required: true }]}>
-                    <TextArea placeholder='请输入' maxLength='200' showCount />
+                    <TextArea placeholder='请输入许可证生产经营范围(生产规模)' maxLength='200' showCount />
                   </Form.Item>
                 </Form>
               </Panel>
