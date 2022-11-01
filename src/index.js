@@ -9,13 +9,27 @@ import './assets/css/normalize.css'
 import './assets/css/common.css'
 import routes from './route';
 
+import Header from '@/components/header/index';
+
 const renderTreeRoutes = (route) => {
   return route.children ?
-    <Route key={route.path} path={route.path} component={(props) => <route.component {...props} />}>
+    <Route key={route.path} path={route.path} component={(props) => 
+      (
+        <div>
+          <Header/>
+          <route.component {...props} />
+        </div>
+      )
+    }>
       {route.children.map((item) => renderTreeRoutes(item))}
     </Route>
     :
-    <Route exact key={route.path} path={route.path} component={(props) => <route.component {...props} />} />
+    <Route exact key={route.path} path={route.path} component={(props) =>(
+        <div>
+          <Header/>
+          <route.component {...props} />
+        </div>
+    )} />
 }
 
 createRoot(document.getElementById('root')).render(
