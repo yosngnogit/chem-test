@@ -80,7 +80,7 @@
           color: #FBFBFB;
 
       }
-      .remember {
+      .login-remember {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -90,18 +90,18 @@
      
       }
 
-      .register {
+      .login-register {
         text-align: end;
         font-size: 16px;
         height: 100%;
         padding-top: 40px;
-        &_tip {
+        .login-register_tip{
           font-weight: 500;
           font-size: 16px;
           color: #393D6E;         
         }
 
-        &_btn {
+        .login-register_btn{
           font-weight: 400;
           font-size: 16px;
           color: #007DFA;
@@ -186,19 +186,20 @@
 
   // 注册
   .register {
-    height: 100%;
+    width:1200px;
+    margin:auto;
     &_nav {
       padding: 12px;
       padding-left: 20px;
       &-step {
-        display: flex;
-        justify-content: space-around;
-        & > img {
-          width: 120px;
-          object-fit: contain;
-          &:nth-child(2) {
-            transform: scale(1.2) translate(4px, -2px);
-          }
+       
+        & > img{
+          width:1200px;
+          margin: auto;
+          // width: 234px;
+          // height:48px;
+          // object-fit: contain;
+         
         }
       }
     }

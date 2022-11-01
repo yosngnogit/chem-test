@@ -97,9 +97,9 @@ function UserLogin(props) {
         </Form.Item>
       </Form>
 
-      <div className="register">
-        <span className="register_tip">您还没有账户?</span>
-        <span className="register_btn" onClick={() => { switchPageType('register') }}>&nbsp;&nbsp;现在注册</span>
+      <div className="login-register">
+        <span className="login-register_tip">您还没有账户?</span>
+        <span className="login-register_btn" onClick={() => { switchPageType('register') }}>&nbsp;&nbsp;现在注册</span>
       </div>
     </div>
   );
