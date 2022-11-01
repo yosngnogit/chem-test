@@ -17,13 +17,12 @@ function baseInfo(props) {
       </div>
       <div className="base-main">
         <ul className='main-list'>
-          <li>
+          <li onClick={onListItemClick}>
             <div className="info-title">
               <span>*</span>
               <p>企业基本情况</p>
             </div>
             <div className="info-icon">
-
               <Image
                 width={10}
                 preview={false}
