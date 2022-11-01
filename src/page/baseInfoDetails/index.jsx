@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { Collapse, Form, Input, Select, DatePicker, Checkbox, Radio, Space, Cascader, Spin, message } from 'antd';
 import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
-import moment from 'moment';
 import { getRegionTree, getDictListByName } from '@/api/common'
 import { positiveIntegerReg, positiveIntegerRegPoint, cardNumberRge } from '@/utils/reg'
 
 import { getBaseInfo, saveUpdate } from '@/api/info'
 import AnswerTable from './component/AnswerTable'
+import moment from 'moment';
 import './index.less'
 
 function BaseInfoDetails(props) {
@@ -40,11 +40,6 @@ function BaseInfoDetails(props) {
       setLoading(false)
     })
   }, [])
-
-
-  const onTimeChange = (key) => {
-  };
-
   const handleRegionTree = (list) => {
     list.forEach(item => {
       item.label = item.name
@@ -261,7 +256,7 @@ function BaseInfoDetails(props) {
               <Form.Item label='企业创办时间' name='entEstablishDatetime'
                 rules={[{ required: true }]}
               >
-                <DatePicker onChange={(val) => onTimeChange(val)} format="YYYY-MM-DD" />
+                <DatePicker format="YYYY-MM-DD" />
               </Form.Item>
 
               <Form.Item label="企业所在/省/市/区" name='regionList'
@@ -292,17 +287,14 @@ function BaseInfoDetails(props) {
               >
                 <Input placeholder='请输入' maxLength='99999999' />
               </Form.Item>
-
               <Form.Item label='企业法定代表人名称' name='legalPerson'
                 rules={[{ required: true }]}>
                 <Input placeholder='请输入' maxLength='64' disabled />
               </Form.Item>
-
               <Form.Item label='使用主要化工原料名称' name='useMainMaterialName'
                 rules={[{ required: true }]}>
                 <Input placeholder='请输入' maxLength='200' />
               </Form.Item>
-
               <Form.Item label='主要危险工序化学反应类型' name='mainDangerChemicalReactionType'
               >
                 <Checkbox.Group
@@ -327,9 +319,7 @@ function BaseInfoDetails(props) {
                     { label: '偶氮化工艺', value: '偶氮化工艺' },
                   ]}
                 />
-
               </Form.Item>
-
               <Form.Item label='现有的安全措施水平' name='safeMeasures'
               >
                 <Checkbox.Group
@@ -362,7 +352,6 @@ function BaseInfoDetails(props) {
               <Form.Item label='生产过程存在的危险有害因素' name='productionFactorsDanger'>
                 <TextArea placeholder='请输入' maxLength='200' showCount />
               </Form.Item>
-
             </Form>
           </Panel>
           {/* 执照情况 */}
@@ -400,7 +389,6 @@ function BaseInfoDetails(props) {
                     <TextArea placeholder='请输入' maxLength='200' showCount />
                   </Form.Item>
                 </Form>
-
               </Panel>
               <Panel header={BaseHeader('生产安全许可证')} key="4" className='inner-header' forceRender>
                 <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
@@ -434,8 +422,6 @@ function BaseInfoDetails(props) {
                     <TextArea placeholder='请输入' maxLength='200' showCount />
                   </Form.Item>
                 </Form>
-
-
               </Panel>
               <Panel header={BaseHeader('危化品经营许可证')} key="5" className='inner-header' forceRender>
                 <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
