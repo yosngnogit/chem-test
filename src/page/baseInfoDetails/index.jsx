@@ -342,7 +342,7 @@ function BaseInfoDetails(props) {
                 placeholder='请输入' maxLength='200'
                 showCount
                 onBlur={onSafeInputBlur}
-                style={{ padding: '12px 16px', margin: '-20px 0 20px 20%', width: '80%' }} />}
+                style={{ padding: '12px 16px', margin: '-20px 0 20px 31%', width: '71%' }} />}
               <Form.Item label='反应放热程度' name='reactionExothermicDegree'>
                 <Radio.Group>
                   <Space>
