@@ -1,0 +1,65 @@
+.header{
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  height: 60px;
+  padding: 16px 24px;
+  background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);
+  &-title{
+    font-size: 20px;
+    color: #FFFFFF;
+  }
+  &-user{
+    display: flex;
+    align-items: center;
+    &-avatar{
+      width: 34px;
+      height: 34px;
+    }
+    &-name{
+      margin: 0 30px 0 8px;
+      font-weight: 400;
+      font-size: 14px;
+      color: #EFFDFE;
+      &-arrow{
+        margin-left: 6px;
+        transform: translateY(2px);
+        font-size: 12px !important;
+      }
+    }
+    &-btn{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 88px;
+      height: 32px;
+      background: #FFFFFF;
+      box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.043);
+      border-radius: 20px;
+
+      font-weight: 400;
+      font-size: 14px;
+      color: #4472EC;
+    }
+  }
+}
+
+.header_transparent{
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  height: 60px;
+  padding: 16px 24px;
+  background: transparent;
+  .header-user-btn{
+    color: #FFFFFF;
+    background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);
+  }
+}
+
