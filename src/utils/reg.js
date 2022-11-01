@@ -42,17 +42,3 @@ export const cardForeignerPermanentReg = /^[A-Z]{3}\d{6}(?:0[1-9]|1[021])(?:0[1-
 
 //生产经营许可证... 数字或数字与大写英文字母正则
 export const cardNumberRge = /^[1-9][A-Z0-9]+$/
-
-
-
-
-
-// 护照
-export const passportReg = /^([a-zA-z]|[0-9]){5,17}$/
-// 港澳通行证
-export const cardHKMacaoReg = /^([A-Z]\d{6,10}(\(\w{1}\))?)$/
-// 台湾通行证
-export const cardTaiwanRge = /^\d{8}|^[a-zA-Z0-9]{10}|^\d{18}$/
-// 外国人永久居住证
-export const cardForeignerPermanentReg = /^[A-Z]{3}\d{6}(?:0[1-9]|1[021])(?:0[1-9]|[21]\d|3[10])\d{2}$/
-
