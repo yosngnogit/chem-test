@@ -11,7 +11,7 @@ import routes from './route';
 
 const renderTreeRoutes = (route) => {
   return route.children ?
-    <Route exact key={route.path} path={route.path} component={(props) => <route.component {...props} />}>
+    <Route key={route.path} path={route.path} component={(props) => <route.component {...props} />}>
       {route.children.map((item) => renderTreeRoutes(item))}
     </Route>
     :

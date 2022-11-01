@@ -3,7 +3,7 @@ import { Carousel } from 'antd';
 
 import './index.less'
 
-import Header from '@/cmponents/header'
+// import Header from '@/components/header'
 import Section1 from './components/section1';
 import Section2 from './components/section2';
 import Section3 from './components/section3';
@@ -18,7 +18,7 @@ export default function Index() {
 
   return (
     <div className='index'>
-      <Header transparent={active=== 0}/>
+      {/* <Header transparent={active=== 0}/> */}
       <Carousel className="index-carousel" dotPosition="right" beforeChange={onCarouselChange}>
         <Section1/>
         <Section2/>
