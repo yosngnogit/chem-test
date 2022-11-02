@@ -1,14 +1,14 @@
 import React from 'react'
-import { Button, Avatar } from 'antd';
+import { Avatar } from 'antd';
 import { withRouter } from "react-router-dom";
 
-// import './index.less'
+import '../index.less'
 
-function baseInfo(props) {
-  // const onListItemClick = (type) => {
-  //   // 用路由定义type
-  //   props.history.push('baseInfoDetails')
-  // }
+function personalBaseInfo(props) {
+  const onListItemClick = (type) => {
+    // 用路由定义type
+    props.history.go(-1)
+  }
   return (
     <div className='personalCenter'>
       <div className="personal-header">
@@ -17,32 +17,52 @@ function baseInfo(props) {
       </div>
       <div className="personal-main">
         <ul className='main-list'>
-          <li>
+          <li className='info-li'>
             <div className="info-title">
-              <p>企业信息个人信息</p>
+              <p>企业名称</p>
             </div>
             <div className="info-btn">
-              <Button type="link" >
-                查看
-              </Button>
+              <p>企业名称</p>
             </div>
           </li>
-          <li>
+          <li className='info-li'>
             <div className="info-title">
-              <p>修改密码</p>
+              <p>统一社会信用代码</p>
             </div>
             <div className="info-btn">
-              <Button type="link" >
-                修改
-              </Button>
+              <p>企业名称</p>
+            </div>
+          </li>
+          <li className='info-li'>
+            <div className="info-title">
+              <p>法定代表人</p>
+            </div>
+            <div className="info-btn">
+              <p>企业名称</p>
+            </div>
+          </li>
+          <li className='info-li'>
+            <div className="info-title">
+              <p>用户名</p>
+            </div>
+            <div className="info-btn">
+              <p>企业名称</p>
+            </div>
+          </li>
+          <li className='info-li'>
+            <div className="info-title">
+              <p>绑定手机号</p>
+            </div>
+            <div className="info-btn">
+              <p>企业名称</p>
             </div>
           </li>
         </ul>
       </div>
       <div className="personal-footer">
-        <div className='logout'>退出登录</div>
+        <div className='logout' onClick={() => onListItemClick('/personalInfo')}>确定</div>
       </div>
     </div>
   )
 }
-export default withRouter(baseInfo)
+export default withRouter(personalBaseInfo)
