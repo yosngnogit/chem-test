@@ -28,7 +28,8 @@ body {
   font-size: 14px;
   line-height: 1.5;
   color: #303133;
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
+  background-color: #F8F8FA!important;
   overflow-y: overlay;
 }
 
