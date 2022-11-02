@@ -29,7 +29,7 @@ export default function Section1() {
       </div>
       <div className="section1-bottom">
         <div className="section1-bottom-title">中控安全自诊断服务内容及服务延伸</div>
-        <Carousel className="section1-carousel">
+        <Carousel className="section1-carousel" autoplay>
           <div className='section1-carousel-item'>
             {list.map((item,index) => (
               <div className="section1-carousel-card" key={index}>
