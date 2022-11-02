@@ -63,5 +63,30 @@ const routes = [
       component: () => import("../page/report"),
     }),
   },
+  // 个人中心
+  {
+    path: "/personalCenter",
+    name: "personalCenter",
+    component: dynamicRoute({
+      component: () => import("../page/personalCenter"),
+    }),
+  },
+  // 个人中心--基本信息
+  {
+    path: "/personalInfo",
+    name: "personalInfo",
+    component: dynamicRoute({
+      component: () => import("../page/personalCenter/component/personalInfo"),
+    }),
+  },
+  // 个人中心--修改密码
+
+  {
+    path: "/changePassword",
+    name: "changePassword",
+    component: dynamicRoute({
+      component: () => import("../page/personalCenter/component/changePassword"),
+    }),
+  }
 ];
 export default routes;

@@ -1,0 +1,126 @@
+.personalCenter {
+  width: 1200px;
+  // height: 500px;
+  // background: rebeccapurple;
+  margin: 0 auto;
+  padding-bottom: 30px;
+
+  .personal-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 215px;
+
+    /* BG/Light blue1 */
+
+    background: #F7F9FF;
+    /* Stroke/Split line2 */
+
+    border-bottom: 1px solid #F2F2F2;
+
+    .ant-avatar-square {
+      border-radius: 15px;
+    }
+
+    .personal-title {
+      margin-top: 16px;
+      font-family: 'SF Pro Text';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 16px;
+      color: #3A3E43;
+    }
+  }
+
+  .personal-main {
+    padding: 36px 20px;
+    background-color: #fff;
+
+
+    .main-list {
+      li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        // background: red;
+        padding: 22px 17px;
+
+        // margin-top: 10;
+        .ant-btn-link {
+          padding: 0;
+        }
+      }
+
+      p {
+        margin: 0;
+      }
+
+      .info-li {
+        padding: 16px 17px;
+      }
+    }
+  }
+
+  .personal-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 42px;
+
+    .logout {
+      width: 350px;
+      height: 50px;
+      background: linear-gradient(90deg, #4472EC -0.34%, rgba(64, 116, 255, 0.86) 99.66%);
+      border-radius: 50px;
+      font-family: 'PingFang SC';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 50px;
+      text-align: center;
+      color: #FFFFFF;
+      cursor: pointer;
+    }
+  }
+
+  .change-password {
+    width: 400px;
+    margin: 0 auto;
+    position: relative;
+    margin-bottom: -20px;
+
+    // padding-bottom: 60px;
+    // .footer{
+    //   margin-bottom: -160px;
+    // }
+    .password-footer {
+      left: 50%;
+      transform: translateX(-50%);
+      position: absolute;
+      bottom: -100px;
+
+      .logout {
+        width: 350px;
+        height: 50px;
+        background: linear-gradient(90deg, #4472EC -0.34%, rgba(64, 116, 255, 0.86) 99.66%);
+        border-radius: 50px;
+        font-family: 'PingFang SC';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 50px;
+        text-align: center;
+        color: #FFFFFF;
+        cursor: pointer;
+      }
+    }
+
+    .ant-input-group-compact {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
