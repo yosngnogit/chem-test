@@ -16,7 +16,7 @@ const renderTreeRoutes = (route) => {
     <Route key={route.path} path={route.path} component={(props) => 
       (
         <div>
-          <Header/>
+          { route.showHeader !== false && <Header/>}
           <route.component {...props} />
         </div>
       )
@@ -26,7 +26,7 @@ const renderTreeRoutes = (route) => {
     :
     <Route exact key={route.path} path={route.path} component={(props) =>(
         <div>
-          <Header/>
+          { route.showHeader !== false && <Header/>}
           <route.component {...props} />
         </div>
     )} />
