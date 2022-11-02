@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import md5 from 'js-md5'
-import { Button, Form, Input, Select , Message, Cascader } from "antd";
+import { Button, Form, Input, Select, Message, Cascader } from "antd";
 import { baseURL, appCode, clientId } from '@/config'
 import { getUUID } from '@/utils'
 import { USCCReg, idCardReg, pwdReg, phoneReg, passportReg, cardHKMacaoReg, cardTaiwanRge, cardForeignerPermanentReg } from '@/utils/reg'
@@ -14,21 +14,17 @@ export default function EnterpriseRegister(props) {
   const [step1Form, setSstep1Form] = useState({})
 
   return (
+    
     <div className='register'>
-
-      <div className='register_header'>
-        
-      </div>
-
       <div className="register_nav">
         {stepActie === 0 &&
           <div className="register_nav-step">
-            <img src={require('@/assets/img/login/Steps1-long.png')} alt=""/>           
+            <img src={require('@/assets/img/login/Steps1-long.png')} alt="" />
           </div>
         }
         {stepActie === 1 &&
           <div className="register_nav-step">
-            <img src={require('@/assets/img/login/Steps2-long.png')} alt="" />         
+            <img src={require('@/assets/img/login/Steps2-long.png')} alt="" />
           </div>
         }
         {stepActie === 2 &&
@@ -144,28 +140,28 @@ function Setp1(props) {
         layout='horizontal'
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        labelCol= {{
+        labelCol={{
           span: 8,
         }}
-        wrapperCol= {{
-          span:16,
+        wrapperCol={{
+          span: 16,
         }}
-        >
+      >
         <Form.Item label='省份' name="provinceCode"
           rules={[{ message: '请选择省份' }]}
-        
-         >
+
+        >
           <Select placeholder="请选择省份">
-            {provinceList.map((item,index) =>
-              <Select.Option value={item.codeP} key={index}>{item.name}</Select.Option>
+            {provinceList.map((item) =>
+              <Select.Option value={item.codeP} key={item.id}>{item.name}</Select.Option>
             )}
           </Select>
         </Form.Item>
 
         <Form.Item label='法人类型' name="legalType"
           rules={[{ required: true, message: '请选择法人类型' }]}
-         >
-           <Select placeholder="请选择法人类型">
+        >
+          <Select placeholder="请选择法人类型">
             {legalTypeList.map((item) =>
               <Select.Option value={item.code} key={item.code}>{item.value}</Select.Option>
             )}
@@ -194,9 +190,9 @@ function Setp1(props) {
 
         <Form.Item label='证件类型' name="legalCertType"
           rules={[{ required: true, message: '请选择证件类型' }]}
-         >
+        >
           <Select placeholder="请选择证件类型">
-            {cardTypeList.map((item) => 
+            {cardTypeList.map((item) =>
               <Select.Option value={item.code} key={item.code}>{item.value}</Select.Option>
             )}
           </Select>
@@ -212,16 +208,16 @@ function Setp1(props) {
         <Form.Item label='所属行业' name="industry"
           rules={[{ required: true, message: '请选择所属行业' }]}
 
-       >
-         <Cascader options={industryTree}  placeholder="选择所属行业" />
+        >
+          <Cascader options={industryTree} placeholder="选择所属行业" />
         </Form.Item>
         <Form.Item
-       
-      >
-        <Button className='register-btn' type="primary" htmlType="submit">
-          注册
-        </Button>
-      </Form.Item>
+
+        >
+          <Button className='register-btn' type="primary" htmlType="submit">
+            注册
+          </Button>
+        </Form.Item>
 
       </Form>
     </div>
@@ -319,14 +315,13 @@ function Setp2(props) {
         autoComplete="off"
         layout='horizontal'
         form={form}
-        labelCol= {{
+        labelCol={{
           span: 7,
         }}
-        wrapperCol= {{
-          span:17,
-        }}
-        >
-
+      // wrapperCol={{
+      //   span: 17,
+      // }}
+      >
         <Form.Item label='用户名' name="username"
           rules={[{ required: true, message: "请输入用户名" }]}>
           <Input placeholder="请输入" maxLength={20} />
@@ -354,9 +349,6 @@ function Setp2(props) {
           ]}>
           <Input type='password' placeholder="请确认" />
         </Form.Item>
-
-       
-
         <Form.Item label='手机号' name="mobile"
           rules={[
             { required: true, message: "请输入手机号" },
@@ -364,7 +356,7 @@ function Setp2(props) {
           ]}>
           <Input placeholder="请输入" maxLength={11} />
         </Form.Item>
-        
+
         <Form.Item label='图形验证码' name="captcha"
           rules={[{ required: true, message: "请输入验证码" }]}>
           <div className="register_captcha">
@@ -372,20 +364,25 @@ function Setp2(props) {
             <img src={`${baseURL}/front/consumer/sysCaptcha/${uuid}`} alt="" onClick={() => setUuid(getUUID())} />
           </div>
         </Form.Item>
-        <Form.Item label='短信验证码' name="messageCode"
+
+        <Form.Item label='验证码' name="messageCode"
           rules={[{ required: true, message: "请输入验证码" }]}
-          extra={
-            <div className='extra-part' onClick={getSmsCode}>
-              <a>  {counter > 0 && counter < 60 ? `${counter}s后重新获取` : '获取验证码'}</a>
-            </div>
-          }>
+        >
+          <div className="register_captcha">
           <Input placeholder='请输入验证码' maxLength={6} />
+          <a className='extra-part' onClick={getSmsCode}>
+          {counter > 0 && counter < 60 ? `${counter}s后重新获取` : '获取验证码'}
+        </a>
+        </div>
         </Form.Item>
+       
+
         <Form.Item>
-        <Button type="primary" htmlType="submit">
-          确认
-        </Button>
-      </Form.Item>
+          <div className='footer-btn'>
+            <div className='footer-left' onClick={back}>上一步</div>
+            <div className='footer-right' onClick={() => form.submit()}>确 认</div>
+          </div>
+        </Form.Item>
       </Form>
     </div>
   )
