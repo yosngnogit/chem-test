@@ -119,18 +119,22 @@
         margin-bottom: 11px;
         .ant-col .ant-form-item-label{
           font-family: 'PingFang SC';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 20px;
-          color: #3A3E43;
-          padding-bottom: 10px;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 22px;
+            color: #646B73;
+          padding-bottom: 24px;
         }
         .ant-input{
           height: 50px;
           background: #F5F5F7;
           border-radius: 50px;
         }
+        .ant-select{
+          color: #3A3E43;
+        }
+       
         #userLogin_username{
           font-family: 'PingFang SC';
           font-style: normal;
@@ -187,18 +191,21 @@
   // 注册
   .register {
     width:1200px;
+    height:710px;
     margin:auto;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 8px rgba(142, 141, 208, 0.16);
+    border-radius: 5px;
+    position:relative;
+
     &_nav {
-      padding: 12px;
+     margin:30px 0 49px;
       padding-left: 20px;
       &-step {
        
         & > img{
           width:1200px;
           margin: auto;
-          // width: 234px;
-          // height:48px;
-          // object-fit: contain;
          
         }
       }
@@ -207,8 +214,7 @@
     &_content {
       display: flex;
       flex-direction: column;
-      width: 100%;
-      height: calc(100% - 120px);
+     
       .input {
         &-tip {
           display: block;
@@ -254,7 +260,24 @@
           box-shadow: 0px 8px 16px rgba(30, 104, 234, 0.12);
         }
       }
+      .ant-btn{
+        width: 350px;
+        height: 50px;         
+        background: linear-gradient(90deg, #4472EC -0.34%, rgba(64, 116, 255, 0.86) 99.66%);
+        border-radius: 50px;
+        margin-top: 40px;
+        margin-left: 137px;
+        font-family: 'PingFang SC';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 22px;
+        color: #FFFFFF;
 
+      }
+.ant-form-item-explain-error{
+  position: initial !important;
+}
       .ant-steps-horizontal {
         padding: 20px 0;
       }
@@ -262,8 +285,10 @@
 
     &-step1 {
       flex: 1;
+      width: 500px;
+      margin-left: 274px;
       .ant-form {
-        height: 100%;
+        width:100%;
       }
       .ant-list {
         min-height: 80%;
@@ -272,6 +297,8 @@
 
     &-step2 {
       flex: 1;
+      width:340px;
+      margin-left: 388px;
       .register_captcha {
         display: flex;
         justify-content: center;
