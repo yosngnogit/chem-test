@@ -50,8 +50,8 @@ export default function Section2() {
       alt="" />
       <div className="section2-title">解决问题</div>
       {
-        list.map(item => (
-          <div className="section2-desc" style={item.style}>{item.title}</div>
+        list.map((item, index) => (
+          <div className="section2-desc" style={item.style} key={index}>{item.title}</div>
         ))
       }
     </div>

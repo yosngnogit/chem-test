@@ -3,6 +3,7 @@ import dynamicRoute from "./dynamicRoute";
 const routes = [
   {
     path: "/",
+    showHeader: false,
     component: dynamicRoute({
       component: () => import("../page/index"),
     }),
@@ -10,6 +11,7 @@ const routes = [
   {
     path: "/login",
     name: "login",
+    showHeader: false,
     component: dynamicRoute({
       component: () => import("../page/login"),
     }),

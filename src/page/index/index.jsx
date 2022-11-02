@@ -40,7 +40,7 @@ export default function Index() {
 
   return (
     <div className='index' onWheel={mousewheel}>
-      <Header transparent={active === 0}/>
+      <Header transparent={active === 0} fixed={true}/>
       <Carousel ref={carouselEl} className="index-carousel" dotPosition="right" beforeChange={onCarouselChange}>
         <Section1/>
         <Section2/>
