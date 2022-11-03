@@ -1,10 +1,20 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+
 import { Avatar } from 'antd';
 import { withRouter } from "react-router-dom";
+import { getEnterpriseInfo } from '@/api/personalCenter';
 
 import '../index.less'
 
-function personalBaseInfo(props) {
+function PersonalBaseInfo(props) {
+  const [componyForm, setComponyForm] = useState({})
+
+  useEffect(() => {
+    getEnterpriseInfo().then(res => {
+      // console.log(res)
+      if (res.data) setComponyForm(res.data)
+    })
+  }, [])
   const onListItemClick = () => {
     // 用路由定义type
     props.history.go(-1)
@@ -22,7 +32,7 @@ function personalBaseInfo(props) {
               <p>企业名称:</p>
             </div>
             <div className="info-btn">
-              <p>企业名称</p>
+              <p>{componyForm.entName}</p>
             </div>
           </li>
           <li className='info-li'>
@@ -30,7 +40,7 @@ function personalBaseInfo(props) {
               <p>统一社会信用代码:</p>
             </div>
             <div className="info-btn">
-              <p>企业名称</p>
+              <p>{componyForm.entCode}</p>
             </div>
           </li>
           <li className='info-li'>
@@ -38,7 +48,7 @@ function personalBaseInfo(props) {
               <p>法定代表人:</p>
             </div>
             <div className="info-btn">
-              <p>企业名称</p>
+              <p>{componyForm.legalPerson}</p>
             </div>
           </li>
           <li className='info-li'>
@@ -46,7 +56,7 @@ function personalBaseInfo(props) {
               <p>用户名:</p>
             </div>
             <div className="info-btn">
-              <p>企业名称:</p>
+              <p>{componyForm.username}</p>
             </div>
           </li>
           <li className='info-li'>
@@ -54,7 +64,7 @@ function personalBaseInfo(props) {
               <p>绑定手机号:</p>
             </div>
             <div className="info-btn">
-              <p>企业名称</p>
+              <p>{componyForm.mobile}</p>
             </div>
           </li>
         </ul>
@@ -65,4 +75,4 @@ function personalBaseInfo(props) {
     </div>
   )
 }
-export default withRouter(personalBaseInfo)
+export default withRouter(PersonalBaseInfo)

@@ -10,15 +10,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    position: relative;
     height: 215px;
-
-    /* BG/Light blue1 */
-
     background: #F7F9FF;
-    /* Stroke/Split line2 */
-
     border-bottom: 1px solid #F2F2F2;
+    .back {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
 
     .ant-avatar-square {
       border-radius: 15px;
@@ -87,10 +87,11 @@
   }
 
   .change-password {
-    width: 400px;
+    width: 432px;
     margin: 0 auto;
     position: relative;
     margin-bottom: -20px;
+    height: 200px;
 
     // padding-bottom: 60px;
     // .footer{

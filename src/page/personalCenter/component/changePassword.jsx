@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 // import { Button, Avatar } from 'antd';
 import { withRouter } from "react-router-dom";
 import { Button, Form, Input, Avatar } from "antd";
+import { LeftOutlined } from '@ant-design/icons';
 import md5 from 'js-md5'
 
 import { getCookie } from '@/utils'
@@ -15,9 +16,15 @@ const entName = getCookie('entName')
 function ChangePassword(props) {
   const [active, setActive] = useState(0)
   const [step1Form, setSstep1Form] = useState({})
+  const onListItemClick = () => {
+    // 用路由定义type
+    props.history.go(-1)
+  }
   return (
     <div className='personalCenter'>
       <div className="personal-header">
+
+        <Button type="link" className='back' onClick={() => onListItemClick()}><LeftOutlined /></Button>
         <Avatar shape="square" size={82} src={require('@/assets/img/personalCenter/avatar.png')} />
         <div className="personal-title">中控技术股份有限公司</div>
       </div>
@@ -129,8 +136,10 @@ function Step0(props) {
           />
         </Form.Item>
 
-        <Button onClick={getSmsCode} type='link'>
+        <Button onClick={getSmsCode} type='link' style={{ width: 124 }}>
           {counter > 0 && counter < 60 ? `${counter}s后重新获取` : '获取验证码'}
+          {/* 获取验证码 */}
+
         </Button>
       </Input.Group>
 
@@ -139,12 +148,13 @@ function Step0(props) {
           <Button type="primary" htmlType="submit">下一步</Button>
         </div> */}
       <div className="password-footer">
-        <div className='logout' onClick={form.submit()}>下一步</div>
+        <div className='logout' onClick={form.submit}>下一步</div>
       </div>
       {/* </Form.Item> */}
     </Form>
   )
 }
+
 function Step1(props) {
   // const navigate = useNavigate();
   let { step1Form } = props
@@ -212,7 +222,7 @@ function Step1(props) {
         </div>
       </Form.Item> */}
       <div className="password-footer">
-        <div className='logout' onClick={form.submit()}>下一步</div>
+        <div className='logout' onClick={form.submit}>确认</div>
       </div>
     </Form>
   )
