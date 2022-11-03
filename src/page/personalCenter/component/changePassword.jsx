@@ -23,7 +23,6 @@ function ChangePassword(props) {
   return (
     <div className='personalCenter'>
       <div className="personal-header">
-
         <Button type="link" className='back' onClick={() => onListItemClick()}><LeftOutlined /></Button>
         <Avatar shape="square" size={82} src={require('@/assets/img/personalCenter/avatar.png')} />
         <div className="personal-title">中控技术股份有限公司</div>
@@ -44,12 +43,10 @@ function Step0(props) {
   const [counter, setCounter] = useState(60)
   const [requestId, setRequestId] = useState('')
   const [loadingLogin, setLoadingLogin] = useState(false);
-
   useEffect(() => {
     clearInterval(timerID)
     return () => clearInterval(timerID)
   }, [])
-
   useEffect(() => {
     if (counter <= 0 || counter >= 60) {
       clearInterval(timerID)
@@ -57,7 +54,6 @@ function Step0(props) {
       setCounter(60)
     }
   }, [counter])
-
   const getSmsCode = async () => {
     try {
       if (timerID) return

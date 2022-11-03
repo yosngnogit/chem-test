@@ -38,9 +38,9 @@ function baseInfo(props) {
           </li>
         </ul>
       </div>
-      <div className="personal-footer">
+      {/* <div className="personal-footer">
         <div className='logout'>退出登录</div>
-      </div>
+      </div> */}
     </div>
   )
 }
