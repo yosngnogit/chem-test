@@ -1,36 +1,39 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { withRouter } from "react-router-dom";
 
 import { DownOutlined } from '@ant-design/icons';
-import { Dropdown, Menu, message } from 'antd';
+import { Dropdown, Menu } from 'antd';
 
 import './index.less'
+import { getCookie } from '@/utils';
+import { logOut } from '@/api/login'
 
-export default function Header(props) {
+function Header(props) {
+  const token = getCookie('access_token')
+  const entName = getCookie('entName')
   const { transparent = false, fixed = false } = props
 
-  const onClick = ({ key }) => {
-    message.info(`Click on item ${key}`);
-  };
+  const onMenuClick = ({ key }) => {
+    if(key === 'logout'){
+      logOut()
+    } else {
+      props.history.push('/personalCenter')
+    }
+  }
   
   const menu = (
     <Menu
-      onClick={onClick}
+      onClick={onMenuClick}
       items={[
-        {
-          label: '1st menu item',
-          key: '1',
-        },
-        {
-          label: '2nd menu item',
-          key: '2',
-        },
-        {
-          label: '3rd menu item',
-          key: '3',
-        },
+        { label: '个人中心', key: 'user' },
+        { label: '退出登录', key: 'logout' }
       ]}
     />
-  );
+  )
+
+  const toLogin = () => {
+    props.history.push('/login')
+  }
 
   return (
     <div className={`${transparent ? 'header_transparent' : 'header'} ${fixed?'header-fixde': ''}`}>
@@ -38,17 +41,22 @@ export default function Header(props) {
         <div className="header-title">企业安全自诊断平台</div>
       </div>
       <div className="header-right">
-        <div className="header-user">
-          <img className='header-user-avatar' src={require('@/assets/img/index/avatar.png')} alt="" />
-          <Dropdown overlay={menu}>
-            <div className='header-user-name'>
-              浙江中控技术
-              <DownOutlined className='header-user-name-arrow'/>
-            </div>
-          </Dropdown>
-          <div className="header-user-btn">开始诊断</div>
-        </div>
+        { token ? 
+          <div className="header-user">
+            <img className='header-user-avatar' src={require('@/assets/img/index/avatar.png')} alt="" />
+            <Dropdown overlay={menu}>
+              <div className='header-user-name'>
+                {entName}<DownOutlined className='header-user-name-arrow'/>
+              </div>
+            </Dropdown>
+            
+            <div className="header-user-btn">开始诊断</div>
+          </div> :
+          <div className='header-login-btn' onClick={toLogin}>登陆</div>
+        }
       </div>
     </div>
   )
 }
+
+export default withRouter(Header)

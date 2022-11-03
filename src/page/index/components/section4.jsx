@@ -1,27 +1,40 @@
 import React from 'react'
+import { withRouter } from "react-router-dom";
+
+import { getCookie } from '@/utils';
 
 const tickIcon = require('@/assets/img/common/tick.png')
 const fockIcon = require('@/assets/img/common/fork.png')
 
-export default function Section4() {
-  const freeList = [
-    { name: '项目项目项目', open: true },
-    { name: '项目项目项目', open: true },
-    { name: '项目项目项目', open: true },
-    { name: '项目项目项目', open: true },
-    { name: '项目项目项目', open: true },
-    { name: '项目项目项目', open: false },
-    { name: '项目项目项目', open: false },
-  ]
-  const notFreeList = [
-    { name: '项目项目项目', open: true },
-    { name: '项目项目项目', open: true },
-    { name: '项目项目项目', open: true },
-    { name: '项目项目项目', open: true },
-    { name: '项目项目项目', open: true },
-    { name: '项目项目项目', open: true },
-    { name: '项目项目项目', open: true },
-  ]
+const freeList = [
+  { name: '项目项目项目', open: true },
+  { name: '项目项目项目', open: true },
+  { name: '项目项目项目', open: true },
+  { name: '项目项目项目', open: true },
+  { name: '项目项目项目', open: true },
+  { name: '项目项目项目', open: false },
+  { name: '项目项目项目', open: false },
+]
+const notFreeList = [
+  { name: '项目项目项目', open: true },
+  { name: '项目项目项目', open: true },
+  { name: '项目项目项目', open: true },
+  { name: '项目项目项目', open: true },
+  { name: '项目项目项目', open: true },
+  { name: '项目项目项目', open: true },
+  { name: '项目项目项目', open: true },
+]
+
+function Section4(props) {
+  const token = getCookie('access_token')
+
+  const startDiagnosis = () => {
+    if(token){
+      props.history.push('/answerEntrance')
+    } else {
+      props.history.push('/login')
+    }
+  }
 
   return (
     <div className='section section4'>
@@ -49,8 +62,10 @@ export default function Section4() {
             ))
           }
         </div>
-        <div className="section4-content-btn">开始诊断</div>
+        <div className="section4-content-btn" onClick={startDiagnosis}>开始诊断</div>
       </div>
     </div>
   )
 }
+
+export default withRouter(Section4)
