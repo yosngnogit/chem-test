@@ -87,10 +87,14 @@ function Setp1(props) {
         entName: values.entName,
         entCode: values.entCode,
         name: values.name,
-        provinceCode: values.provinceCode[0],
-        legalType: values.legalType[0],
-        legalCertType: values.legalCertType[0],
+        provinceCode: values.provinceCode,
+        legalType: values.legalType,
+        cardType: values.legalCertType,
+        cardCode:values.cardCode
+       
       })
+
+      console.log(values,values.provinceCode)
       setSstep1Form(values)
       nextStep(1)
       setLoadingLogin(false)
@@ -109,7 +113,7 @@ function Setp1(props) {
   const cardCodeValid = (rule, val) => {
     if (!form.getFieldValue('cardCode')) return Promise.reject('请输入证件号码')
     let legalCertType = form.getFieldValue('legalCertType')
-    legalCertType = legalCertType && legalCertType[0]
+    // legalCertType = legalCertType && legalCertType[0]
     let reg = idCardReg
     if (legalCertType === '20') reg = passportReg
     if (legalCertType === '30') reg = cardHKMacaoReg
