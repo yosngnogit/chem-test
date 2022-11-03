@@ -6,8 +6,6 @@ import './index.less'
 
 function baseInfo(props) {
   const onListItemClick = (type) => {
-    console.log(type)
-    // 用路由定义type
     props.history.push(type)
   }
   return (
@@ -23,7 +21,7 @@ function baseInfo(props) {
               <p>企业信息</p>
             </div>
             <div className="info-btn">
-              <Button type="link" onClick={()=>onListItemClick('/personalInfo')} >
+              <Button type="link" onClick={() => onListItemClick('/personalInfo')} >
                 查看
               </Button>
             </div>
@@ -33,7 +31,7 @@ function baseInfo(props) {
               <p>修改密码</p>
             </div>
             <div className="info-btn">
-              <Button type="link" onClick={()=>onListItemClick('/changePassword')}>
+              <Button type="link" onClick={() => onListItemClick('/changePassword')}>
                 修改
               </Button>
             </div>
