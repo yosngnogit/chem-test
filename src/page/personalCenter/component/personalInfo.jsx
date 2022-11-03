@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import '../index.less'
 
 function personalBaseInfo(props) {
-  const onListItemClick = (type) => {
+  const onListItemClick = () => {
     // 用路由定义type
     props.history.go(-1)
   }
@@ -19,7 +19,7 @@ function personalBaseInfo(props) {
         <ul className='main-list'>
           <li className='info-li'>
             <div className="info-title">
-              <p>企业名称</p>
+              <p>企业名称:</p>
             </div>
             <div className="info-btn">
               <p>企业名称</p>
@@ -27,7 +27,7 @@ function personalBaseInfo(props) {
           </li>
           <li className='info-li'>
             <div className="info-title">
-              <p>统一社会信用代码</p>
+              <p>统一社会信用代码:</p>
             </div>
             <div className="info-btn">
               <p>企业名称</p>
@@ -35,7 +35,7 @@ function personalBaseInfo(props) {
           </li>
           <li className='info-li'>
             <div className="info-title">
-              <p>法定代表人</p>
+              <p>法定代表人:</p>
             </div>
             <div className="info-btn">
               <p>企业名称</p>
@@ -43,15 +43,15 @@ function personalBaseInfo(props) {
           </li>
           <li className='info-li'>
             <div className="info-title">
-              <p>用户名</p>
+              <p>用户名:</p>
             </div>
             <div className="info-btn">
-              <p>企业名称</p>
+              <p>企业名称:</p>
             </div>
           </li>
           <li className='info-li'>
             <div className="info-title">
-              <p>绑定手机号</p>
+              <p>绑定手机号:</p>
             </div>
             <div className="info-btn">
               <p>企业名称</p>

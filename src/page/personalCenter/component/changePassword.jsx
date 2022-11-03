@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // import { Button, Avatar } from 'antd';
 import { withRouter } from "react-router-dom";
@@ -9,21 +9,12 @@ import { getCookie } from '@/utils'
 import { pwdReg } from '@/utils/reg'
 import { sendCode, checkMessageCode, modifyPassword } from '@/api/personalCenter'
 import { logOut } from '@/api/login';
-
 import '../index.less'
-
 const mobile = getCookie('mobile')
-
+const entName = getCookie('entName')
 function ChangePassword(props) {
   const [active, setActive] = useState(0)
   const [step1Form, setSstep1Form] = useState({})
-  // const step0Ref = useRef();
-
-
-  // const aaa = () => {
-  //   console.log('step0Ref', step0Ref)
-  // }
-
   return (
     <div className='personalCenter'>
       <div className="personal-header">
@@ -36,13 +27,8 @@ function ChangePassword(props) {
           {active === 1 && <Step1 step1Form={step1Form} />}
         </div>
       </div>
-      {/* <div className="personal-footer">
-        <div className='logout' onClick={aaa}>下一步</div>
-      </div> */}
     </div>
   )
-
-
 }
 let timerID = 0
 function Step0(props) {
@@ -104,14 +90,14 @@ function Step0(props) {
       autoComplete="off"
       form={form}
       initialValues={{
-        mobile
+        mobile, entName
       }}
       labelCol={{
         span: 8
       }}
     >
       <Form.Item
-        name="mobile"
+        name="entName"
         label="确认企业名称"
         rules={[
           { required: true },
@@ -123,7 +109,7 @@ function Step0(props) {
         name="mobile"
         label="确认绑定手机号"
         rules={[
-          { required: true, message: "请输入手机号" },
+          { required: true },
         ]}
       >
         <Input disabled />
@@ -144,7 +130,7 @@ function Step0(props) {
         </Form.Item>
 
         <Button onClick={getSmsCode} type='link'>
-          {counter > 0 && counter < 60 ? `${counter}s后重新获取` : '发送验证码'}
+          {counter > 0 && counter < 60 ? `${counter}s后重新获取` : '获取验证码'}
         </Button>
       </Input.Group>
 
@@ -159,8 +145,6 @@ function Step0(props) {
     </Form>
   )
 }
-
-
 function Step1(props) {
   // const navigate = useNavigate();
   let { step1Form } = props
@@ -190,12 +174,12 @@ function Step1(props) {
       onFinish={onFinish}
       autoComplete="off"
       form={form}
-      labelCol={{ span: 5 }}
+      labelCol={{ span: 8 }}
       labelAlign='right'
     >
       <Form.Item
         name="newPassword"
-        label="新密码"
+        label="新的企业账号密码"
         rules={[
           { required: true, message: "请输入密码" },
           { pattern: pwdReg, message: "请输入6-16位大小写、数字、特殊符号组合" },
@@ -206,7 +190,7 @@ function Step1(props) {
 
       <Form.Item
         name="rePassword"
-        label="确认密码"
+        label="确认新密码"
         rules={[
           { required: true, message: "请确认密码" },
           ({ getFieldValue }) => ({
