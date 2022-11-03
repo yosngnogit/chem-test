@@ -58,9 +58,6 @@ function AnswerEntrance(props) {
 
   return (
     <div className='answerEntrance'>
-      <div className="header">
-        头部
-      </div>
       <div className="answer-main">
         <div className='answer-perfect'>企业信息已完成20% 去完善</div>
         <div className="answer-main-list">
