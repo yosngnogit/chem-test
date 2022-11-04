@@ -32,6 +32,17 @@
       line-height: 130%;
       margin: 20px 0;
       text-align: center;
+      justify-content: center;
+      display:flex;
+      align-items: center;
+      .answer-perfect-div{
+        font-weight: 400;
+        font-size: 16px;
+        color: #4074FF;
+        margin-left: 8px;
+        margin-right: 5px;
+        cursor:pointer;
+      }
     }
     .answer-tips{
       padding: 12px 8px;
@@ -48,6 +59,7 @@
       font-style: normal;
       font-weight: 400;
       font-size: 14px;
+
       span{
         color: #5C6E7C;
         margin-right: 4px;
@@ -66,24 +78,14 @@
           width: 686px;
           height: 100%;
           display: flex;
-          // flex-direction: row;
           align-items: center;
           justify-content: center;
-          // gap: 6px;
-
           padding: 12px 8px;
           gap: 6px;
           background: #E4E9F5;
-          /* Elevation_Grey 2 */
-
           box-shadow: 0px 4px 8px rgba(142, 141, 208, 0.16);
           border-radius: 10px;
-
-          /* Inside auto layout */
-
-          flex: none;
-          order: 0;
-          flex-grow: 0;
+          cursor: pointer;
         }
 
         .card-notfree {
@@ -253,6 +255,9 @@
           .list-bottom-time{
             font-size: 12px;
           }
+          .ant-progress-inner{
+          background-color: #DDDDDD;
+          }
         
           .list-status {
             font-size: 12px;
@@ -317,6 +322,7 @@
               font-weight: 500;
               font-size: 14px;
               color: #FFFFFF;
+              cursor: pointer;
             }
             .list-button-del{
               background: #fff;

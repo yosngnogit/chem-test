@@ -59,10 +59,10 @@ function Setp1(props) {
       getDictListByName('LEGAL_CERT_TYPE'),
       getIndustryTree()
     ]).then(res => {
-      setProvinceList(res[0].data)
-      setLegalTypeList(res[1].data)
-      setcardTypeList(res[2].data)
-      setIndustryTree(handleIndustryTree(res[3].data))
+      setProvinceList(res[0].data||[])
+      setLegalTypeList(res[1].data||[])
+      setcardTypeList(res[2].data||[])
+      setIndustryTree(handleIndustryTree(res[3].data)||[])
     })
     form.setFieldsValue(step1Form)
   }, [])
@@ -90,8 +90,7 @@ function Setp1(props) {
         provinceCode: values.provinceCode,
         legalType: values.legalType,
         cardType: values.legalCertType,
-        cardCode: values.cardCode
-
+        // cardCode:values.cardCode      
       })
 
       console.log(values, values.provinceCode)

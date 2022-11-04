@@ -1,10 +1,11 @@
 import http from '@/utils/http'
 
 // 查询版本详情
-export const getVersionInfo = (entCode) => {
+export const getVersionInfo = (data) => {
   return http.request({
-    url: `/front/maintain/DiagnosticEntrance/queryDiagnosisVersionDetail?entCode=${entCode}`,
-    method: 'get',
+    url: `/front/maintain/DiagnosticEntrance/queryDiagnosisVersionDetail`,
+    method: 'post',
+    data
   })
 }
 
@@ -101,6 +102,14 @@ export const submitModule = (params) => {
 export const submitPaper = (params) => {
   return http.request({
     url: '/front/maintain/DiagnosticEntrance/submitPaper',
+    method: 'get',
+    params
+  })
+}
+// 删除答题记录
+export const deleteEntPaper = (params) => {
+  return http.request({
+    url: '/front/maintain/DiagnosticEntrance/deleteEntPaper',
     method: 'get',
     params
   })

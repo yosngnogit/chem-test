@@ -5,6 +5,8 @@ import './index.less'
 import { withRouter } from "react-router-dom";
 import { getDirectory, getQuestionInfo, markedQuestion, nextMarked, nextNotAnswered, saveQuestion, submitModule } from "../../api/answer";
 import { createWebSocket } from '@/utils/socket';
+import { decrypt } from '@/utils/aes';
+
 
 
 class AnswerDetail extends Component {
@@ -45,6 +47,7 @@ class AnswerDetail extends Component {
     this.getInfo(undefined, 'now');
 
   }
+ 
   nextNotAnswered = () => {
     nextNotAnswered({ paperType: this.paperType, moduleId: this.moduleId, quesId: this.leafId }).then(res => {
       if (!res.data.answerPage) {
@@ -55,11 +58,14 @@ class AnswerDetail extends Component {
     })
   }
   nextMarked = () => {
-    nextMarked({ paperType: this.paperType, moduleId: this.moduleId, quesId: this.leafId }).then(res => {
+    if (!this.nMarked) { this.nextMarkedId = this.leafId }
+    nextMarked({ paperType: this.paperType, moduleId: this.moduleId, quesId: this.nextMarkedId }).then(res => {
       if (!res.data.answerPage) {
         Message.info('没有标记的题目')
         return
       }
+      this.nMarked = true;
+      this.nextMarkedId = res.data.quesId;
       this.setState({ quesInfo: res.data.answerPage })
     })
   }
@@ -68,6 +74,8 @@ class AnswerDetail extends Component {
       if (res.code === 0) this.goSchedule()
     })
   }
+
+   
   goSchedule = () => this.props.history.replace(`/answerSchedule?paperId=${this.paperId}`)
 
   onChange = (item, v) => {
@@ -123,18 +131,17 @@ class AnswerDetail extends Component {
         activeKey: factorInfo[0].factorNo
       })
     })
+    console.log(this.quesInfo)
   }
   chooseOrder = (quesId) => {
     this.getInfo(quesId, 'now');
   }
   renderItem = (item, index) => {
-
     const { markMap } = this.state;
     return <div key={index} className='question'>
-      <p className='second-title'>{item.quesNo}&nbsp;&nbsp;{item.subjectContent}</p>
+      <p className='second-title'>{item.quesNo}&nbsp;&nbsp;{decrypt(item.subjectContent)}</p>
       <div className='result'>
-        <p onClick={() => { this.marked(item) }}>
-
+        <p onClick={() => {this.marked(item) }}>
           <img
             src={(markMap[item.quesNo] !== undefined ? markMap[item.quesNo] : item.marked)
               ? require('@/assets/img/answerDetail/star.png')
@@ -159,16 +166,15 @@ class AnswerDetail extends Component {
     const { quesInfo, directory, collapsed } = this.state;
     return (
       <div className='answer-detail' >
-        <div>header</div>
         <div className='content'>
           <div className='top'>
-            <div className="card-free" onClick={() => { }}>
+            <div className="card-free">
               <img src={require('@/assets/img/answerEntrance/free.png')} width={38} height={44} fit='fill' />
               <div className="free-tip">
                 <div className="free-tip-p">
-                  <span>产品监督产品监督</span>
+                  <span>{decrypt(quesInfo.moduleName)}</span>
                 </div>
-                <span className='tip-span'>题数：78</span>
+                <span className='tip-span'>题数：{quesInfo.quesNum}</span>
               </div>
               <div className='top-botton' onClick={this.submit}>提交</div>
             </div>
@@ -178,12 +184,14 @@ class AnswerDetail extends Component {
               <div className='right-totle'>
                 <div className='right-item'>
                   <div className='right-div-null' style={{ width: '15px', height: '15px', borderRadius: '2px', border: '1px solid #ccc' }}></div>
-                  <div className='right-font'>未回答  <div className='right-num'>40</div></div>
-
+                  <div className='right-font'>未回答 <div className='right-num'>
+                    {quesInfo.quesNum?quesInfo.quesNum-quesInfo.answeredQuesNum:''}
+                    </div>
+                    </div>
                 </div>
                 <div className='right-item'>
                   <div className='right-div-blue'></div>
-                  <div className='right-font'>已回答<div className='right-num'>8</div>
+                  <div className='right-font'>已回答<div className='right-num'>{quesInfo.answeredQuesNum}</div>
                   </div>
 
                 </div>
@@ -211,8 +219,8 @@ class AnswerDetail extends Component {
                     <Menu.SubMenu
                     key={dir.factorNo}
                       title={
-                        <div className="item">
-                          <span className='item-content'>{dir.factorNo}&nbsp;&nbsp;{dir.factorContent}</span>
+                        <div className="item" style={{ display:'flex',justifyContent:'space-between' }}>
+                          <span className='item-content'>{dir.factorNo}&nbsp;&nbsp;{decrypt(dir.factorContent)}</span>
                           <span className='item-order'><b>{dir.answeredQuesNum}</b>/{dir.quesNum}</span>
                         </div>
                       }
@@ -223,9 +231,12 @@ class AnswerDetail extends Component {
                             key={i}
                             style={{ paddingLeft: '7px' }}
                           >
-                            <div className={v.check ? 'active' : ''} style={{ paddingLeft: '7px' }} onClick={() => { this.chooseOrder(v.quesId) }} >
-                              {v.quesNo} <b>{v.answeredQuesNum ? `v.answeredQuesNum/` : ''}</b>{v.quesNum ? v.quesNum : ''}</div>
-
+                            <div className={v.check ? 'active' : ''} style={{ paddingLeft: '7px',display:'flex',justifyContent:'space-between' }} onClick={() => { this.chooseOrder(v.quesId) }} >
+                              <div>{v.quesNo} </div>
+                              <div style={{marginRight:'18px'}}>
+                                <b>{v.answeredQuesNum ? `${v.answeredQuesNum}/` : ''}</b>{v.quesNum ? v.quesNum : ''}
+                                </div>
+                              </div>
                           </Menu.Item>
                         ))
                         : ""}
@@ -247,8 +258,9 @@ class AnswerDetail extends Component {
 
                     }) :
                       (info.quesInfo || []).map(prop => {
+                        console.log(info.quesInfo)
                         this.quesId = prop.quesId;
-                        return <div className='bottom' key={prop.quesNo}>
+                        return <div className='nofree-bottom' key={prop.quesNo}>
                           <p className='first-title'>{prop.quesNo}&nbsp;&nbsp;{prop.subjectContent}</p>
                           {(prop.childQues || []).map((child, index) => {
                             this.leafId = prop.childQues[0].quesId;
