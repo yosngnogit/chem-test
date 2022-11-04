@@ -16,14 +16,14 @@ const entName = getCookie('entName')
 function ChangePassword(props) {
   const [active, setActive] = useState(0)
   const [step1Form, setSstep1Form] = useState({})
-  const onListItemClick = () => {
+  const goBack = () => {
     // 用路由定义type
     props.history.go(-1)
   }
   return (
     <div className='personalCenter'>
       <div className="personal-header">
-        <Button type="link" className='back' onClick={() => onListItemClick()}><LeftOutlined /></Button>
+        <Button type="link" className='back' onClick={() => goBack()}><LeftOutlined /></Button>
         <Avatar shape="square" size={82} src={require('@/assets/img/personalCenter/avatar.png')} />
         <div className="personal-title">中控技术股份有限公司</div>
       </div>

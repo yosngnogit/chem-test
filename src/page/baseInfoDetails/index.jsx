@@ -227,6 +227,9 @@ function BaseInfoDetails(props) {
       span: 18,
     },
   };
+  const goback = () => {
+    props.history.go(-1)
+  }
   return (
     <div className='baseInfoDetails'>
       <Spin spinning={loading}>
@@ -487,6 +490,7 @@ function BaseInfoDetails(props) {
         </Collapse>
       </Spin>
       <div className="base-footer">
+        <div className="back" onClick={goback}>取消</div>
         <div type='submit' className="submit" onClick={() => form.submit()}>保存</div>
       </div>
     </div>

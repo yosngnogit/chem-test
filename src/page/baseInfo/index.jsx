@@ -1,17 +1,24 @@
 import React from 'react'
-import { Image } from 'antd';
+import { Image, Button } from 'antd';
+import { LeftOutlined } from '@ant-design/icons';
+
 import { withRouter } from "react-router-dom";
 
 import './index.less'
 
 function baseInfo(props) {
-  const onListItemClick = (type) => {
+  const onListItemClick = () => {
     // 用路由定义type
     props.history.push('baseInfoDetails')
+  }
+  const goBack = () => {
+    // 用路由定义type
+    props.history.go(-1)
   }
   return (
     <div className='baseInfo'>
       <div className="base-header">
+        <Button type="link" className='back' onClick={() => goBack()}><LeftOutlined /></Button>
         <div className="base-title">中控技术股份有限公司</div>
         <div className="base-tip">开始自诊断前，请先完善企业基本信息</div>
       </div>
