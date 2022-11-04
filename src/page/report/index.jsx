@@ -19,14 +19,15 @@ import './index.less'
     const params=query()
     console.log(params)
     report(params.paperId).then(res => {
+      console.log(res.data)
       setCommon(res.data)
       setChartData(res.data.diagnosisPaperModuleTotalList.map((item) => {
-        return { name: item.moduleName, max: item.maxTotal }
+        return { name: item.moduleName, max: item.fullTotalCount }
       }))
       setValueList(res.data.diagnosisPaperModuleTotalList.map((item) => {
-        return item.total
+        return item.checkScoreCount
       }))
-      let newArr = res.data.diagnosisPaperModuleTotalList.reduce((sum, current) => sum + current.maxTotal, 0)
+      let newArr = res.data.diagnosisPaperModuleTotalList.reduce((sum, current) => sum + current.fullTotalCount, 0)
       setMaxAll(newArr)
       setPercent(res.data.diagnosisPaperModuleTotalList.map((item) => {
         return item.percentTotal
@@ -113,11 +114,7 @@ import './index.less'
         <div className='score'>{common.score?common.score:0}</div>
         <div className='totle'>综合得分</div>
         <div className='progress'>
-          <div className='progress-icon' style={{ right: common.score?`${common.score / maxAll * 275}px`:0, top: '-150%' }}></div>
-        </div>
-        <div className='judge'>
-          <span>优秀</span><span>良好</span><span>需改进</span>
-          <span>危险</span>
+          <div className='progress-icon' style={{ left: common.score?`${common.score / maxAll * 275}px`:0, top: '-150%' }}></div>
         </div>
       </div>
       <div id='rendar-echart' className='img-style' style={{ width: '368px', height: '252px' ,margin:'auto'}}>

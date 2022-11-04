@@ -1,6 +1,83 @@
 .answer-schedule {
   background: #fff;
-
+  .header-top{
+    .header{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100vw;
+      height: 60px;
+      padding: 16px 24px;
+      background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, 
+      #4472EC 105.19%);
+      transition: all .2s ease .2s;
+      &-title{
+        font-size: 20px;
+        color: #FFFFFF;
+      }
+      &-login-btn{
+        margin: 0 30px 0 8px;
+        font-weight: 400;
+        font-size: 14px;
+        color: #EFFDFE;
+        cursor: pointer;
+      }
+      &-user{
+        display: flex;
+        align-items: center;
+        &-avatar{
+          width: 34px;
+          height: 34px;
+        }
+        &-name{
+          margin: 0 30px 0 8px;
+          font-weight: 400;
+          font-size: 14px;
+          color: #EFFDFE;
+          &-arrow{
+            margin-left: 6px;
+            transform: translateY(2px);
+            font-size: 12px !important;
+          }
+        }
+        &-btn{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 88px;
+          height: 32px;
+          background: #FFFFFF;
+          box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.043);
+          border-radius: 20px;
+    
+          font-weight: 400;
+          font-size: 14px;
+          color: #4472EC;
+        }
+      }
+    }
+    
+    .header_transparent{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100vw;
+      height: 60px;
+      padding: 16px 24px;
+      background: transparent;
+      transition: all .2s ease .2s;
+      .header-user-btn{
+        color: #FFFFFF;
+        background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);
+      }
+    }
+    
+    .header-fixde{
+      position: fixed !important;
+      z-index: 999;
+      top: 0;
+    }
+  }
 
   .answer-main {
     width: 1440px;

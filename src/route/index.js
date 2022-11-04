@@ -51,6 +51,7 @@ const routes = [
   {
     path: "/answerSchedule",
     name: "answerSchedule",
+    showHeader: false,
     component: dynamicRoute({
       component: () => import("../page/answerSchedule"),
     }),

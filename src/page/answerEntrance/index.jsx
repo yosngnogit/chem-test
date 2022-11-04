@@ -75,8 +75,8 @@ function AnswerEntrance(props) {
     })
   }
   const onLookReport = (item) => {
-    console.log(item)
-    props.history.push(`/report?paperId=${item.paperId}`);
+    console.log(item.paperId)
+    props.history.push(`/report?paperId=${item.paperId}`)
   }
   return (
     <div className='answerEntrance'>

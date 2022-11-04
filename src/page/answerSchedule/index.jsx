@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Progress, Image, Message } from 'antd'
-import { RightOutlined } from '@ant-design/icons'
+import { Progress, Image, Message,Dropdown, Menu } from 'antd'
+import { RightOutlined, DownOutlined } from '@ant-design/icons'
 import './index.less'
 import { query, getCookie } from '@/utils'
 import { decrypt } from '@/utils/aes';
 import { withRouter } from "react-router-dom";
 import { checkLockQuestion, createAnswer, getAnswer, submitPaper } from "../../api/answer";
+import { logOut } from '@/api/login'
 
 function AnswerSchedule(props) {
   const params = query()
@@ -13,6 +14,8 @@ function AnswerSchedule(props) {
   const [paperId, setPaperId] = useState(params.paperId)
   const [answerModule, setAnswerModule] = useState(null)
   const entCode = getCookie('entCode');
+  const entName = getCookie('entName')
+  const { transparent = false, fixed = false } = props
 
   useEffect(() => {
     if (paperId !== 'undefined') {
@@ -32,7 +35,17 @@ function AnswerSchedule(props) {
     }
   }, [])
 
-
+  const submit = () => {
+    if (data.incompleteModule) {
+      Message.info({ content: '还有板块未回答完成' })
+      return
+    }
+    submitPaper({ paperId }).then(res => {
+      if (res.code === 0) {
+        props.history.push(`/report?paperId=${paperId}`);
+      }
+    })
+  }
 
   const back = () => props.history.go(-1);
 
@@ -41,10 +54,44 @@ function AnswerSchedule(props) {
       if (res) props.history.replace(`/answerDetail?paperId=${paperId}&paperType=${item.paperType}&moduleId=${item.moduleId}`)
     }).catch(err => console.log(err))
   }
-
+  const onMenuClick = ({ key }) => {
+    if(key === 'logout'){
+      logOut()
+    } else {
+      props.history.push('/personalCenter')
+    }
+  }
+  
+  const menu = (
+    <Menu
+      onClick={onMenuClick}
+      items={[
+        { label: '个人中心', key: 'user' },
+        { label: '退出登录', key: 'logout' }
+      ]}
+    />
+  )
   return (
     <div className='answer-schedule'>
       <div className='header-top'>
+      <div className={`${transparent ? 'header_transparent' : 'header'} ${fixed?'header-fixde': ''}`}>
+      <div className="header-left">
+        <div className="header-title">企业安全自诊断平台</div>
+      </div>
+      <div className="header-right">
+       
+          <div className="header-user">
+            <img className='header-user-avatar' src={require('@/assets/img/index/avatar.png')} alt="" />
+            <Dropdown overlay={menu}>
+              <div className='header-user-name'>
+                {entName}<DownOutlined className='header-user-name-arrow'/>
+              </div>
+            </Dropdown>
+            
+            <div className="header-user-btn"  onClick={submit}>提交</div>
+          </div>
+      </div>
+    </div>
       </div>
       <div className="answer-main">
         <div className="answer-main-list">

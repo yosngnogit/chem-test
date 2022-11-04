@@ -90,7 +90,7 @@ function Setp1(props) {
         provinceCode: values.provinceCode,
         legalType: values.legalType,
         cardType: values.legalCertType,
-        // cardCode:values.cardCode      
+        cardCode:values.cardCode      
       })
 
       console.log(values,values.provinceCode)
@@ -112,7 +112,7 @@ function Setp1(props) {
   const cardCodeValid = (rule, val) => {
     if (!form.getFieldValue('cardCode')) return Promise.reject('请输入证件号码')
     let legalCertType = form.getFieldValue('legalCertType')
-    // legalCertType = legalCertType && legalCertType[0]
+    //  legalCertType = legalCertType && legalCertType[0]
     let reg = idCardReg
     if (legalCertType === '20') reg = passportReg
     if (legalCertType === '30') reg = cardHKMacaoReg
@@ -122,12 +122,6 @@ function Setp1(props) {
       return Promise.resolve()
     } else {
       return Promise.reject('格式错误')
-    }
-  }
-
-  const industryConfirm = (arr) => {
-    if (arr.length < 4) {
-      form.resetFields(['industry'])
     }
   }
 
@@ -274,6 +268,8 @@ function Setp2(props) {
   }
 
   const onFinish = async (params) => {
+    console.log(step1Form,params)
+    
     try {
       if (loadingLogin) return
       setLoadingLogin(true)
@@ -281,9 +277,9 @@ function Setp2(props) {
         ...step1Form,
         ...params,
         industry: step1Form.industry?.join(','),
-        provinceCode: step1Form.provinceCode[0],
-        legalType: step1Form.legalType[0],
-        legalCertType: step1Form.legalCertType[0],
+        provinceCode: step1Form.provinceCode,
+        legalType: step1Form.legalType,
+        legalCertType: step1Form.legalCertType,
         legalPerson: step1Form.name,
         legalCertNumber: step1Form.cardCode,
         telephone: params.mobile,

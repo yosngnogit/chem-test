@@ -19,8 +19,7 @@ import { withRouter } from 'react-router-dom'
 
   }
  back=()=>{
-   this.props.history.goBack()
-
+   this.switchPageType('login')
  }
   switchPageType = (pageType) => {
     this.setState(({
