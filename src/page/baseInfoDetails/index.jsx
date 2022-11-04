@@ -472,6 +472,7 @@ function BaseInfoDetails(props) {
                 </Form>
               </Panel>
               <Panel header={BaseHeader('从业人员分布情况')} key="6" className='inner-header' forceRender>
+                <p className='form-tip'>注：填写企业主要工种如（电工、电焊工、厂内车辆驾驶员，眼里容器操作工、安全员等）</p>
                 <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                   wrapperCol={{ span: 24 }}
                   className='base-form-add'>
