@@ -107,6 +107,7 @@ function AnswerSchedule(props) {
                 percent={data.overallProgress}
                 showInfo={false}
                 width='1249px'
+                strokeWidth={10}
                 strokeColor='#4074FF'
               />
             </div>
@@ -131,7 +132,7 @@ function AnswerSchedule(props) {
                         showInfo={false}
                         width='212px'
                         strokeColor='#4074FF'
-                        height='6px'
+                        strokeWidth={6}
                         style={{ marginRight: '8px' }}
                       />
                       {item.moduleProgress}%</div>

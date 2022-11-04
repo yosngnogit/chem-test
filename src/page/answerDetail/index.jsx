@@ -47,11 +47,20 @@ class AnswerDetail extends Component {
     this.getInfo(undefined, 'now');
 
   }
+  // 点击右侧选项时触发
+  getDirInfo = () => {
+    getDirectory({
+      paperType: this.paperType,
+      moduleId: this.moduleId,
+    }).then(res => {
+      this.setState({ directory: res.data })
+    });
+  }
  
   nextNotAnswered = () => {
     nextNotAnswered({ paperType: this.paperType, moduleId: this.moduleId, quesId: this.leafId }).then(res => {
       if (!res.data.answerPage) {
-        Message.info('已答问所有题目')
+        Message.info('已答完所有题目')
         return;
       }
       this.setState({ quesInfo: res.data.answerPage })
@@ -149,7 +158,7 @@ class AnswerDetail extends Component {
             alt=''
           />
         </p>
-        <div className='options'>
+        <div className='options' onClick={()=>this.getDirInfo()}>
           {['完全满足', '部分满足', '不满足', '不适用'].map(v =>
             <span
               key={v}
@@ -199,7 +208,7 @@ class AnswerDetail extends Component {
                   <div className='right-div-star'>
                     <img src={require('@/assets/img/answerDetail/star.png')} width={18} height={18} style={{ marginRight: '12px' }} fit='fill' />
                   </div>
-                  <div className='right-font'>已标记  <div className='right-num'>3</div>
+                  <div className='right-font'>已标记 <div className='right-num'>{quesInfo.markedNum}</div>
                   </div>
 
                 </div>
@@ -209,7 +218,7 @@ class AnswerDetail extends Component {
           <div className='bottom'>
             <div className='bottom-left'>
 
-              {directory.map((dir, index) => {
+              {directory?directory.map((dir, index) => {
                 return (
                   <Menu
                     mode="inline"
@@ -243,7 +252,7 @@ class AnswerDetail extends Component {
                     </Menu.SubMenu>
                   </Menu>
                 )
-              })}
+              }):''}
 
             </div>
             <div className='bottom-right'>
