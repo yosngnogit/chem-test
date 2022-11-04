@@ -14,7 +14,7 @@ export default function EnterpriseRegister(props) {
   const [step1Form, setSstep1Form] = useState({})
 
   return (
-    
+
     <div className='register'>
       <div className="register_nav">
         {stepActie === 0 &&
@@ -93,7 +93,7 @@ function Setp1(props) {
         cardCode:values.cardCode      
       })
 
-      console.log(values,values.provinceCode)
+      console.log(values, values.provinceCode)
       setSstep1Form(values)
       nextStep(1)
       setLoadingLogin(false)
@@ -368,18 +368,18 @@ function Setp2(props) {
           rules={[{ required: true, message: "请输入验证码" }]}
         >
           <div className="register_captcha">
-          <Input placeholder='请输入验证码' maxLength={6} />
-          <a className='extra-part' onClick={getSmsCode}>
-          {counter > 0 && counter < 60 ? `${counter}s后重新获取` : '获取验证码'}
-        </a>
-        </div>
+            <Input placeholder='请输入验证码' maxLength={6} />
+            <a className='extra-part' onClick={getSmsCode}>
+              {counter > 0 && counter < 60 ? `${counter}s后重新获取` : '获取验证码'}
+            </a>
+          </div>
         </Form.Item>
-       
+
 
         <Form.Item>
           <div className='footer-btn'>
             <div className='footer-left' onClick={back}>上一步</div>
-            <div className='footer-right' onClick={() => form.submit()}>确 认</div>
+            <div className='footer-right' onClick={form.submit}>确 认</div>
           </div>
         </Form.Item>
       </Form>

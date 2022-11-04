@@ -34,11 +34,14 @@ function Header(props) {
   const toLogin = () => {
     props.history.push('/login')
   }
+  const goHome = () => {
+    props.history.push('/')
+  }
 
   return (
     <div className={`${transparent ? 'header_transparent' : 'header'} ${fixed?'header-fixde': ''}`}>
       <div className="header-left">
-        <div className="header-title">企业安全自诊断平台</div>
+        <div className="header-title" onClick={goHome}>企业安全自诊断平台</div>
       </div>
       <div className="header-right">
         { token ? 
@@ -50,7 +53,7 @@ function Header(props) {
               </div>
             </Dropdown>
             
-            <div className="header-user-btn">开始诊断</div>
+            {/* <div className="header-user-btn">开始诊断</div> */}
           </div> :
           <div className='header-login-btn' onClick={toLogin}>登陆</div>
         }
