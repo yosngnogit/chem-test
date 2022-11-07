@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Progress, Image, Message,Dropdown, Menu } from 'antd'
+import { Progress, Image, Message,Dropdown, Menu ,Spin} from 'antd'
 import { RightOutlined, DownOutlined } from '@ant-design/icons'
 import './index.less'
 import { query, getCookie } from '@/utils'
@@ -13,6 +13,8 @@ function AnswerSchedule(props) {
   const [data, setData] = useState([])
   const [paperId, setPaperId] = useState(params.paperId)
   const [answerModule, setAnswerModule] = useState(null)
+  const [loading, setLoading] = useState(true)
+
   const entCode = getCookie('entCode');
   const entName = getCookie('entName')
   const { transparent = false, fixed = false } = props
@@ -20,12 +22,14 @@ function AnswerSchedule(props) {
   useEffect(() => {
     if (paperId !== 'undefined') {
       getAnswer(paperId).then(res => {
+        setLoading(false)
         setAnswerModule(res.data.moduleDetail)
         setData(res.data)
       })
     } else {
       const data = JSON.parse(params.body)
       createAnswer({ ...data, entCode }).then(res => {
+        setLoading(false)
         setPaperId(res.data)
         getAnswer(res.data).then(res => {
           setAnswerModule(res.data.moduleDetail)
@@ -71,7 +75,7 @@ function AnswerSchedule(props) {
       ]}
     />
   )
-  return (
+  return (loading? <Spin className='answer-loading' tip="Loading..."/>:
     <div className='answer-schedule'>
       <div className='header-top'>
       <div className={`${transparent ? 'header_transparent' : 'header'} ${fixed?'header-fixde': ''}`}>
