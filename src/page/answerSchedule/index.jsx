@@ -65,7 +65,9 @@ function AnswerSchedule(props) {
       props.history.push('/personalCenter')
     }
   }
-  
+  const goBack=()=>{
+    props.history.push('/answerEntrance')
+  }  
   const menu = (
     <Menu
       onClick={onMenuClick}
@@ -80,7 +82,7 @@ function AnswerSchedule(props) {
       <div className='header-top'>
       <div className={`${transparent ? 'header_transparent' : 'header'} ${fixed?'header-fixde': ''}`}>
       <div className="header-left">
-        <div className="header-title">企业安全自诊断平台</div>
+        <div className="header-title" onClick={goBack}>企业安全自诊断平台</div>
       </div>
       <div className="header-right">
        
