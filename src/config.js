@@ -1,5 +1,5 @@
 const env = process.env.NODE_ENV
-let baseURL = 'http://10.52.24.22:8500' // 自诊断开发环境
+let baseURL = 'http://10.52.24.21:8021/api'
 let appCode = 'CBRAIN_OFFICIAL'
 let clientId = 'android'
 let SmsTemplate = 'SMS_154950909'
