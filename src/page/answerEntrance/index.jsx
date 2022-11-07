@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
-import { Modal, Progress, Message } from 'antd'
+import { Modal, Progress, Message,Spin } from 'antd'
 import { getVersionInfo, getRecordInfo, deleteEntPaper } from "../../api/answer";
 import { getCookie } from '@/utils'
 import { decrypt } from '@/utils/aes';
@@ -32,26 +32,22 @@ function AnswerEntrance(props) {
     props.history.push(`/answerSchedule?paperId=${item.paperId}&body=${str}`)
   }
 
-  const goInfo = () => {
-    if (!getCookie('access_token')) {
-      return Modal.alert({
-        bodyClassName: 'pay-confirm',
-        closeOnMaskClick: true,
-        showCloseButton: true,
-        content: '请先登录企业账号',
-        confirmText: '去登录',
-        onConfirm: async () => {
-          props.history.push('/login')
-        },
-      })
-    }
-    props.history.push('/info')
+  const goCreate = (item) => {
+   confirm({
+      bodyClassName: 'pay-confirm',
+      content: '是否创建新答题？',
+      okText:'确认',
+      onOk () { goSchedule(item) }
+    })
   }
 
   const goIndex = () => props.history.go(-1)
 
   const goPay = () => {
-    // setIsModalOpen(true)
+    if (info.pay.canAnswer) {
+      goCreate({ versionNo: info.versionNo, paperType: '2', quesNum: info.pay.quesNum })
+      return;
+    }
     confirm({
       title: '提示',
       content: '付费版未解锁，请联系客服进行解锁。联系方式：18868888888。',
@@ -88,7 +84,7 @@ function AnswerEntrance(props) {
         <div className="answer-main-list">
 
           <div className="answer-cards">
-            <div className="card-free" onClick={() => { goSchedule({ versionNo: info.versionNo, paperType: '1', quesNum: info.free.quesNum }) }}>
+            <div className="card-free" onClick={() => { goCreate({ versionNo: info.versionNo, paperType: '1', quesNum: info.free.quesNum })}}>
               <img src={require('@/assets/img/answerEntrance/free.png')} width={38} height={44} fit='fill' />
               <div className="free-tip">
                 <div className="free-tip-p">

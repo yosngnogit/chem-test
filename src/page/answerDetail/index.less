@@ -173,15 +173,16 @@
        .bottom-right-content {
         background: #f8f8fa;
         position: relative;
-       
+      
         .question {
+          position: relative;
           display:flex;
           background: #fff;
           padding: 24px 25px;
           align-items: center;
           height: 132px;
           border-bottom: 1px solid #EEEEEE;
-          cursor: pointer;
+          
           
           .second-title {
             width:705px;
@@ -199,6 +200,7 @@
           .result {
             display: flex;       
             justify-content: space-between;
+            cursor: pointer;
             
             svg {
               width: inherit;
@@ -278,7 +280,6 @@
         justify-content: center;
        margin:auto;
        gap:32px;
-       
         
         .btn {
           box-sizing: border-box;
@@ -331,6 +332,16 @@
     background-color: #DDDDDD;
     }
 
+   
 
-
+}
+.answer-loading {
+  height: 100%;
+  width: 100%;
+  margin-top: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  background: #fff;
 }
