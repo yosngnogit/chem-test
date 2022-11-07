@@ -1,2 +1,2 @@
-process.env.IS_DEV = 'true';
+process.env.BUILD_NAME = 'dev';
 require('./build');

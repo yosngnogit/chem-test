@@ -83,6 +83,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "dev": "node scripts/dev.js",
+    "exam": "node scripts/exam.js",
+    "experience": "node scripts/experience.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
   },
