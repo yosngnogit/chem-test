@@ -7,22 +7,17 @@ const tickIcon = require('@/assets/img/common/tick.png')
 const fockIcon = require('@/assets/img/common/fork.png')
 
 const freeList = [
-  { name: '项目项目项目', open: true },
-  { name: '项目项目项目', open: true },
-  { name: '项目项目项目', open: true },
-  { name: '项目项目项目', open: true },
-  { name: '项目项目项目', open: true },
-  { name: '项目项目项目', open: false },
-  { name: '项目项目项目', open: false },
+  { name: '免费版答题通道（基础测评）', open: true },
+  { name: '企业安全管理水平诊断测评', open: true },
+  { name: '安全管理要点分项测评', open: true },
+  
 ]
 const notFreeList = [
-  { name: '项目项目项目', open: true },
-  { name: '项目项目项目', open: true },
-  { name: '项目项目项目', open: true },
-  { name: '项目项目项目', open: true },
-  { name: '项目项目项目', open: true },
-  { name: '项目项目项目', open: true },
-  { name: '项目项目项目', open: true },
+  { name: '专业版答题通道（精准评估）', open: true },
+  { name: '行业对标评估', open: true },
+  { name: '安全管理改进建议', open: true },
+  { name: '安全管理专家辅导', open: true },
+  { name: '《企业EHSS安全管理》教材', open: true },
 ]
 
 function Section4(props) {
@@ -46,7 +41,6 @@ function Section4(props) {
             freeList.map((item, index) => (
               <div className="section4-content-project" key={index}>
                 <div className="section4-content-project-name">{item.name}</div>
-                <img className="section4-content-project-open" src={item.open?tickIcon:fockIcon} alt="" />
               </div>
             ))
           }
@@ -57,7 +51,6 @@ function Section4(props) {
             notFreeList.map((item, index) => (
               <div className="section4-content-project" key={index}>
                 <div className="section4-content-project-name">{item.name}</div>
-                <img className="section4-content-project-open" src={item.open?tickIcon:fockIcon} alt="" />
               </div>
             ))
           }

@@ -145,7 +145,7 @@ function Setp1(props) {
         }}
       >
         <Form.Item label='省份' name="provinceCode"
-          rules={[{ message: '请选择省份' }]}
+          rules={[{required: true, message: '请选择省份' }]}
 
         >
           <Select placeholder="请选择省份">
