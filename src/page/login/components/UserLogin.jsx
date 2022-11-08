@@ -8,19 +8,21 @@ import { login } from '@/api/login'
 function UserLogin(props) {
   const { switchPageType } = props
   const [loadingLogin, setLoadingLogin] = useState(false);
-  const [remember, setRemember] = useState(false);
+  const [remember, setRemember] = useState(localStorage.getItem('login_remeber'));
   const [form] = Form.useForm()
 
 
-  const defaultChecked = localStorage.getItem('login_remeber') === 'true'
+  const defaultChecked = localStorage.getItem('login_remeber')
 
   const initialize = () => {
     let username = localStorage.getItem('login_username')
     let password = localStorage.getItem('login_password')
+    let remember = localStorage.getItem('login_remeber')
     if (password) {
       return {
         username,
         password,
+        remember
       }
     }
   }
@@ -72,17 +74,17 @@ function UserLogin(props) {
         <Form.Item
           className="remember"
           name="remember"
-        
+          valuePropName="checked"     
           wrapperCol={{
             offset: 8,
             span: 16,
           }}
-        ><div>
-           <Checkbox  onChange={(value) => { setRemember(value) }}>
+        >
+           <Checkbox defaultChecked={defaultChecked}  onChange={(value) => {
+            console.log(value)
+            setRemember(value.target.checked) }}>
             <div className="remember-me">记住我</div>
-           </Checkbox>
-        </div>
-         
+           </Checkbox>      
         </Form.Item>
 
         <Form.Item

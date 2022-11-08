@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Modal, Progress, Message, } from 'antd'
-import { getVersionInfo, getRecordInfo, deleteEntPaper } from "../../api/answer";
+import { getVersionInfo, getRecordInfo, deleteEntPaper,getInfoPerfect } from "../../api/answer";
 import { getCookie } from '@/utils'
 
 import './index.less'
@@ -11,6 +11,8 @@ function AnswerEntrance(props) {
 
   const [info, setInfo] = useState({ free: {}, pay: {} })
   const [listData, setListData] = useState([])
+  const [infoPerfect, setInfoPerfect] = useState([])
+
   const { confirm } = Modal;
 
   useEffect(() => {
@@ -19,6 +21,10 @@ function AnswerEntrance(props) {
     })
     getRecordInfo(entCode).then(res => {
       setListData(res.data)
+    })
+    getInfoPerfect(entCode).then(res=>{
+
+      setInfoPerfect(res.data)
     })
   }, [])
 
@@ -77,7 +83,7 @@ function AnswerEntrance(props) {
     <div className='answerEntrance'>
       <div className="answer-main">
         <div className='answer-perfect'>
-          <div>企业信息已完成20%,</div>
+          <div>企业信息已完成{infoPerfect}%,</div>
           <div className='answer-perfect-div' onClick={() => { props.history.push('/baseInfo') }}>去完善</div><img src={require('@/assets/img/answerEntrance/Vector.png')} style={{ width: '6px', height: '10px' }} alt="" />
         </div>
         <div className="answer-main-list">

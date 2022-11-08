@@ -74,17 +74,6 @@ class AnswerDetail extends Component {
       if (!res.data.answerPage) {
         Message.info('已答完所有题目')
         this.getDirInfo()
-        getQuestionInfo({
-          paperType: this.paperType,
-          moduleId: this.moduleId,
-          quesId:this.leafId ,
-           "operation":'now'
-        }).then(res=>{
-          this.setState({
-            quesInfo: res.data || {},
-          })
-        })
-        console.log(' res.data', res.data)
         return;
       }
       console.log(' res.data', res.data)

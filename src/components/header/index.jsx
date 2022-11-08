@@ -55,7 +55,7 @@ function Header(props) {
             
             {/* <div className="header-user-btn">开始诊断</div> */}
           </div> :
-          <div className='header-login-btn' onClick={toLogin}>登陆</div>
+          <div className='header-login-btn' onClick={toLogin}>登录</div>
         }
       </div>
     </div>

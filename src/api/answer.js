@@ -114,3 +114,10 @@ export const deleteEntPaper = (params) => {
     params
   })
 }
+// 企业完善信息
+export const getInfoPerfect = (entCode) => {
+  return http.request({
+    url: `/front/maintain/DiagnosticEntrance/getEntBaseIntegrity?entCode=${entCode}`,
+    method: 'get',
+  })
+}
