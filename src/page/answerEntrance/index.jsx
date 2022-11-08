@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom'
 import { Modal, Progress, Message, } from 'antd'
 import { getVersionInfo, getRecordInfo, deleteEntPaper } from "../../api/answer";
 import { getCookie } from '@/utils'
-import { decrypt } from '@/utils/aes';
 
 import './index.less'
 

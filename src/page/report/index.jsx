@@ -31,8 +31,7 @@ import { decrypt } from '@/utils/aes';
       setPercent(res.data.diagnosisPaperModuleTotalList.map((item) => {
         return item.percentTotal
       }))
-    })
-   
+    })   
   }, [])
 
 
