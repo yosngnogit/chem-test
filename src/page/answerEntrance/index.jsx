@@ -83,7 +83,7 @@ function AnswerEntrance(props) {
     <div className='answerEntrance'>
       <div className="answer-main">
         <div className='answer-perfect'>
-          <div>企业信息已完成{infoPerfect}%,</div>
+          <div>企业信息已完成{infoPerfect?infoPerfect:0}%,</div>
           <div className='answer-perfect-div' onClick={() => { props.history.push('/baseInfo') }}>去完善</div><img src={require('@/assets/img/answerEntrance/Vector.png')} style={{ width: '6px', height: '10px' }} alt="" />
         </div>
         <div className="answer-main-list">
