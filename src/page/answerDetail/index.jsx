@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import { Menu, Message } from 'antd';
+import { Menu, Message,  } from 'antd';
 import { query, getCookie } from '@/utils';
 import './index.less'
 import { withRouter } from "react-router-dom";
 import { getDirectory, getQuestionInfo, markedQuestion, nextMarked, nextNotAnswered, saveQuestion, submitModule } from "../../api/answer";
 import { createWebSocket } from '@/utils/socket';
 import { decrypt } from '@/utils/aes';
-
-
+import { set } from 'mobx';
 
 class AnswerDetail extends Component {
 
@@ -16,7 +15,9 @@ class AnswerDetail extends Component {
     collapsed: false,
     quesInfo: {},
     checkMap: {},
-    markMap: {}
+    markMap: {},
+    markAll:0,
+    
   }
 
   urlObj = query()
@@ -36,24 +37,57 @@ class AnswerDetail extends Component {
   componentDidMount() {
     const entCode = getCookie('entCode');
     this.ws = createWebSocket(`${entCode}/${this.moduleId}`);
-
+      getDirectory({
+        paperType: this.paperType,
+        moduleId: this.moduleId,
+      }).then(res => {
+        this.setState({ directory: res.data })
+      });
+      this.getInfo(undefined, 'now')
+   
     // 获取左侧menu
+    getQuestionInfo({
+      paperType: this.paperType,
+      moduleId: this.moduleId,
+      quesId:this.leafId ,
+       "operation":'now'
+    }).then(res=>{     
+      this.state.markAll=res.data.markedNum
+    })
+   
+  }
+  componentWillUnmount() {
+    this.ws.close()
+  }
+  // 点击右侧选项时触发
+  getDirInfo = () => {
     getDirectory({
       paperType: this.paperType,
       moduleId: this.moduleId,
     }).then(res => {
       this.setState({ directory: res.data })
-    });
-    this.getInfo(undefined, 'now');
-
+    })
   }
  
   nextNotAnswered = () => {
     nextNotAnswered({ paperType: this.paperType, moduleId: this.moduleId, quesId: this.leafId }).then(res => {
       if (!res.data.answerPage) {
-        Message.info('已答问所有题目')
+        Message.info('已答完所有题目')
+        this.getDirInfo()
+        getQuestionInfo({
+          paperType: this.paperType,
+          moduleId: this.moduleId,
+          quesId:this.leafId ,
+           "operation":'now'
+        }).then(res=>{
+          this.setState({
+            quesInfo: res.data || {},
+          })
+        })
+        console.log(' res.data', res.data)
         return;
       }
+      console.log(' res.data', res.data)
       this.setState({ quesInfo: res.data.answerPage })
     })
   }
@@ -94,15 +128,24 @@ class AnswerDetail extends Component {
       if (res.data) console.log(1);
       else console.log(0);
     })
-    console.log(this.paperId, this.moduleId)
   }
   marked = (item) => {
     const { quesId, marked } = item;
-    const { markMap } = this.state;
+    let { markMap, markAll ,quesInfo} = this.state;
     const newMark = (markMap[item.quesNo] !== undefined ? markMap[item.quesNo] : marked) ? 0 : 1
     this.setState({ markMap: { ...markMap, [item.quesNo]: newMark } })
     markedQuestion({ marked: newMark, quesId }).then(res => {
-      if (res.code === 0) Message.info({ content: `${newMark ? '' : '取消'}标记成功` })
+      if (res.code === 0) {
+        Message.info({ content: `${newMark ? '' : '取消'}标记成功` })
+        if(newMark){
+          this.setState({markAll: ++markAll})
+         
+        }
+        else{
+          this.setState({markAll: markAll===0?0:--markAll})
+         
+        }
+    }
     })
   }
   goPrev = () => this.getInfo(this.quesId, 'up')
@@ -120,7 +163,6 @@ class AnswerDetail extends Component {
       quesId,
       "operation": status
     }).then(res => {
-      console.log(res.data)
       if (!res.data.factorInfo) {
         Message.info({ content: `已经是${status === 'up' ? '第' : '最后'}一页了` })
         return;
@@ -131,17 +173,22 @@ class AnswerDetail extends Component {
         activeKey: factorInfo[0].factorNo
       })
     })
+ 
     console.log(this.quesInfo)
   }
   chooseOrder = (quesId) => {
     this.getInfo(quesId, 'now');
   }
+  onDirChange = (activeKey) => this.setState({ activeKey })
+
   renderItem = (item, index) => {
     const { markMap } = this.state;
     return <div key={index} className='question'>
       <p className='second-title'>{item.quesNo}&nbsp;&nbsp;{decrypt(item.subjectContent)}</p>
       <div className='result'>
-        <p onClick={() => {this.marked(item) }}>
+        <p onClick={() => {this.marked(item)
+       
+        }}>
           <img
             src={(markMap[item.quesNo] !== undefined ? markMap[item.quesNo] : item.marked)
               ? require('@/assets/img/answerDetail/star.png')
@@ -149,7 +196,7 @@ class AnswerDetail extends Component {
             alt=''
           />
         </p>
-        <div className='options'>
+        <div className='options' onClick={()=>this.getDirInfo()}>
           {['完全满足', '部分满足', '不满足', '不适用'].map(v =>
             <span
               key={v}
@@ -163,7 +210,7 @@ class AnswerDetail extends Component {
   }
 
   render() {
-    const { quesInfo, directory, collapsed } = this.state;
+    const { quesInfo, directory, collapsed,activeKey, markAll,loading} = this.state;
     return (
       <div className='answer-detail' >
         <div className='content'>
@@ -199,7 +246,7 @@ class AnswerDetail extends Component {
                   <div className='right-div-star'>
                     <img src={require('@/assets/img/answerDetail/star.png')} width={18} height={18} style={{ marginRight: '12px' }} fit='fill' />
                   </div>
-                  <div className='right-font'>已标记  <div className='right-num'>3</div>
+                  <div className='right-font'>已标记 <div className='right-num'>{markAll}</div>
                   </div>
 
                 </div>
@@ -208,20 +255,20 @@ class AnswerDetail extends Component {
           </div>
           <div className='bottom'>
             <div className='bottom-left'>
-
-              {directory.map((dir, index) => {
+              {directory?directory.map((dir, index) => {
                 return (
                   <Menu
                     mode="inline"
                     inlineCollapsed={collapsed}
                     key={index}
+                    onChange={this.onDirChange}
+                    selectedKeys={activeKey}
                   >
                     <Menu.SubMenu
-                    key={dir.factorNo}
+                    key={dir.factorNo}                   
                       title={
                         <div className="item" style={{ display:'flex',justifyContent:'space-between' }}>
                           <span className='item-content'>{dir.factorNo}&nbsp;&nbsp;{decrypt(dir.factorContent)}</span>
-                          <span className='item-order'><b>{dir.answeredQuesNum}</b>/{dir.quesNum}</span>
                         </div>
                       }
                     >
@@ -233,9 +280,10 @@ class AnswerDetail extends Component {
                           >
                             <div className={v.check ? 'active' : ''} style={{ paddingLeft: '7px',display:'flex',justifyContent:'space-between' }} onClick={() => { this.chooseOrder(v.quesId) }} >
                               <div>{v.quesNo} </div>
-                              <div style={{marginRight:'18px'}}>
-                                <b>{v.answeredQuesNum ? `${v.answeredQuesNum}/` : ''}</b>{v.quesNum ? v.quesNum : ''}
-                                </div>
+                              {this.paperType==='2'&&<div style={{marginRight:'18px'}}>
+                                <b>{v.answeredQuesNum ? `${v.answeredQuesNum}/` : `0/`}</b>{v.quesNum ? v.quesNum : `0`}                                
+                                </div>}
+                                     
                               </div>
                           </Menu.Item>
                         ))
@@ -243,7 +291,7 @@ class AnswerDetail extends Component {
                     </Menu.SubMenu>
                   </Menu>
                 )
-              })}
+              }):''}
 
             </div>
             <div className='bottom-right'>
@@ -258,10 +306,9 @@ class AnswerDetail extends Component {
 
                     }) :
                       (info.quesInfo || []).map(prop => {
-                        console.log(info.quesInfo)
                         this.quesId = prop.quesId;
                         return <div className='nofree-bottom' key={prop.quesNo}>
-                          <p className='first-title'>{prop.quesNo}&nbsp;&nbsp;{prop.subjectContent}</p>
+                          <p className='first-title'>{prop.quesNo}&nbsp;&nbsp;{decrypt(prop.subjectContent)}</p>
                           {(prop.childQues || []).map((child, index) => {
                             this.leafId = prop.childQues[0].quesId;
                             return this.renderItem(child, index)

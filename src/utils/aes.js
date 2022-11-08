@@ -1,7 +1,7 @@
 import CryptoJS from 'crypto-js';
 
 //约定密钥(与后端密钥保持一致)
-const key = CryptoJS.enc.Utf8.parse("4829593032910210");// 密钥16位长度字符   内容可自定义
+const key = CryptoJS.enc.Utf8.parse("4829593032911304");// 密钥16位长度字符   内容可自定义
 //  const IV = CryptoJS.enc.Utf8.parse("4829593032910210");//  密钥偏移量    16位长度字符
 
 /**

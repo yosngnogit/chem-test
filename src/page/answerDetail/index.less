@@ -64,6 +64,7 @@
         width: 88px;
         height:44px;
         margin-left: 26px;
+        cursor: pointer;
       }
     }
 
@@ -77,6 +78,7 @@
         width: 122px;
         height:44px;
         border-radius: 36px;
+        cursor: pointer;
       }
 
       .right-totle {
@@ -155,9 +157,9 @@
 
   .bottom {
     width: 100%;
-    height: 1134px;
     display: flex;
     margin-top: 8px;
+    padding-bottom: 20px;
 
     .bottom-left {
       width: 253px;
@@ -173,15 +175,16 @@
        .bottom-right-content {
         background: #f8f8fa;
         position: relative;
-       
+      
         .question {
+          position: relative;
           display:flex;
           background: #fff;
           padding: 24px 25px;
           align-items: center;
           height: 132px;
           border-bottom: 1px solid #EEEEEE;
-          cursor: pointer;
+          
           
           .second-title {
             width:705px;
@@ -199,6 +202,7 @@
           .result {
             display: flex;       
             justify-content: space-between;
+            cursor: pointer;
             
             svg {
               width: inherit;
@@ -269,17 +273,15 @@
         }
       }
 
-      .footer {
+      .footer{
         position: absolute;
         width: 100%;
         height: 46px;
-        bottom: 20px;
         display: flex;
         justify-content: center;
-       margin:auto;
-       gap:32px;
-       
-        
+        margin:auto;
+        gap:32px;
+        margin-top: 20px;       
         .btn {
           box-sizing: border-box;
           width: 242px;
@@ -295,7 +297,7 @@
           font-weight: 400;
           font-size: 14px;          
           color: #4074FF;
-        
+          cursor: pointer;        
         }
         .two{         
           background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);
@@ -329,8 +331,6 @@
 
   .ant-progress-inner{
     background-color: #DDDDDD;
-    }
-
-
+    }  
 
 }
