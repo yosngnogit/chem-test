@@ -1,10 +1,11 @@
 import React from 'react'
 import { Button, Avatar } from 'antd';
 import { withRouter } from "react-router-dom";
+import { getCookie } from '@/utils'
 
 import './index.less'
-
 function baseInfo(props) {
+  const entName = getCookie('entName')
   const onListItemClick = (type) => {
     props.history.push(type)
   }
@@ -12,7 +13,7 @@ function baseInfo(props) {
     <div className='personalCenter'>
       <div className="personal-header">
         <Avatar shape="square" size={82} src={require('@/assets/img/personalCenter/avatar.png')} />
-        <div className="personal-title">中控技术股份有限公司</div>
+        <div className="personal-title">{entName}</div>
       </div>
       <div className="personal-main">
         <ul className='main-list'>

@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react'
 import { Avatar } from 'antd';
 import { withRouter } from "react-router-dom";
 import { getEnterpriseInfo } from '@/api/personalCenter';
+import { getCookie } from '@/utils'
 
 import '../index.less'
 
 function PersonalBaseInfo(props) {
   const [componyForm, setComponyForm] = useState({})
-
+  const entName = getCookie('entName')
   useEffect(() => {
     getEnterpriseInfo().then(res => {
       // console.log(res)
@@ -23,7 +24,7 @@ function PersonalBaseInfo(props) {
     <div className='personalCenter'>
       <div className="personal-header">
         <Avatar shape="square" size={82} src={require('@/assets/img/personalCenter/avatar.png')} />
-        <div className="personal-title">中控技术股份有限公司</div>
+        <div className="personal-title">{entName}</div>
       </div>
       <div className="personal-main">
         <ul className='main-list'>
