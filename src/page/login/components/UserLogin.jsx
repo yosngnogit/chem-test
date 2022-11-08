@@ -80,11 +80,11 @@ function UserLogin(props) {
             span: 16,
           }}
         >
-           <Checkbox defaultChecked={defaultChecked}  onChange={(value) => {
-            console.log(value)
-            setRemember(value.target.checked) }}>
+          <div>
+           <Checkbox defaultChecked={defaultChecked}  onChange={(value) => {setRemember(value.target.checked) }}>
             <div className="remember-me">记住我</div>
-           </Checkbox>      
+           </Checkbox>  
+           </div>    
         </Form.Item>
 
         <Form.Item
