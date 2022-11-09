@@ -40,23 +40,25 @@ function Header(props) {
 
   return (
     <div className={`${transparent ? 'header_transparent' : 'header'} ${fixed?'header-fixde': ''}`}>
-      <div className="header-left">
-        <div className="header-title" onClick={goHome}>企业安全自诊断平台</div>
-      </div>
-      <div className="header-right">
-        { token ? 
-          <div className="header-user">
-            <img className='header-user-avatar' src={require('@/assets/img/index/avatar.png')} alt="" />
-            <Dropdown overlay={menu}>
-              <div className='header-user-name'>
-                {entName}<DownOutlined className='header-user-name-arrow'/>
-              </div>
-            </Dropdown>
-            
-            {/* <div className="header-user-btn">开始诊断</div> */}
-          </div> :
-          <div className='header-login-btn' onClick={toLogin}>登录</div>
-        }
+      <div className="header-content">
+        <div className="header-left">
+          <div className="header-title" onClick={goHome}>企业安全自诊断平台</div>
+        </div>
+        <div className="header-right">
+          { token ? 
+            <div className="header-user">
+              <img className='header-user-avatar' src={require('@/assets/img/index/avatar.png')} alt="" />
+              <Dropdown overlay={menu}>
+                <div className='header-user-name'>
+                  {entName}<DownOutlined className='header-user-name-arrow'/>
+                </div>
+              </Dropdown>
+              
+              {/* <div className="header-user-btn">开始诊断</div> */}
+            </div> :
+            <div className='header-login-btn' onClick={toLogin}>登录</div>
+          }
+        </div>
       </div>
     </div>
   )

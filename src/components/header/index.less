@@ -8,11 +8,37 @@
   background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, 
   #4472EC 105.19%);
   transition: all .2s ease .2s;
+
+  &_transparent{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100vw;
+    height: 60px;
+    padding: 16px 24px;
+    background: transparent;
+    transition: all .2s ease .2s;
+    .header-user-btn{
+      color: #FFFFFF;
+      background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);
+    }
+  }
+
+  &-content{
+    margin: auto;
+    width: 100%;
+    max-width: 1440px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   &-title{
     font-size: 20px;
     color: #FFFFFF;
     cursor: pointer;
   }
+
   &-login-btn{
     margin: 0 30px 0 8px;
     font-weight: 400;
@@ -20,6 +46,7 @@
     color: #EFFDFE;
     cursor: pointer;
   }
+
   &-user{
     display: flex;
     align-items: center;
@@ -53,21 +80,6 @@
       font-size: 14px;
       color: #4472EC;
     }
-  }
-}
-
-.header_transparent{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100vw;
-  height: 60px;
-  padding: 16px 24px;
-  background: transparent;
-  transition: all .2s ease .2s;
-  .header-user-btn{
-    color: #FFFFFF;
-    background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);
   }
 }
 
