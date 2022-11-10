@@ -114,6 +114,7 @@ function AnswerEntrance(props) {
 
           </div>
           <div className='answer-tips'> <span>Tips:</span> 请联系当地中控5S店解锁付费版，获得更精准的诊断结果</div>
+          <div style={{width:'1440px',height:'8px',margin:'auto',backgroundColor:'#F8F8FA'}}></div>
           <ul className="answer-list">
             {
               listData.map((item, index) => {
@@ -129,7 +130,7 @@ function AnswerEntrance(props) {
                   <div className="list-bottom">
                     <div className='list-bottom-name'>{item.paperName}</div>
                     <div className='list-bottom-time'>开始时间：{item.beginTime}</div>
-                    <div className="list-status">{item.paperStatus === '1' ? '已完成' : '进行中'}</div>
+                    <div className={item.paperStatus === '1'?'list-finish':'list-status'} >{item.paperStatus === '1' ? '已完成' : '进行中'}</div>
                     <div style={{ display: 'flex' }}>
                       <Progress
                         percent={item.overallProgress}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-
+import { RightOutlined } from '@ant-design/icons';
 import { Collapse, Form, Input, Select, DatePicker, Checkbox, Radio, Space, Cascader, Spin, message } from 'antd';
 import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
@@ -237,7 +237,8 @@ function BaseInfoDetails(props) {
           <div className="baseInfo-header">
             <p>中控技术股份有限公司</p>
           </div>
-          <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'>
+          <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'
+          expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
             <Panel header={BaseHeader('企业基本情况')} key="1" showArrow={false} collapsible='disabled'>
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 {...formItemLayout}
@@ -363,7 +364,8 @@ function BaseInfoDetails(props) {
             </Panel>
             {/* 执照情况 */}
             <Panel header={BaseHeader('执照情况')} key="2" forceRender>
-              <Collapse expandIconPosition='end' defaultActiveKey={['3']}>
+              <Collapse expandIconPosition='end' defaultActiveKey={['3']}
+               expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
                 <Panel header={BaseHeader('企业工商营业执照')} key="3" className='inner-header' forceRender>
                   <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                     {...formItemLayout}
