@@ -23,17 +23,20 @@ function ChangePassword(props) {
   }
   return (
     <div className='personalCenter'>
-      <div className="personal-header">
-        <Button type="link" className='back' onClick={() => goBack()}><LeftOutlined /></Button>
-        <Avatar shape="square" size={82} src={require('@/assets/img/personalCenter/avatar.png')} />
-        <div className="personal-title">{entName}</div>
-      </div>
-      <div className="personal-main">
-        <div className='change-password'>
-          {active === 0 && <Step0 nextStep={setActive} setSstep1Form={setSstep1Form} />}
-          {active === 1 && <Step1 step1Form={step1Form} />}
+      <div className="center-main">
+        <div className="personal-header">
+          <Button type="link" className='back' onClick={() => goBack()}><LeftOutlined /></Button>
+          <Avatar shape="square" size={82} src={require('@/assets/img/personalCenter/avatar.png')} />
+          <div className="personal-title">{entName}</div>
+        </div>
+        <div className="personal-main">
+          <div className='change-password'>
+            {active === 0 && <Step0 nextStep={setActive} setSstep1Form={setSstep1Form} />}
+            {active === 1 && <Step1 step1Form={step1Form} />}
+          </div>
         </div>
       </div>
+
     </div>
   )
 }
