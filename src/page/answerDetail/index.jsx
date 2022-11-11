@@ -179,6 +179,7 @@ class AnswerDetail extends Component {
        
         }}>
           <img
+          style={{width:'24px',height:'24px'}}
             src={(markMap[item.quesNo] !== undefined ? markMap[item.quesNo] : item.marked)
               ? require('@/assets/img/answerDetail/star.png')
               : require('@/assets/img/answerDetail/unStar.png')}

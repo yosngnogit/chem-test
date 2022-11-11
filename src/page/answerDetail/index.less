@@ -1,9 +1,14 @@
+body{
+  background-color: #fff !important;
 .answer-detail {
-  background: #F8F8FA;
-
+  width: 1440px;
+  min-height:1225px!important;
+margin: auto;
   .content {
     width: 1440px;
+    min-height: 900px;
     margin: auto;
+    background-color: #F8F8FA;
   }
 
   .top {
@@ -157,20 +162,23 @@
 
   .bottom {
     width: 100%;
+    min-height:900px;
     display: flex;
     margin-top: 8px;
     padding-bottom: 20px;
 
     .bottom-left {
       width: 253px;
+      min-height:100%;
       margin-right: 16px;
       border-right: 1px solid #EEEEEE;
-      // background-color: #ff0;
+      //  background-color: #ff0 !important;
     }
 
     .bottom-right {
       position: relative;
       flex: 1;
+      min-height:100%;
        background-color: #fff;
        .bottom-right-content {
         background: #f8f8fa;
@@ -213,15 +221,18 @@
               background: linear-gradient(180deg, #ffed46 25%, #ffb341 100%);
               box-shadow: 0 4px 4px rgb(208 221 237 / 16%);
             }
-            > p {
+            
+            > p{
               border: 1px solid rgb(0 0 0 / 12%);
               border-radius: 6px;            
               width: 34px;
-              margin-right: 10px;
+              height:34px;
+              margin: 0;
+               margin-right: 8px;
               text-align: center;
               > img {
-                width: 28px;
-                height: 28px;
+                width: 24px;
+                height: 24px;
                 margin-top: 3px;
               }
             }
@@ -333,4 +344,5 @@
     background-color: #DDDDDD;
     }  
 
+}
 }

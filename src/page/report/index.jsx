@@ -72,14 +72,38 @@ function Report(props) {
       legend: {
         show: false,
       },
+      // radar: {
+      //   center: ['49%', '50%'], //图的位置
+      //   radius: ["0%", "75%"],
+      //   axisName: {
+      //     color: "rgba(85, 85, 85, 1)",
+      //     fontSize: 12
+      //   },
+      //   // shape: 'circle',
+      //   indicator: chartData
+      // },
       radar: {
         center: ['49%', '50%'], //图的位置
-        radius: ["0%", "75%"],
+        radius: ["0%", "70%"],
         axisName: {
-          color: "rgba(85, 85, 85, 1)",
+          color: "#5C6E7C",
           fontSize: 12
         },
-        // shape: 'circle',
+        axisLine: {
+          lineStyle: {
+            color: '#C9CFD8'
+          }
+        },
+        splitLine: {
+          lineStyle: {
+            color: '#C9CFD8'
+          }
+        },
+        splitArea: {
+          areaStyle: {
+            color: ["rgba(255,255,255,0)", '#E3ECF8'],
+          }
+        },
         indicator: chartData
       },
       series: [{
