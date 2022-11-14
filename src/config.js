@@ -10,7 +10,7 @@ if (env === 'production') {
     baseURL = 'http://101.68.70.245:8090/api'
   } else if (process.env.BUILD_NAME === 'prod') {
     // 生产环境
-    baseURL = 'http://112.124.0.32:8021/api'
+    baseURL = 'https://security.chemical-brain.com/api'
   } else if (process.env.BUILD_NAME === 'experience') {
     // 体验版
     baseURL = 'http://60.12.1.36:8021/api'
