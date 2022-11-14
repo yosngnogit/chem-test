@@ -37,7 +37,7 @@ function Section1(props) {
     <div className='section section1'>
       <div className="section1-top">
         <div className="section1-top-title">专业性</div>
-        <div className="section1-top-desc">具有非常鲜明的专业、需要学习很多有一定深度的专业知识</div>
+        <div className="section1-top-desc">全员参与、全面测评，对标行业最佳实践。</div>
         <div className="section1-top-btn" onClick={startDiagnosis}>开始诊断</div>
       </div>
       <div className="section1-bottom">

@@ -30,7 +30,7 @@ function AnswerEntrance(props) {
 
   const goSchedule = (item) => {
     if (item.paperStatus === '1') {
-      props.history.push(`/report?paperId=${item.paperId}`)
+      props.history.push(`/report?paperId=${item.paperId}&paperType=${item.paperType}`)
       return;
     }
     const str = JSON.stringify({ versionNo: item.versionNo, paperType: item.paperType, quesNum: item.quesNum });
@@ -55,7 +55,7 @@ function AnswerEntrance(props) {
     }
     confirm({
       title: '提示',
-      content: '付费版未解锁，请联系客服进行解锁。联系方式：18868888888。',
+      content: '付费版未解锁，请联系客服进行解锁。联系方式：15958102151。',
       okText: '确定',
       okType: 'danger',
       // onOk() {
