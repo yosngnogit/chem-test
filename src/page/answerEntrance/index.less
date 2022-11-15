@@ -19,11 +19,9 @@
   }
 
   .answer-main {
-
     width: 1440px;
     margin: auto;
     background: #F8F8FA;
-
     .answer-perfect {
       height: 21px;
       font-family: 'PingFang SC';
@@ -31,11 +29,13 @@
       font-weight: 400;
       font-size: 16px;
       line-height: 130%;
-      margin: 20px 0;
+      padding: 20px 0;
+      box-sizing:content-box;
       text-align: center;
       justify-content: center;
       display:flex;
       align-items: center;
+      background-color: #fff;
       .answer-perfect-div{
         font-weight: 400;
         font-size: 16px;
@@ -60,7 +60,6 @@
       font-style: normal;
       font-weight: 400;
       font-size: 14px;
-
       span{
         color: #5C6E7C;
         margin-right: 4px;
@@ -150,9 +149,6 @@
             line-height: 130%;
             /* or 18px */
             text-transform: uppercase;
-
-            /* Text/Black2 */
-
             color: #3A3E43;
           }
         }
@@ -160,26 +156,22 @@
 
       .answer-list {
         li {
-          box-sizing: border-box;
-          padding: 0px 25px;
+          box-sizing:content-box;
+          padding: 0px 25px 15px;
           gap: 24px;
          width: 1440px;
           height: 75px;
           background: #FFFFFF;
           border-bottom: 1px solid #EEEEEE;
           position:relative;
-         margin-bottom: 15px;
-          // background-color: pink;
-
+       
         }
 
         .list-top {
           display: flex;
           align-items: flex-end;
-
           .list-title-true {
             width:50px;
-
             p {
               font-family: "SF Pro Display";
               font-style: normal;
@@ -188,10 +180,8 @@
               color: #1f2229;
             }
           }
-
           .list-title-false {
             width: 50px;
-
             p {
               font-family: "SF Pro Display";
               font-style: normal;
@@ -213,8 +203,7 @@
               font-style: normal;
               font-weight: 500;
               font-size: 12px;
-              color: #5C6E7C;
-          
+              color: #5C6E7C;          
           }
 
           .title-tip-false{
@@ -229,12 +218,9 @@
             font-weight: 500;
             font-size: 12px;
             color: #FFFFFF
-          }
-
-         
+          }        
         }
        
-
         .list-bottom {
           display: flex;
            justify-content:flex-start;
@@ -248,8 +234,7 @@
           font-weight: 400;         
           color: #1F2229;
           .ant-progress-outer {
-            width: 212px;
-           
+            width: 212px;           
           }
           .list-bottom-name{
             font-size: 16px;

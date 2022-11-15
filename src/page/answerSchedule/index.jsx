@@ -14,6 +14,7 @@ function AnswerSchedule(props) {
   const [paperId, setPaperId] = useState(params.paperId)
   const [answerModule, setAnswerModule] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [free ,setFree] = useState('')/* 答题类型 */
 
   const entCode = getCookie('entCode');
   const entName = getCookie('entName')
@@ -38,6 +39,11 @@ function AnswerSchedule(props) {
       })
     }
   }, [])
+  useEffect(()=>{
+    getAnswer(paperId).then(res=>{
+      setFree(res.data.moduleDetail[0].paperType)
+    })
+  })
 
   const submit = () => {
     if (data.incompleteModule) {
@@ -46,7 +52,7 @@ function AnswerSchedule(props) {
     }
     submitPaper({ paperId }).then(res => {
       if (res.code === 0) {
-        props.history.push(`/report?paperId=${paperId}`);
+        props.history.push(`/report?paperId=${paperId}&paperType=${free?free:''}`);
       }
     })
   }

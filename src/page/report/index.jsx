@@ -18,12 +18,13 @@ function Report(props) {
   const [valueList, setValueList] = useState([]) /*  echart value数据 */
   const [maxAll, setMaxAll] = useState(0)  /* 满分 */
   const [percent, setPercent] = useState([]) /* 百分数 */
+  const [free ,setFree] = useState('')/* 答题类型 */
+
   useEffect(() => {
     const params = query()
-    // console.log(params)
+    setFree(params.paperType)  
     report(params.paperId).then(res => {
-      // console.log(res.data)
-      setCommon(res.data)
+      setCommon(res.data)   
       setChartData(res.data.diagnosisPaperModuleTotalList.map((item) => {
         return { name: decrypt(item.moduleName), max: item.fullTotalCount }
       }))
@@ -42,8 +43,7 @@ function Report(props) {
   useEffect(() => {
     if (chartData && chartData.length === 0) return
     initRendarChart()
-    initActive()
-
+    if(free=='2') initActive()
   }, [chartData, maxAll, valueList])
 
   const back = () => {
@@ -72,19 +72,10 @@ function Report(props) {
       legend: {
         show: false,
       },
-      // radar: {
-      //   center: ['49%', '50%'], //图的位置
-      //   radius: ["0%", "75%"],
-      //   axisName: {
-      //     color: "rgba(85, 85, 85, 1)",
-      //     fontSize: 12
-      //   },
-      //   // shape: 'circle',
-      //   indicator: chartData
-      // },
       radar: {
         center: ['49%', '50%'], //图的位置
         radius: ["0%", "70%"],
+        splitNumber: 4,
         axisName: {
           color: "#5C6E7C",
           fontSize: 12
@@ -97,11 +88,13 @@ function Report(props) {
         splitLine: {
           lineStyle: {
             color: '#C9CFD8'
+         /*    ['#8543E0','#F52126','#2FC25B','#FACC14'] */
           }
         },
         splitArea: {
           areaStyle: {
-            color: ["rgba(255,255,255,0)", '#E3ECF8'],
+            color: ["rgba(255,255,255,0)",'#E3ECF8'], /* ['#FDD3D4', '#D5F3DE', '#FEF5D0', '#E7D9F9'],
+            shadowColor: 'rgba(255,255,255,0)', */
           }
         },
         indicator: chartData
@@ -138,10 +131,8 @@ function Report(props) {
     const chartTopDom = document.getElementById('active-echart');
     const myTopChart = echarts.init(chartTopDom);
     let topOption = {
-
       tooltip: {
         trigger: "axis",
-
       },
       title: {
         text: "模块得分占比与对标",
@@ -225,29 +216,29 @@ function Report(props) {
 
       series: [
         {
-          name: "百分之",
+          name: "得分占比",
           type: "bar",
           barWidth: 45,
           data: common.columnarMap.y,
+          // common.columnarMap.y.map((item)=>{
+          //   return `${item}%`
           itemStyle: {
             color: "rgba(2, 99, 255, 0.7)"
           }
         },
         {
-          name: "标杆",
+          name: "标杆占比",
           type: "line",
           itemStyle: {
             color: "#f60"
           },
-          symbolSize: 0,
-          // yAxisIndex: 1, //使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用        
-          data: [19, 2, 39, 19, 4, 1, 4, 2, 5, 1, 4]
+          symbolSize: 0,     
+          data: [19, 2, 19, 4, 1, 4, 2, 5, 1, 4,39]
         },
       ]
     }
     myTopChart.setOption(topOption);
   }
-
   const goBack = () => {
     // 用路由定义type
     props.history.go(-1)
@@ -258,7 +249,6 @@ function Report(props) {
       </div>
       <div style={{ textAlign: 'center', position: 'relative' }}>
         <Button type="link" className='back' onClick={() => goBack()}><LeftOutlined /></Button>
-
         <div className='title'>{common.entName ? common.entName : '某某公司'}安全自诊断报告</div>
         <div className='score'>{common.score ? common.score : 0}</div>
         <div className='totle'>综合得分</div>
@@ -268,8 +258,8 @@ function Report(props) {
       </div>
       <div id='rendar-echart' className='img-style' style={{ width: '368px', height: '252px', margin: 'auto' }}>
       </div>
-      <div className="active-echart" id='active-echart' style={{ width: '600px', height: '300px', margin: 'auto' }}>
-      </div>
+      {free=='2'? <div className="active-echart" id='active-echart' style={{ width: '600px', height: '300px', margin: 'auto' }}>
+      </div>:''}
 
     </div>
   )

@@ -55,7 +55,7 @@ function AnswerEntrance(props) {
     }
     confirm({
       title: '提示',
-      content: '付费版未解锁，请联系客服进行解锁。联系方式：15958102151。',
+      content: '付费版未解锁，请联系客服进行解锁。联系方式：159-5810-2151。',
       okText: '确定',
       okType: 'danger',
       // onOk() {
@@ -77,7 +77,7 @@ function AnswerEntrance(props) {
   }
   const onLookReport = (item) => {
     console.log(item.paperId)
-    props.history.push(`/report?paperId=${item.paperId}`)
+    props.history.push(`/report?paperId=${item.paperId}&paperType=${item.paperType}`)
   }
   return (
     <div className='answerEntrance'>

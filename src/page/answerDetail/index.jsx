@@ -6,7 +6,6 @@ import { withRouter } from "react-router-dom";
 import { getDirectory, getQuestionInfo, markedQuestion, nextMarked, nextNotAnswered, saveQuestion, submitModule } from "../../api/answer";
 import { createWebSocket } from '@/utils/socket';
 import { decrypt } from '@/utils/aes';
-import { set } from 'mobx';
 
 class AnswerDetail extends Component {
 
@@ -159,17 +158,13 @@ class AnswerDetail extends Component {
       const { data: { factorInfo = [] } } = res;
       this.setState({
         quesInfo: res.data || {},
-        activeKey: factorInfo[0].factorNo
       })
     })
- 
-    console.log(this.quesInfo)
   }
-  chooseOrder = (quesId) => {
-    this.getInfo(quesId, 'now');
+  chooseOrder = (v) => {
+    this.getInfo(v.quesId, 'now');
+    this.setState({ activeKey: [v.quesNo]})
   }
-  onDirChange = (activeKey) => this.setState({ activeKey })
-
   renderItem = (item, index) => {
     const { markMap } = this.state;
     return <div key={index} className='question'>
@@ -250,12 +245,11 @@ class AnswerDetail extends Component {
                   <Menu
                     mode="inline"
                     inlineCollapsed={collapsed}
-                    key={index}
-                    onChange={this.onDirChange}
-                    selectedKeys={activeKey}
+                    key={dir.factorNo}
+                    selectedKeys={activeKey}                
                   >
                     <Menu.SubMenu
-                    key={dir.factorNo}                   
+                    key={dir.factorNo}                                      
                       title={
                         <div className="item" style={{ display:'flex',justifyContent:'space-between' }}>
                           <span className='item-content'>{dir.factorNo}&nbsp;&nbsp;{decrypt(dir.factorContent)}</span>
@@ -265,10 +259,10 @@ class AnswerDetail extends Component {
                       {dir.entCatalogueQuesVos ?
                         dir.entCatalogueQuesVos.map((v, i) => (
                           <Menu.Item
-                            key={i}
+                            key={v.quesNo}
                             style={{ paddingLeft: '7px' }}
                           >
-                            <div className={v.check ? 'active' : ''} style={{ paddingLeft: '7px',display:'flex',justifyContent:'space-between' }} onClick={() => { this.chooseOrder(v.quesId) }} >
+                            <div className={v.check ? 'active' : ''} style={{ paddingLeft: '7px',display:'flex',justifyContent:'space-between' }} onClick={() => {this.chooseOrder(v) }} >
                               <div>{v.quesNo} </div>
                               {this.paperType==='2'&&<div style={{marginRight:'18px'}}>
                                 <b>{v.answeredQuesNum ? `${v.answeredQuesNum}/` : `0/`}</b>{v.quesNum ? v.quesNum : `0`}                                
@@ -308,8 +302,6 @@ class AnswerDetail extends Component {
                   </div>
                 })}
 
-              </div>
-              <div className='bottom-right-footer'>
                 <div className='footer'>
                   <div><div className='btn' onClick={this.goPrev} >上一页</div></div>
                   <div><div className='btn two' onClick={this.save}>保存</div></div>
