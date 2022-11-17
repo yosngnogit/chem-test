@@ -18,13 +18,13 @@ function Report(props) {
   const [valueList, setValueList] = useState([]) /*  echart value数据 */
   const [maxAll, setMaxAll] = useState(0)  /* 满分 */
   const [percent, setPercent] = useState([]) /* 百分数 */
-  const [free ,setFree] = useState('')/* 答题类型 */
+  const [free, setFree] = useState('')/* 答题类型 */
 
   useEffect(() => {
     const params = query()
-    setFree(params.paperType)  
+    setFree(params.paperType)
     report(params.paperId).then(res => {
-      setCommon(res.data)   
+      setCommon(res.data)
       setChartData(res.data.diagnosisPaperModuleTotalList.map((item) => {
         return { name: decrypt(item.moduleName), max: item.fullTotalCount }
       }))
@@ -43,7 +43,7 @@ function Report(props) {
   useEffect(() => {
     if (chartData && chartData.length === 0) return
     initRendarChart()
-    if(free=='2') initActive()
+    if (free == '2') initActive()
   }, [chartData, maxAll, valueList])
 
   const back = () => {
@@ -88,12 +88,12 @@ function Report(props) {
         splitLine: {
           lineStyle: {
             color: '#C9CFD8'
-         /*    ['#8543E0','#F52126','#2FC25B','#FACC14'] */
+            /*    ['#8543E0','#F52126','#2FC25B','#FACC14'] */
           }
         },
         splitArea: {
           areaStyle: {
-            color: ["rgba(255,255,255,0)",'#E3ECF8'], /* ['#FDD3D4', '#D5F3DE', '#FEF5D0', '#E7D9F9'],
+            color: ["rgba(255,255,255,0)", '#E3ECF8'], /* ['#FDD3D4', '#D5F3DE', '#FEF5D0', '#E7D9F9'],
             shadowColor: 'rgba(255,255,255,0)', */
           }
         },
@@ -132,7 +132,25 @@ function Report(props) {
     const myTopChart = echarts.init(chartTopDom);
     let topOption = {
       tooltip: {
+        show: true,
         trigger: "axis",
+        formatter: (parmas) => {
+          return `
+          <div style=" width: 150px; height: 80px;border-radius:4px;border:1px;border-color:#888;margin:auto;color:rgb(102,102,102)">
+        <div style='margin-bottom:8px'>${parmas[0].axisValueLabel}</div>
+        <div style='display:flex;justify-content:space-between;margin-bottom:5px'>
+          <div style='display:flex'>
+            <div style='width:10px;height:10px;background-color:rgba(2, 99, 255, 0.7);border-radius:5px;margin-top:6px;margin-right:5px'></div>得分占比</div>
+          <div> ${parmas[0].data}%</div>
+        </div>
+        <div style='display:flex;justify-content:space-between'>         
+          <div style='display: flex'>
+          <div style='width:10px;height:10px;background-color:#f60;border-radius:5px;margin-top:6px;margin-right:5px'></div>标杆占比</div>
+          <div> ${parmas[1].data}%</div>
+        </div>
+      </div>
+        `
+        },
       },
       title: {
         text: "模块得分占比与对标",
@@ -220,11 +238,9 @@ function Report(props) {
           type: "bar",
           barWidth: 45,
           data: common.columnarMap.y,
-          // common.columnarMap.y.map((item)=>{
-          //   return `${item}%`
           itemStyle: {
             color: "rgba(2, 99, 255, 0.7)"
-          }
+          },
         },
         {
           name: "标杆占比",
@@ -232,12 +248,12 @@ function Report(props) {
           itemStyle: {
             color: "#f60"
           },
-          symbolSize: 0,     
-          data: [19, 2, 19, 4, 1, 4, 2, 5, 1, 4,39]
+          symbolSize: 0,
+          data: [19, 2, 19, 4, 1, 4, 2, 5, 1, 4, 39]
         },
       ]
     }
-    myTopChart.setOption(topOption);
+    myTopChart.setOption(topOption)
   }
   const goBack = () => {
     // 用路由定义type
@@ -247,6 +263,7 @@ function Report(props) {
     <div className='report'>
       <div className='header-top'>
       </div>
+
       <div style={{ textAlign: 'center', position: 'relative' }}>
         <Button type="link" className='back' onClick={() => goBack()}><LeftOutlined /></Button>
         <div className='title'>{common.entName ? common.entName : '某某公司'}安全自诊断报告</div>
@@ -256,10 +273,10 @@ function Report(props) {
           <div className='progress-icon' style={{ left: common.score ? `${common.score / maxAll * 275}px` : 0, top: '-150%' }}></div>
         </div>
       </div>
-      <div id='rendar-echart' className='img-style' style={{ width: '368px', height: '252px', margin: 'auto' }}>
+      <div id='rendar-echart' className='img-style' style={{ width: '368px', height: '252px', margin: 'auto'}}>
       </div>
-      {free=='2'? <div className="active-echart" id='active-echart' style={{ width: '600px', height: '300px', margin: 'auto' }}>
-      </div>:''}
+      {free == '2' ? <div className="active-echart" id='active-echart' style={{ width: '600px', height: '300px', margin: 'auto' }}>
+      </div> : ''}
 
     </div>
   )
