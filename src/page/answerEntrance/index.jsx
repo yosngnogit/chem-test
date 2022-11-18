@@ -103,7 +103,7 @@ function AnswerEntrance(props) {
 
               <div className="free-tip">
                 <div>
-                  <div className="free-tip-p">  <img src={require('@/assets/img/answerEntrance/Vectorunlock.png')} width={13} height={15} style={{ marginRight: '6px' }} fit='fill' />
+                  <div className="free-tip-p"> {info.pay.canAnswer?<img src={require('@/assets/img/answerEntrance/unLock.png')} width={26} height={24} style={{ marginRight: '6px' }} fit='fill' />:<img src={require('@/assets/img/answerEntrance/lock.png')} width={21} height={24} style={{ marginRight: '6px' }} fit='fill' />}
                     <span>付费版</span>
                   </div>
                 </div>
