@@ -1,4 +1,28 @@
 .baseInfoDetails {
+  .haeder-tip {
+    margin: 16px 0;
+
+    p {
+      margin: 0;
+      /* Body/regular */
+
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+
+      color: rgba(0, 0, 0, 0.45);
+      display: inline-block;
+      margin-right: 4px;
+
+      span {
+        color: rgba(0, 0, 0, 0.85);
+      }
+      cursor: pointer;
+    }
+
+  }
+
   .background {
 
     width: 1440px;
@@ -7,7 +31,96 @@
     position: relative;
   }
 
-  background-color: #fff;
+  // background-color: #fff;
+  .base-main {
+    display: flex;
+
+  }
+
+  .base-list {
+    width: 353px;
+    height: 100%;
+    margin-right: 22px;
+
+    p {
+      margin: 0;
+    }
+
+    li {
+      display: flex;
+      // height: 50px;
+      background: #fff;
+
+      padding: 13.5px 17px;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+
+      p {
+        font-family: 'SF Pro Display';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        color: #646B73;
+        width: 80%;
+        overflow: hidden; //超出的文本隐藏
+        text-overflow: ellipsis; //溢出用省略号显示
+        white-space: nowrap; // 默认不换行；
+
+        span {
+          color: #F05E41;
+        }
+      }
+
+      .icons {
+        display: flex;
+        align-items: center;
+      }
+
+      .right-icon {
+        width: 6px;
+        height: 10px;
+        background-image: url('~@/assets/img/baseInfo/Vectorinfo-right.png');
+        background-size: 100% 100%;
+      }
+
+      .ant-image {
+        margin-right: 9px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+
+      &:hover {
+        background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);
+
+        p {
+          color: #fff;
+        }
+
+        .right-icon {
+          width: 6px;
+          height: 10px;
+          background-image: url('~@/assets/img/baseInfo/right-hover.png');
+          background-size: 100% 100%;
+        }
+      }
+    }
+
+    .activebtn {
+      background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);
+
+      p {
+        color: #fff;
+      }
+    }
+  }
+
+  .ant-spin-nested-loading {
+    flex: 1;
+  }
 
   .baseInfo-header {
     width: 100%;
@@ -18,12 +131,21 @@
     font-weight: 600;
     font-size: 22px;
     color: #1F2229;
+    text-align: center;
 
     p {
       margin: 0;
     }
 
-    margin-bottom: 10px;
+    span {
+      font-family: 'PingFang SC';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      color: #4472EC;
+    }
+
+    margin-bottom: 22px;
   }
 
   .info-title {
@@ -47,13 +169,17 @@
     border: none;
   }
 
-  .ant-collapse-content{ 
-   
-  .ant-collapse-content-box {
-    padding: 0;
-    // padding-top: 30px;
+  .ant-collapse>.ant-collapse-item.ant-collapse-no-arrow>.ant-collapse-header {
+    background: #fff;
   }
-}
+
+  .ant-collapse-content {
+
+    .ant-collapse-content-box {
+      padding: 0;
+      // padding-top: 30px;
+    }
+  }
 
   .ant-collapse-content {
     // &:first{
@@ -63,9 +189,14 @@
   }
 
   .ant-collapse-header {
-    background: #F8F8FA;
+    background: #fff !important;
     // border-bottom: 0.5px solid rgba(0, 0, 0, 0.12);
     padding: 8px 16px !important;
+  }
+
+  .ant-collapse-icon-position-end>.ant-collapse-item>.ant-collapse-header {
+    align-items: center;
+
   }
 
 
@@ -131,7 +262,7 @@
   }
 
   .base-form-add {
-    width: 70%;
+    width: 95%;
     margin: 0 auto;
     margin-top: 30px;
   }
@@ -176,6 +307,27 @@
       margin-right: 20px;
 
     }
+
+  }
+
+  .panel-btn {
+    width: 60px;
+    height: 32px;
+    background: #4472EC;
+    box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.043);
+    border-radius: 50px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 32px;
+    color: #fff;
+    /* identical to box height, or 157% */
+
+    text-align: center;
+
+    /* Character / Primary(inverse) */
+
 
   }
 }
