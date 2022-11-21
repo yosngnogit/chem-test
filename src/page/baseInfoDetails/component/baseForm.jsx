@@ -10,7 +10,7 @@ import { getRegionTree, getDictListByName } from '@/api/common'
 import { positiveIntegerReg, positiveIntegerRegPoint, cardNumberRge } from '@/utils/reg'
 
 import { getBaseInfo, saveUpdate } from '@/api/info'
-import AnswerTable from './AnswerTable'
+import AnswerTable from './baseTable'
 
 import moment from 'moment';
 import '.././index.less'
@@ -56,61 +56,63 @@ let BaseForm = (props, ref) => {
     return list;
   }
   const onFinish = async (values) => {
-    try {
-      if (saveLoading) return
-      setSaveLoading(true)
-      let { regionList, safeMeasures, entEstablishDatetime, economicType, mainDangerChemicalReactionType, personDistributionSituation } = values
-      let params = {
-        entCode: getCookie('entCode'),
-        ...values,
-        economicType,
-        provinceCode: regionList[0],
-        city: regionList[1],
-        area: regionList[2],
-        other: otherSafe,
-        safeMeasures: safeMeasures?.join(','),
-        mainDangerChemicalReactionType: mainDangerChemicalReactionType?.join(','),
-        entEstablishDatetime: entEstablishDatetime.format('YYYY-MM-DD'),
-        certificatesSituation: [
-          {
-            certificatesName: '企业工商营业执照',
-            issueUnit: values.businessLicenseUnit,
-            issuingDate: values.businessLicenseDate.format('YYYY-MM-DD'),
-            valid: values.businessLicenseExpire.format('YYYY-MM-DD'),
-            certificatesCode: values.businessLicenseNumber,
-            productionManageRange: values.businessLicenseArea
-          }, {
-            certificatesName: '安全生产许可证',
-            issueUnit: values.produceLicenseUnit,
-            issuingDate: values.produceLicenseDate.format('YYYY-MM-DD'),
-            valid: values.produceLicenseExpire.format('YYYY-MM-DD'),
-            certificatesCode: values.produceLicenseNumber,
-            productionManageRange: values.produceLicenseArea
-          }, {
-            certificatesName: '危化品经营许可证',
-            issueUnit: values.dangerLicenseUnit,
-            issuingDate: values.dangerLicenseDate.format('YYYY-MM-DD'),
-            valid: values.dangerLicenseExpire.format('YYYY-MM-DD'),
-            certificatesCode: values.dangerLicenseNumber,
-            productionManageRange: values.dangerLicenseArea
-          }
-        ],
-        personDistributionSituation: personDistributionSituation || []
-      }
-      if (id) {
-        params.id = id
-      }
-      setSaveLoading(false)
-      await saveUpdate(params).then(res => {
-        if (res.code === 0) message.success('保存成功'); setIsEdit(true)
-      }).catch(err => {
-        throw err
-      })
-    } catch (err) {
-      setSaveLoading(false)
-      setIsEdit(true)
-      throw err
-    }
+    console.log('jibenxinxi1')
+
+    // try {
+    //   if (saveLoading) return
+    //   setSaveLoading(true)
+    //   let { regionList, safeMeasures, entEstablishDatetime, economicType, mainDangerChemicalReactionType, personDistributionSituation } = values
+    //   let params = {
+    //     entCode: getCookie('entCode'),
+    //     ...values,
+    //     economicType,
+    //     provinceCode: regionList[0],
+    //     city: regionList[1],
+    //     area: regionList[2],
+    //     other: otherSafe,
+    //     safeMeasures: safeMeasures?.join(','),
+    //     mainDangerChemicalReactionType: mainDangerChemicalReactionType?.join(','),
+    //     entEstablishDatetime: entEstablishDatetime.format('YYYY-MM-DD'),
+    //     certificatesSituation: [
+    //       {
+    //         certificatesName: '企业工商营业执照',
+    //         issueUnit: values.businessLicenseUnit,
+    //         issuingDate: values.businessLicenseDate.format('YYYY-MM-DD'),
+    //         valid: values.businessLicenseExpire.format('YYYY-MM-DD'),
+    //         certificatesCode: values.businessLicenseNumber,
+    //         productionManageRange: values.businessLicenseArea
+    //       }, {
+    //         certificatesName: '安全生产许可证',
+    //         issueUnit: values.produceLicenseUnit,
+    //         issuingDate: values.produceLicenseDate.format('YYYY-MM-DD'),
+    //         valid: values.produceLicenseExpire.format('YYYY-MM-DD'),
+    //         certificatesCode: values.produceLicenseNumber,
+    //         productionManageRange: values.produceLicenseArea
+    //       }, {
+    //         certificatesName: '危化品经营许可证',
+    //         issueUnit: values.dangerLicenseUnit,
+    //         issuingDate: values.dangerLicenseDate.format('YYYY-MM-DD'),
+    //         valid: values.dangerLicenseExpire.format('YYYY-MM-DD'),
+    //         certificatesCode: values.dangerLicenseNumber,
+    //         productionManageRange: values.dangerLicenseArea
+    //       }
+    //     ],
+    //     personDistributionSituation: personDistributionSituation || []
+    //   }
+    //   if (id) {
+    //     params.id = id
+    //   }
+    //   setSaveLoading(false)
+    //   await saveUpdate(params).then(res => {
+    //     if (res.code === 0) message.success('保存成功'); setIsEdit(true)
+    //   }).catch(err => {
+    //     throw err
+    //   })
+    // } catch (err) {
+    //   setSaveLoading(false)
+    //   setIsEdit(true)
+    //   throw err
+    // }
   }
   const initBaseInfo = async () => {
     let res = await getBaseInfo(getCookie('entCode'))
@@ -397,6 +399,7 @@ let BaseForm = (props, ref) => {
             <Panel header={BaseHeader('企业工商营业执照')} key="3" className='inner-header' forceRender>
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 {...formItemLayout}
+                disabled={isEdit}
                 className='base-form'>
                 <Form.Item label='证件名称' name='businessName'
                 >
@@ -434,6 +437,7 @@ let BaseForm = (props, ref) => {
             <Panel header={BaseHeader('生产安全许可证')} key="4" className='inner-header' forceRender>
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 {...formItemLayout}
+                disabled={isEdit}
                 className='base-form'>
                 <Form.Item label='证件名称' name='produceName'
                 >
@@ -471,6 +475,7 @@ let BaseForm = (props, ref) => {
             <Panel header={BaseHeader('危化品经营许可证')} key="5" className='inner-header' forceRender>
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 {...formItemLayout}
+                disabled={isEdit}
                 className='base-form'>
                 <Form.Item label='证件名称' name='dangerName'
                 >
@@ -509,6 +514,7 @@ let BaseForm = (props, ref) => {
               <p className='form-tip'>注：填写企业主要工种如（电工、电焊工、厂内车辆驾驶员，眼里容器操作工、安全员等）</p>
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 wrapperCol={{ span: 24 }}
+                disabled={isEdit}
                 className='base-form-add'>
                 <Form.Item name="personDistributionSituation" valuePropName='dataSource'
                 >

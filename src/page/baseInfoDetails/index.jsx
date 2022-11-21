@@ -113,14 +113,21 @@ function BaseInfoDetails(props) {
 
   const searchForm = (e, index) => {
     // setParkData(parkObj[e.cityCode])
-    console.log(e)
+    // console.log(e)
     if (componentEdit) {
       confirm({
         content: '是否保存当前页面修改内容?',
         okText: '确认',
         onOk() {
           refbase.current.onCallback();
+          // setComponentType(e.componentName)
           setIsActive(index)
+          setComponentName(e.componentName)
+          setFormName(e.name)
+        },
+        onCancel() {
+          setIsActive(index)
+          setComponentEdit(false)
           setComponentName(e.componentName)
           setFormName(e.name)
         }
@@ -137,8 +144,55 @@ function BaseInfoDetails(props) {
   }
   const onBack = () => {
     props.history.go(-1)
+    // setComponentType(componentName)
     refbase.current.onCallback();
+
   }
+  // const setComponentType = (param) => {
+  //   switch (param) {
+  //     case 'BaseForm':
+  //       refbase.current.onCallback();
+  //       break
+  //     case 'SourceForm':
+  //       console.log('2')
+  //       break
+  //     case 'ProductionSafetyForm':
+  //       refbase.current.onCallback();
+  //       break
+  //     case 'ObtainEvidenceForm':
+  //       console.log('2')
+  //       break
+  //     case 'CertificateForm':
+  //       refbase.current.onCallback();
+  //       break
+  //     case 'EquipmentForm':
+  //       console.log('2')
+  //       break
+  //     case 'AccidenttForm':
+  //       refbase.current.onCallback();
+  //       break
+  //     case 'MaterialForm':
+  //       console.log('2')
+  //       break
+  //     case 'LedgerForm':
+  //       refbase.current.onCallback();
+  //       break
+  //     case 'HarmForm':
+  //       console.log('2')
+  //       break
+  //     case 'InputForm':
+  //       console.log('2')
+  //       break
+  //     case 'RescueForm':
+  //       console.log('2')
+  //       break
+  //     case 'OutfitForm':
+  //       console.log('2')
+  //       break
+  //     default:
+  //       console.log('default')
+  //   }
+  // }
   return (
     <div className='baseInfoDetails'>
       <div className='background'>
@@ -147,7 +201,7 @@ function BaseInfoDetails(props) {
         </div>
         <div className="baseInfo-header">
           <p>中控技术股份有限公司</p>
-          <span></span>
+          <span>开始自诊断前，请先完善企业基本信息</span>
         </div>
         <div className='base-main'>
           <ul className="base-list">
@@ -189,40 +243,40 @@ function BaseInfoDetails(props) {
             componentName === 'BaseForm' ? <BaseForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
-            componentName === 'SourceForm' ? <SourceForm /> : ''
+            componentName === 'SourceForm' ? <SourceForm setEdit={setEdit} /> : ''
           }
           {
-            componentName === 'ProductionSafetyForm' ? <ProductionSafetyForm /> : ''
+            componentName === 'ProductionSafetyForm' ? <ProductionSafetyForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
-            componentName === 'ObtainEvidenceForm' ? <ObtainEvidenceForm /> : ''
+            componentName === 'ObtainEvidenceForm' ? <ObtainEvidenceForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
-            componentName === 'CertificateForm' ? <CertificateForm /> : ''
+            componentName === 'CertificateForm' ? <CertificateForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
-            componentName === 'EquipmentForm' ? <EquipmentForm /> : ''
+            componentName === 'EquipmentForm' ? <EquipmentForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
-            componentName === 'AccidenttForm' ? <AccidenttForm /> : ''
+            componentName === 'AccidenttForm' ? <AccidenttForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
-            componentName === 'MaterialForm' ? <MaterialForm /> : ''
+            componentName === 'MaterialForm' ? <MaterialForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
-            componentName === 'LedgerForm' ? <LedgerForm /> : ''
+            componentName === 'LedgerForm' ? <LedgerForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
-            componentName === 'HarmForm' ? <HarmForm /> : ''
+            componentName === 'HarmForm' ? <HarmForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
-            componentName === 'InputForm' ? <InputForm /> : ''
+            componentName === 'InputForm' ? <InputForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
-            componentName === 'RescueForm' ? <RescueForm /> : ''
+            componentName === 'RescueForm' ? <RescueForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
-            componentName === 'OutfitForm' ? <OutfitForm /> : ''
+            componentName === 'OutfitForm' ? <OutfitForm setEdit={setEdit} ref={refbase} /> : ''
           }
 
         </div>
