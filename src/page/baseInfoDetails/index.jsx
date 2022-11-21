@@ -117,6 +117,7 @@ function BaseInfoDetails(props) {
     // console.log(e)
     if (componentEdit) {
       confirm({
+        style: { top: '30%' },
         content: '是否保存当前页面修改内容?',
         okText: '确认',
         onOk() {

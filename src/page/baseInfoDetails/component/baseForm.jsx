@@ -527,6 +527,65 @@ let BaseForm = (props, ref) => {
             </Form.Item>
           </Form>
         </Panel>
+        <Panel header={BaseHeader('主要危险化学品')} key="7" forceRender>
+          <Collapse expandIconPosition='end' defaultActiveKey={['8']}
+            expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
+            <Panel header={BaseHeader('产品信息')} key="8" className='inner-header' forceRender>
+              <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
+                disabled={isEdit}
+                className='base-form-add'>
+                <Form.Item name="personDistributionSituation" valuePropName='dataSource'
+                >
+                  <AnswerTable setTableData={setTableData} />
+                </Form.Item>
+              </Form>
+            </Panel>
+            <Panel header={BaseHeader('中间体信息')} key="9" className='inner-header' forceRender>
+              <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
+                disabled={isEdit}
+                className='base-form-add'>
+                <Form.Item name="personDistributionSituation" valuePropName='dataSource'
+                >
+                  <AnswerTable setTableData={setTableData} />
+                </Form.Item>
+              </Form>
+            </Panel>
+            <Panel header={BaseHeader('主要原料信息')} key="10" className='inner-header' forceRender>
+              <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
+                disabled={isEdit}
+                className='base-form-add'>
+                <Form.Item name="personDistributionSituation" valuePropName='dataSource'
+                >
+                  <AnswerTable setTableData={setTableData} />
+                </Form.Item>
+              </Form>
+            </Panel>
+
+          </Collapse>
+        </Panel>
+        <Panel header={BaseHeader('高危生产装置自动控制实施情况')} key="11" forceRender>
+          <p className='form-tip'>注：填写企业主要工种如（电工、电焊工、厂内车辆驾驶员，眼里容器操作工、安全员等）</p>
+          <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
+            disabled={isEdit}
+            className='base-form-add'>
+            <Form.Item name="personDistributionSituation" valuePropName='dataSource'
+            >
+              <AnswerTable setTableData={setTableData} />
+            </Form.Item>
+          </Form>
+        </Panel>
+        <Panel header={BaseHeader('高危岗位情况')} key="12" forceRender>
+          <p className='form-tip'>注：填写企业主要工种如（电工、电焊工、厂内车辆驾驶员，眼里容器操作工、安全员等）</p>
+          <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
+            wrapperCol={{ span: 24 }}
+            disabled={isEdit}
+            className='base-form-add'>
+            <Form.Item name="personDistributionSituation" valuePropName='dataSource'
+            >
+              <AnswerTable setTableData={setTableData} />
+            </Form.Item>
+          </Form>
+        </Panel>
       </Collapse>
     </Spin>
 
