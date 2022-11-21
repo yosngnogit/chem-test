@@ -56,63 +56,61 @@ let BaseForm = (props, ref) => {
     return list;
   }
   const onFinish = async (values) => {
-    console.log('jibenxinxi1')
-
-    // try {
-    //   if (saveLoading) return
-    //   setSaveLoading(true)
-    //   let { regionList, safeMeasures, entEstablishDatetime, economicType, mainDangerChemicalReactionType, personDistributionSituation } = values
-    //   let params = {
-    //     entCode: getCookie('entCode'),
-    //     ...values,
-    //     economicType,
-    //     provinceCode: regionList[0],
-    //     city: regionList[1],
-    //     area: regionList[2],
-    //     other: otherSafe,
-    //     safeMeasures: safeMeasures?.join(','),
-    //     mainDangerChemicalReactionType: mainDangerChemicalReactionType?.join(','),
-    //     entEstablishDatetime: entEstablishDatetime.format('YYYY-MM-DD'),
-    //     certificatesSituation: [
-    //       {
-    //         certificatesName: '企业工商营业执照',
-    //         issueUnit: values.businessLicenseUnit,
-    //         issuingDate: values.businessLicenseDate.format('YYYY-MM-DD'),
-    //         valid: values.businessLicenseExpire.format('YYYY-MM-DD'),
-    //         certificatesCode: values.businessLicenseNumber,
-    //         productionManageRange: values.businessLicenseArea
-    //       }, {
-    //         certificatesName: '安全生产许可证',
-    //         issueUnit: values.produceLicenseUnit,
-    //         issuingDate: values.produceLicenseDate.format('YYYY-MM-DD'),
-    //         valid: values.produceLicenseExpire.format('YYYY-MM-DD'),
-    //         certificatesCode: values.produceLicenseNumber,
-    //         productionManageRange: values.produceLicenseArea
-    //       }, {
-    //         certificatesName: '危化品经营许可证',
-    //         issueUnit: values.dangerLicenseUnit,
-    //         issuingDate: values.dangerLicenseDate.format('YYYY-MM-DD'),
-    //         valid: values.dangerLicenseExpire.format('YYYY-MM-DD'),
-    //         certificatesCode: values.dangerLicenseNumber,
-    //         productionManageRange: values.dangerLicenseArea
-    //       }
-    //     ],
-    //     personDistributionSituation: personDistributionSituation || []
-    //   }
-    //   if (id) {
-    //     params.id = id
-    //   }
-    //   setSaveLoading(false)
-    //   await saveUpdate(params).then(res => {
-    //     if (res.code === 0) message.success('保存成功'); setIsEdit(true)
-    //   }).catch(err => {
-    //     throw err
-    //   })
-    // } catch (err) {
-    //   setSaveLoading(false)
-    //   setIsEdit(true)
-    //   throw err
-    // }
+    try {
+      if (saveLoading) return
+      setSaveLoading(true)
+      let { regionList, safeMeasures, entEstablishDatetime, economicType, mainDangerChemicalReactionType, personDistributionSituation } = values
+      let params = {
+        entCode: getCookie('entCode'),
+        ...values,
+        economicType,
+        provinceCode: regionList[0],
+        city: regionList[1],
+        area: regionList[2],
+        other: otherSafe,
+        safeMeasures: safeMeasures?.join(','),
+        mainDangerChemicalReactionType: mainDangerChemicalReactionType?.join(','),
+        entEstablishDatetime: entEstablishDatetime.format('YYYY-MM-DD'),
+        certificatesSituation: [
+          {
+            certificatesName: '企业工商营业执照',
+            issueUnit: values.businessLicenseUnit,
+            issuingDate: values.businessLicenseDate.format('YYYY-MM-DD'),
+            valid: values.businessLicenseExpire.format('YYYY-MM-DD'),
+            certificatesCode: values.businessLicenseNumber,
+            productionManageRange: values.businessLicenseArea
+          }, {
+            certificatesName: '安全生产许可证',
+            issueUnit: values.produceLicenseUnit,
+            issuingDate: values.produceLicenseDate.format('YYYY-MM-DD'),
+            valid: values.produceLicenseExpire.format('YYYY-MM-DD'),
+            certificatesCode: values.produceLicenseNumber,
+            productionManageRange: values.produceLicenseArea
+          }, {
+            certificatesName: '危化品经营许可证',
+            issueUnit: values.dangerLicenseUnit,
+            issuingDate: values.dangerLicenseDate.format('YYYY-MM-DD'),
+            valid: values.dangerLicenseExpire.format('YYYY-MM-DD'),
+            certificatesCode: values.dangerLicenseNumber,
+            productionManageRange: values.dangerLicenseArea
+          }
+        ],
+        personDistributionSituation: personDistributionSituation || []
+      }
+      if (id) {
+        params.id = id
+      }
+      setSaveLoading(false)
+      await saveUpdate(params).then(res => {
+        if (res.code === 0) message.success('保存成功'); setIsEdit(true)
+      }).catch(err => {
+        throw err
+      })
+    } catch (err) {
+      setSaveLoading(false)
+      setIsEdit(true)
+      throw err
+    }
   }
   const initBaseInfo = async () => {
     let res = await getBaseInfo(getCookie('entCode'))
@@ -268,7 +266,11 @@ let BaseForm = (props, ref) => {
     <Spin spinning={loading}>
       <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
-        <Panel header={BaseHeader('企业基本情况')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
+        <Panel
+          header={BaseHeader('企业基本情况')}
+          key="1" showArrow={false}
+          extra={isEdit ? genEditExtra() : genSaveExtra()}
+        >
           <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
             {...formItemLayout}
             disabled={isEdit}
@@ -510,19 +512,20 @@ let BaseForm = (props, ref) => {
                 </Form.Item>
               </Form>
             </Panel>
-            <Panel header={BaseHeader('从业人员分布情况')} key="6" className='inner-header' forceRender>
-              <p className='form-tip'>注：填写企业主要工种如（电工、电焊工、厂内车辆驾驶员，眼里容器操作工、安全员等）</p>
-              <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
-                wrapperCol={{ span: 24 }}
-                disabled={isEdit}
-                className='base-form-add'>
-                <Form.Item name="personDistributionSituation" valuePropName='dataSource'
-                >
-                  <AnswerTable setTableData={setTableData} />
-                </Form.Item>
-              </Form>
-            </Panel>
+
           </Collapse>
+        </Panel>
+        <Panel header={BaseHeader('从业人员分布情况')} key="6" forceRender>
+          <p className='form-tip'>注：填写企业主要工种如（电工、电焊工、厂内车辆驾驶员，眼里容器操作工、安全员等）</p>
+          <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
+            wrapperCol={{ span: 24 }}
+            disabled={isEdit}
+            className='base-form-add'>
+            <Form.Item name="personDistributionSituation" valuePropName='dataSource'
+            >
+              <AnswerTable setTableData={setTableData} />
+            </Form.Item>
+          </Form>
         </Panel>
       </Collapse>
     </Spin>

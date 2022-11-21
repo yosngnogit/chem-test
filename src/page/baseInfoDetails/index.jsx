@@ -12,79 +12,80 @@ import ProductionSafetyForm from './component/productionSafetyForm'
 import ObtainEvidenceForm from './component/obtainEvidenceForm';
 import CertificateForm from './component/certificateForm'
 import EquipmentForm from './component/equipmentForm'
-import AccidenttForm from './component/accidenttForm';
+import AccidentForm from './component/accidentForm';
 import MaterialForm from './component/materialForm'
 import LedgerForm from './component/ledgerForm'
 import HarmForm from './component/harmForm';
 import InputForm from './component/inputForm'
 import RescueForm from './component/rescueForm'
 import OutfitForm from './component/outfitForm';
-import { kdf } from 'crypto-js';
+// import { kdf } from 'crypto-js';
 
 function BaseInfoDetails(props) {
 
-  const [baseList, setBaseList] = useState([
-    {
-      name: '企业基本情况表',
-      status: true,
-      componentName: 'BaseForm'
-    },
-    {
-      name: '危险源（点）监控管理表',
-      status: true,
-      componentName: 'SourceForm',
-    }, {
-      name: '安全生产组织机构登记表',
-      status: true,
-      componentName: 'ProductionSafetyForm',
-    }, {
-      name: '企业主要负责人、安全管理人员安全生产管理资格培训取证记录',
-      status: true,
-      componentName: 'ObtainEvidenceForm',
-    },
-    {
-      name: '特种作业人员培训、考核、持证登记表',
-      status: true,
-      componentName: 'CertificateForm',
-    }, {
-      name: '特种设备登记表',
-      status: false,
-      componentName: 'EquipmentForm',
-    }
-    , {
-      name: '生产安全事故统计表',
-      status: true,
-      componentName: 'AccidenttForm',
-    }, {
-      name: '消防器材、防护配置情况登记表',
-      status: true,
-      componentName: 'MaterialForm',
-    },
-    {
-      name: '安全设备设施登记使用管理台账',
-      status: true,
-      componentName: 'LedgerForm',
-    }, {
-      name: '职业危害管理登记表',
-      status: false,
-      componentName: 'HarmForm',
-    }, {
-      name: '安全生产投入登记表',
-      status: true,
-      componentName: 'InputForm',
-    },
-    {
-      name: '企业应急救援管理机构、人员统计表',
-      status: true,
-      componentName: 'RescueForm',
-    }, {
-      name: '企业消防设施器材、应急救援器材装备登记表',
-      status: false,
-      componentName: 'OutfitForm',
-    }
-  ])
+  const [baseList, setBaseList] = useState(
+    [
+      {
+        name: '企业基本情况表',
+        status: true,
+        componentName: 'BaseForm'
+      },
+      {
+        name: '危险源（点）监控管理表',
+        status: true,
+        componentName: 'SourceForm',
+      }, {
+        name: '安全生产组织机构登记表',
+        status: true,
+        componentName: 'ProductionSafetyForm',
+      }, {
+        name: '企业主要负责人、安全管理人员安全生产管理资格培训取证记录',
+        status: true,
+        componentName: 'ObtainEvidenceForm',
+      },
+      {
+        name: '特种作业人员培训、考核、持证登记表',
+        status: true,
+        componentName: 'CertificateForm',
+      }, {
+        name: '特种设备登记表',
+        status: false,
+        componentName: 'EquipmentForm',
+      }
+      , {
+        name: '生产安全事故统计表',
+        status: true,
+        componentName: 'AccidentForm',
+      }, {
+        name: '消防器材、防护配置情况登记表',
+        status: true,
+        componentName: 'MaterialForm',
+      },
+      {
+        name: '安全设备设施登记使用管理台账',
+        status: true,
+        componentName: 'LedgerForm',
+      }, {
+        name: '职业危害管理登记表',
+        status: false,
+        componentName: 'HarmForm',
+      }, {
+        name: '安全生产投入登记表',
+        status: true,
+        componentName: 'InputForm',
+      },
+      {
+        name: '企业应急救援管理机构、人员统计表',
+        status: true,
+        componentName: 'RescueForm',
+      }, {
+        name: '企业消防设施器材、应急救援器材装备登记表',
+        status: false,
+        componentName: 'OutfitForm',
+      }
+    ])
   const [isActive, setIsActive] = useState(0)
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [componentName, setComponentName] = useState('BaseForm');
   const [formName, setFormName] = useState('企业基本情况表');
 
@@ -168,7 +169,7 @@ function BaseInfoDetails(props) {
   //     case 'EquipmentForm':
   //       console.log('2')
   //       break
-  //     case 'AccidenttForm':
+  //     case 'AccidentForm':
   //       refbase.current.onCallback();
   //       break
   //     case 'MaterialForm':
@@ -258,7 +259,7 @@ function BaseInfoDetails(props) {
             componentName === 'EquipmentForm' ? <EquipmentForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
-            componentName === 'AccidenttForm' ? <AccidenttForm setEdit={setEdit} ref={refbase} /> : ''
+            componentName === 'AccidentForm' ? <AccidentForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
             componentName === 'MaterialForm' ? <MaterialForm setEdit={setEdit} ref={refbase} /> : ''

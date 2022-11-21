@@ -10,7 +10,7 @@ import { getRegionTree, getDictListByName } from '@/api/common'
 import { positiveIntegerReg, positiveIntegerRegPoint, cardNumberRge } from '@/utils/reg'
 
 import { getBaseInfo, saveUpdate } from '@/api/info'
-import AnswerTable from './ledgerTable'
+import AnswerTable from './accidentTable'
 
 import moment from 'moment';
 import '.././index.less'
@@ -266,7 +266,7 @@ let AccidenttForm = (props, ref) => {
     <Spin spinning={loading}>
       <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
-        <Panel header={BaseHeader('安全设备设施登记使用管理台账')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
+        <Panel header={BaseHeader('生产安全事故统计表')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
           <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
             disabled={isEdit}
             className='base-form-add'

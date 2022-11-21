@@ -207,30 +207,11 @@ let SourceForm = (props, ref) => {
   const onFinishFailed = () => {
     message.warning('请检查并完成必填项');
   }
-  const safeChange = (value) => {
-    const flag = value.toString().indexOf('其他') > -1 ? true : false
-    if (flag) {
-      setShowSafeInput(true)
-    } else {
-      setShowSafeInput(false)
-    }
-  }
-  const onSafeInputBlur = (e) => {
-    setOtherSafe(e.target.value)
-  }
   const setTableData = (data) => {
     form.setFieldsValue({
       personDistributionSituation: data
     })
   }
-  const formItemLayout = {
-    labelCol: {
-      span: 10,
-    },
-    wrapperCol: {
-      span: 16,
-    },
-  };
   const onCallback = () => {
     form.submit()
   }
@@ -265,6 +246,7 @@ let SourceForm = (props, ref) => {
   return (
     <Spin spinning={loading}>
       <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'
+        collapsible="header"
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
         <Panel header={BaseHeader('危险源（点）监控管理表')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
           <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}

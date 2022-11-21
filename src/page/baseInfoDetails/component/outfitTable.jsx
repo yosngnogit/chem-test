@@ -143,7 +143,7 @@ const AnswerTable = (props) => {
     //     <span>{index + 1}</span>
     // },
     {
-      title: '单位名称',
+      title: '姓名',
       dataIndex: 'mainWorkTypeName',
       editable: true,
       align: 'center',
@@ -153,7 +153,7 @@ const AnswerTable = (props) => {
         }} value={record.mainWorkTypeName} />
     },
     {
-      title: '危险源(点)名称',
+      title: '性别',
       dataIndex: 'personNumber',
       editable: true,
       align: 'center',
@@ -163,7 +163,7 @@ const AnswerTable = (props) => {
         }} placeholder='请输入正整数' value={record.personNumber} />
     },
     {
-      title: '级别',
+      title: '救援工作职务',
       dataIndex: 'holdCertificate',
       editable: true,
       align: 'center',
@@ -182,7 +182,7 @@ const AnswerTable = (props) => {
         </Select>
     },
     {
-      title: '所在部位',
+      title: '电话',
       dataIndex: 'personNumber',
       editable: true,
       align: 'center',
@@ -192,7 +192,7 @@ const AnswerTable = (props) => {
         }} placeholder='请输入正整数' value={record.personNumber} />
     },
     {
-      title: '等级评定机构名称',
+      title: '职责划分',
       dataIndex: 'personNumber',
       editable: true,
       align: 'center',
@@ -202,7 +202,7 @@ const AnswerTable = (props) => {
         }} placeholder='请输入正整数' value={record.personNumber} />
     },
     {
-      title: '危险因素',
+      title: '备注',
       dataIndex: 'personNumber',
       editable: true,
       align: 'center',
@@ -211,57 +211,6 @@ const AnswerTable = (props) => {
           width: 150,
         }} placeholder='请输入正整数' value={record.personNumber} />
     },
-    {
-      title: '可能发生的危险（害）',
-      dataIndex: 'personNumber',
-      editable: true,
-      align: 'center',
-      render: (text, record, index) =>
-        <Input style={{
-          width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
-    },
-    {
-      title: '第一责任人',
-      dataIndex: 'personNumber',
-      editable: true,
-      align: 'center',
-      render: (text, record, index) =>
-        <Input style={{
-          width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
-    },
-    {
-      title: '监控责任人',
-      dataIndex: 'personNumber',
-      editable: true,
-      align: 'center',
-      render: (text, record, index) =>
-        <Input style={{
-          width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
-    },
-    {
-      title: '监测情况',
-      dataIndex: 'personNumber',
-      editable: true,
-      align: 'center',
-      render: (text, record, index) =>
-        <Input style={{
-          width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
-    },
-    {
-      title: '评估情况',
-      dataIndex: 'personNumber',
-      editable: true,
-      align: 'center',
-      render: (text, record, index) =>
-        <Input style={{
-          width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
-    },
-
     {
       title: '操作',
       dataIndex: '',

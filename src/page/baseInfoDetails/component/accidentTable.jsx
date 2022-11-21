@@ -143,7 +143,7 @@ const AnswerTable = (props) => {
     //     <span>{index + 1}</span>
     // },
     {
-      title: '单位名称',
+      title: '发生时间',
       dataIndex: 'mainWorkTypeName',
       editable: true,
       align: 'center',
@@ -153,7 +153,7 @@ const AnswerTable = (props) => {
         }} value={record.mainWorkTypeName} />
     },
     {
-      title: '危险源(点)名称',
+      title: '部门',
       dataIndex: 'personNumber',
       editable: true,
       align: 'center',
@@ -163,7 +163,7 @@ const AnswerTable = (props) => {
         }} placeholder='请输入正整数' value={record.personNumber} />
     },
     {
-      title: '级别',
+      title: '伤亡者姓名',
       dataIndex: 'holdCertificate',
       editable: true,
       align: 'center',
@@ -182,7 +182,7 @@ const AnswerTable = (props) => {
         </Select>
     },
     {
-      title: '所在部位',
+      title: '性别',
       dataIndex: 'personNumber',
       editable: true,
       align: 'center',
@@ -192,7 +192,7 @@ const AnswerTable = (props) => {
         }} placeholder='请输入正整数' value={record.personNumber} />
     },
     {
-      title: '等级评定机构名称',
+      title: '年龄',
       dataIndex: 'personNumber',
       editable: true,
       align: 'center',
@@ -202,7 +202,7 @@ const AnswerTable = (props) => {
         }} placeholder='请输入正整数' value={record.personNumber} />
     },
     {
-      title: '危险因素',
+      title: '工种',
       dataIndex: 'personNumber',
       editable: true,
       align: 'center',
@@ -212,7 +212,7 @@ const AnswerTable = (props) => {
         }} placeholder='请输入正整数' value={record.personNumber} />
     },
     {
-      title: '可能发生的危险（害）',
+      title: '工龄',
       dataIndex: 'personNumber',
       editable: true,
       align: 'center',
@@ -222,7 +222,7 @@ const AnswerTable = (props) => {
         }} placeholder='请输入正整数' value={record.personNumber} />
     },
     {
-      title: '第一责任人',
+      title: '事故简介',
       dataIndex: 'personNumber',
       editable: true,
       align: 'center',
@@ -232,7 +232,7 @@ const AnswerTable = (props) => {
         }} placeholder='请输入正整数' value={record.personNumber} />
     },
     {
-      title: '监控责任人',
+      title: '事故分析时间/性质',
       dataIndex: 'personNumber',
       editable: true,
       align: 'center',
@@ -242,26 +242,35 @@ const AnswerTable = (props) => {
         }} placeholder='请输入正整数' value={record.personNumber} />
     },
     {
-      title: '监测情况',
+      title: '事故损失',
       dataIndex: 'personNumber',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
-          width: 150,
+          width: 180,
         }} placeholder='请输入正整数' value={record.personNumber} />
     },
     {
-      title: '评估情况',
+      title: '事故类别',
       dataIndex: 'personNumber',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
-          width: 150,
+          width: 180,
         }} placeholder='请输入正整数' value={record.personNumber} />
     },
-
+    {
+      title: '事故责任人',
+      dataIndex: 'personNumber',
+      editable: true,
+      align: 'center',
+      render: (text, record, index) =>
+        <Input style={{
+          width: 180,
+        }} placeholder='请输入正整数' value={record.personNumber} />
+    },
     {
       title: '操作',
       dataIndex: '',
