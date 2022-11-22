@@ -3,14 +3,23 @@ import React, {
   useImperativeHandle,
 } from 'react'
 import { RightOutlined } from '@ant-design/icons';
-import { Collapse, Form, Input, Select, DatePicker, Checkbox, Radio, Space, Cascader, Spin, message } from 'antd';
+import { Collapse, Form, Input, Select, DatePicker, Checkbox, Radio, Space, Cascader, Spin, message, Upload } from 'antd';
 // import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
 import { getRegionTree, getDictListByName } from '@/api/common'
 import { positiveIntegerReg, positiveIntegerRegPoint, cardNumberRge } from '@/utils/reg'
 
 import { getBaseInfo, saveUpdate } from '@/api/info'
+import { uploadApi } from "@/config"
+
 import AnswerTable from './baseTable'
+import BaseProductTable from './baseProductTable'
+import BaseMidbodyTable from './baseMidbodyTable'
+import BaseMaterialTable from './baseMaterialTable'
+import BaseDeviceTable from './baseDeviceTable'
+import BasePostTable from './basePostTable'
+
+
 
 import moment from 'moment';
 import '.././index.less'
@@ -262,6 +271,33 @@ let BaseForm = (props, ref) => {
       }}
     >保存</div>
   );
+  const uploadProps = {
+    name: 'file',
+    action: uploadApi + "/help/fileupload/sys/aliOssUpload",
+    headers: {
+      authorization: 'authorization-text',
+    },
+    showUploadList: false,
+    accept: '.png',
+    beforeUpload: (file) => {
+      const isPNG = file.type === 'image/png';
+      if (!isPNG) {
+        message.error(`${file.name} is not a png file`);
+      }
+      return isPNG || Upload.LIST_IGNORE;
+    },
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
   return (
     <Spin spinning={loading}>
       <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'
@@ -536,7 +572,7 @@ let BaseForm = (props, ref) => {
                 className='base-form-add'>
                 <Form.Item name="personDistributionSituation" valuePropName='dataSource'
                 >
-                  <AnswerTable setTableData={setTableData} />
+                  <BaseProductTable setTableData={setTableData} />
                 </Form.Item>
               </Form>
             </Panel>
@@ -546,7 +582,7 @@ let BaseForm = (props, ref) => {
                 className='base-form-add'>
                 <Form.Item name="personDistributionSituation" valuePropName='dataSource'
                 >
-                  <AnswerTable setTableData={setTableData} />
+                  <BaseMidbodyTable setTableData={setTableData} />
                 </Form.Item>
               </Form>
             </Panel>
@@ -556,7 +592,7 @@ let BaseForm = (props, ref) => {
                 className='base-form-add'>
                 <Form.Item name="personDistributionSituation" valuePropName='dataSource'
                 >
-                  <AnswerTable setTableData={setTableData} />
+                  <BaseMaterialTable setTableData={setTableData} />
                 </Form.Item>
               </Form>
             </Panel>
@@ -564,25 +600,32 @@ let BaseForm = (props, ref) => {
           </Collapse>
         </Panel>
         <Panel header={BaseHeader('高危生产装置自动控制实施情况')} key="11" forceRender>
-          <p className='form-tip'>注：填写企业主要工种如（电工、电焊工、厂内车辆驾驶员，眼里容器操作工、安全员等）</p>
           <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
             disabled={isEdit}
             className='base-form-add'>
             <Form.Item name="personDistributionSituation" valuePropName='dataSource'
             >
-              <AnswerTable setTableData={setTableData} />
+              <BaseDeviceTable setTableData={setTableData} />
+
             </Form.Item>
           </Form>
         </Panel>
         <Panel header={BaseHeader('高危岗位情况')} key="12" forceRender>
-          <p className='form-tip'>注：填写企业主要工种如（电工、电焊工、厂内车辆驾驶员，眼里容器操作工、安全员等）</p>
+          <div className='form-tip-btns'>
+            <div className="dowload">下载模板</div>
+            <Upload {...uploadProps} >
+              {/* <Button>Click to Upload</Button> */}
+              <div className="import">导入</div>
+
+            </Upload>
+          </div>
           <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
             wrapperCol={{ span: 24 }}
             disabled={isEdit}
             className='base-form-add'>
             <Form.Item name="personDistributionSituation" valuePropName='dataSource'
             >
-              <AnswerTable setTableData={setTableData} />
+              <BasePostTable setTableData={setTableData} />
             </Form.Item>
           </Form>
         </Panel>
