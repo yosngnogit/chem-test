@@ -16,6 +16,15 @@ const routes = [
       component: () => import("../page/login"),
     }),
   },
+  // 忘记密码
+  {
+    path: "/forgetPassword",
+    name: "forgetPassword",
+    showHeader: false,
+    component: dynamicRoute({
+      component: () => import("../page/forgetPassword"),
+    }),
+  },
   {
     path: "/answerEntrance",
     name: "answerEntrance",

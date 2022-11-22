@@ -5,6 +5,27 @@
   height: 100vh;
 }
 
+.back {
+  padding: 5px 15px;
+  border: 1px solid #4074FF;
+  position: absolute;
+  right: 40px;
+  top: 20px;
+  border-radius: 20px;
+  font-family: 'PingFang SC';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  color: #4074FF;
+  cursor: pointer;
+  z-index: 99;
+
+  .back-p {
+    // margin-right: 5px;
+    margin-left: 8px;
+  }
+}
+
 // 子组件
 .login-box {
   width: 100%;
@@ -14,7 +35,7 @@
   // 登录
   .login {
     width: 100vw;
-    margin:auto;
+    margin: auto;
     height: 100vh;
     background-image: url("~@/assets/img/login/LEFT.png");
     background-size: cover;
@@ -23,56 +44,60 @@
     position: relative;
 
     .login-title {
-     position:absolute;
-     top:74px;
-     left:97px;
-     font-family: 'PingFang SC';
-     font-style: normal;
-     font-weight: 600;
-     font-size: 24px;
-     line-height: 28px;
-     color: #FFFFFF;
-    
+      position: absolute;
+      top: 74px;
+      left: 97px;
+      font-family: 'PingFang SC';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 28px;
+      color: #FFFFFF;
+      cursor: pointer;
+
     }
+
     .login-content {
       position: absolute;
       width: 350px;
       height: 494px;
       left: 68%;
       top: 50%;
-      margin-left:-175px;
+      margin-left: -175px;
       margin-top: -247px;
       border-radius: 5px;
       letter-spacing: 2px;
       // background-color: rgba(0, 0, 0, 0);
       user-select: none;
 
-      .login-content-title{
+      .login-content-title {
         font-weight: 600;
         font-size: 28px;
         line-height: 39px;
         color: #2F3367;
         margin-bottom: 24px;
       }
-  
-     
+
+
     }
+
     .user-login {
-      .user-login-bottom{
+      .user-login-bottom {
         width: 350px;
         height: 50px;
         background: linear-gradient(90deg, #4074FF -0.34%, #4472EC 99.66%);
         box-shadow: 0px 16px 24px rgba(100, 103, 107, 0.24);
         border-radius: 36px;
         font-family: 'SF Pro Display';
-          font-style: normal;
-          font-weight: 600;
-          font-size: 16px;
-          line-height: 48px;
-          text-align: center;
-          color: #FBFBFB;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 48px;
+        text-align: center;
+        color: #FBFBFB;
 
       }
+
       .login-remember {
         display: flex;
         justify-content: space-between;
@@ -80,7 +105,12 @@
         padding-right: 12px;
         height: 30px;
 
-     
+
+      }
+
+      .remember {
+        display: flex;
+        justify-content: space-between;
       }
 
       .login-register {
@@ -88,15 +118,31 @@
         font-size: 16px;
         height: 100%;
         padding-top: 40px;
-        .login-register_tip{
+
+        .login-register_tip {
           font-weight: 500;
           font-size: 16px;
-          color: #393D6E;         
+          color: #393D6E;
         }
 
-        .login-register_btn{
+        .login-register_btn {
           font-weight: 400;
           font-size: 16px;
+          color: #007DFA;
+          cursor: pointer;
+        }
+      }
+
+      .foget-div {
+        // display: flex;
+        // float: right;
+        height: 32px;
+
+        span {
+          font-family: 'PingFang SC';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
           color: #007DFA;
           cursor: pointer;
         }
@@ -106,136 +152,154 @@
     // antd样式重写
     .user-login {
 
-      #userLogin{
+      #userLogin {
         border-bottom: 1px solid #C4C5CA;
       }
-     .ant-form-item{
+
+      .ant-form-item {
         margin-bottom: 11px;
-        .ant-col .ant-form-item-label{
+
+        .ant-col .ant-form-item-label {
           font-family: 'PingFang SC';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 22px;
-            color: #646B73;
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 22px;
+          color: #646B73;
           padding-bottom: 24px;
         }
-        .ant-input{
+
+        .ant-input {
           height: 50px;
-          width:350px;
+          width: 350px;
           background: #F5F5F7;
           border-radius: 50px;
         }
-        .ant-select{
+
+        .ant-select {
           color: #3A3E43;
         }
-       
-        #userLogin_username{
+
+        #userLogin_username {
           font-family: 'PingFang SC';
           font-style: normal;
           font-weight: 400;
           font-size: 14px;
           color: #8B8FA8;
         }
-        #userLogin_password{
+
+        #userLogin_password {
           background: rgba(0, 0, 0, 0);
           border-radius: 50px;
-          
+
         }
-        .ant-input-focused{
+
+        .ant-input-focused {
           border: 3px solid #4472EC !important;
-         }
-        .ant-col-offset-8{
+        }
+
+        .ant-col-offset-8 {
           margin-left: 0 !important;
-                    }
-        #userLogin_remember{
+        }
+
+        #userLogin_remember {
           width: 65px;
           height: 18px;
-          .ant-checkbox-wrapper .ant-checkbox-wrapper-in-form-item{
-            width:100%;
+
+          .ant-checkbox-wrapper .ant-checkbox-wrapper-in-form-item {
+            width: 100%;
 
           }
-          .remember-me{
-            width:70px;
+
+          .remember-me {
+            width: 70px;
           }
-          span{
-            display:block;
-           
+
+          span {
+            display: block;
+
           }
-          .ant-checkbox-inner{
-              background:rgba(0, 0, 0, 0);
+
+          .ant-checkbox-inner {
+            background: rgba(0, 0, 0, 0);
             width: 15px;
             height: 15px;
             border: 1px solid #999DA6;
             border-radius: 2px;
-            
+
           }
+
           .ant-checkbox-checked {
             background-color: #4472EC;
           }
-          .ant-checkbox-input{
-             background-color:rgba(255, 255, 255, 0.8);
+
+          .ant-checkbox-input {
+            background-color: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(15px);
-            
+
           }
-                  
+
         }
 
-     }
-     .user-login-bottom{
-      width:350px;
-      margin:28px 0 44px;
-      border-bottom: 1px solid #C4C5CA;
-      cursor: pointer;
-     }
+      }
+
+      .user-login-bottom {
+        width: 350px;
+        margin: 28px 0 44px;
+        border-bottom: 1px solid #C4C5CA;
+        cursor: pointer;
+      }
     }
   }
 
   // 注册
-  .header{
+  .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100vw;
     height: 60px;
     padding: 16px 24px;
-    background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, 
-    #4472EC 105.19%);
+    background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%,
+        #4472EC 105.19%);
     transition: all .2s ease .2s;
     font-family: 'Roboto';
     font-style: normal;
-   
-    &-title{
+
+    &-title {
       font-size: 20px;
       color: #FFFFFF;
       font-weight: 500;
     }
-    &-user{
+
+    &-user {
       font-weight: 400;
       font-size: 16px;
       color: #FFFFFF
     }
   }
+
   .register {
-    width:1200px;
-    height:710px;
-    margin:auto;
+    width: 1200px;
+    height: 710px;
+    margin: auto;
     margin-top: 22px;
     background: #FFFFFF;
     box-shadow: 0px 4px 8px rgba(142, 141, 208, 0.16);
     border-radius: 5px;
-    position:relative;
+    position: relative;
 
-    
+
 
     &_nav {
-     padding:30px 0 49px;
+      padding: 30px 0 49px;
+
       &-step {
-       
-        & > img{
-          width:1200px;
+
+        &>img {
+          width: 1200px;
           margin: auto;
-         
+
         }
       }
     }
@@ -243,7 +307,7 @@
     &_content {
       display: flex;
       flex-direction: column;
-     
+
       .input {
         &-tip {
           display: block;
@@ -252,6 +316,7 @@
           font-size: 14px;
           text-align: right;
         }
+
         &-value {
           display: block;
           width: 100%;
@@ -261,15 +326,17 @@
           white-space: nowrap;
         }
       }
+
       .footer-btn {
         margin-top: 64px;
-        width:100%;
+        width: 100%;
         margin-left: 81px;
         display: flex;
-        gap:22px;
+        gap: 22px;
+
         .footer-right {
           width: 120px;
-          height: 50px;         
+          height: 50px;
           background: linear-gradient(90deg, #4472EC -0.34%, rgba(64, 116, 255, 0.86) 99.66%);
           border-radius: 50px;
           font-family: 'PingFang SC';
@@ -280,6 +347,7 @@
           text-align: center;
           color: #FFFFFF;
         }
+
         .footer-left {
           width: 120px;
           height: 50px;
@@ -292,12 +360,13 @@
           font-size: 16px;
           color: #4074FF;
           text-align: center;
-          
+
         }
       }
-      .ant-btn{
+
+      .ant-btn {
         width: 350px;
-        height: 50px;         
+        height: 50px;
         background: linear-gradient(90deg, #4472EC -0.34%, rgba(64, 116, 255, 0.86) 99.66%);
         border-radius: 50px;
         margin-top: 40px;
@@ -310,9 +379,11 @@
         color: #FFFFFF;
 
       }
-.ant-form-item-explain-error{
-  position: initial !important;
-}
+
+      .ant-form-item-explain-error {
+        position: initial !important;
+      }
+
       .ant-steps-horizontal {
         padding: 20px 0;
       }
@@ -322,9 +393,11 @@
       flex: 1;
       width: 500px;
       margin-left: 274px;
+
       .ant-form {
-        width:100%;
+        width: 100%;
       }
+
       .ant-list {
         min-height: 80%;
       }
@@ -332,13 +405,14 @@
 
     &-step2 {
       flex: 1;
-      width:340px;
+      width: 340px;
       margin-left: 388px;
+
       .register_captcha {
         display: flex;
-       
 
-        & > img {
+
+        &>img {
           margin-left: 12px;
           width: 82px;
           height: 30px;
@@ -350,11 +424,13 @@
           cursor: pointer;
         }
       }
-      .ant-form-item-control{
-        display:flex;
-        width:262px;
-        
+
+      .ant-form-item-control {
+        display: flex;
+        width: 262px;
+
       }
+
       .extra-part {
         border-left: solid 1px #eeeeee;
         padding-left: 8px;
@@ -364,10 +440,11 @@
         width: 270px;
         line-height: 32px;
       }
-     
+
       .ant-form {
         height: 100%;
       }
+
       .ant-list {
         min-height: 80%;
       }
@@ -384,11 +461,11 @@
       &_tip {
         text-align: center;
 
-        & > img {
+        &>img {
           width: 300px;
         }
 
-        & > p {
+        &>p {
           font-size: 22px;
           transform: translateY(-20px);
         }
@@ -401,7 +478,8 @@
       &_back {
         font-size: 13px;
         color: #333333;
-        & > span {
+
+        &>span {
           color: #4472ec;
         }
       }
@@ -414,23 +492,27 @@
         font-size: 14px;
         // padding-right: 24px;
       }
+
       .ant-list-item-description {
         text-align: right;
         // padding-right: 24px;
       }
-     
+
       .ant-form-item-label {
         font-size: 14px;
         white-space: nowrap;
       }
+
       .ant-form-item-explain-error {
         position: absolute;
         right: 28px;
         top: 6px;
       }
+
       .ant-input-affix-wrapper {
         z-index: 99;
       }
+
       .ant-btn-default {
         width: 150px;
         background-color: #f5f7fa;
@@ -448,7 +530,7 @@
           border-color: #d9d9d9;
         }
       }
-     
+
       .ant-input-group {
         .ant-form-item {
           width: calc(100% - 150px);
@@ -457,4 +539,3 @@
     }
   }
 }
-

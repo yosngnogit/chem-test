@@ -3,8 +3,10 @@ import './index.less'
 import UserLogin from './components/UserLogin'
 import EnterpriseRegister from './components/EnterpriseRegister'
 import { withRouter } from 'react-router-dom'
+import { HomeOutlined } from '@ant-design/icons';
 
- class Login extends Component {
+
+class Login extends Component {
   state = {
     pageType: 'login',//  login:登录页面 register:注册页面 forget:忘记密码页面
     userType: 'user', // user:个人用户  enterprise:企业用户
@@ -18,9 +20,9 @@ import { withRouter } from 'react-router-dom'
 
 
   }
- back=()=>{
-   this.switchPageType('login')
- }
+  back = () => {
+    this.switchPageType('login')
+  }
   switchPageType = (pageType) => {
     this.setState(({
       pageType: pageType,
@@ -31,10 +33,13 @@ import { withRouter } from 'react-router-dom'
     const { pageType } = this.state
     return (
       <div id="login">
+        <div className='back' onClick={() => this.props.history.push('/')}>
+          <HomeOutlined />
+          <span className='back-p'>回到首页</span> </div>
         <div className="login-box">
           {pageType === 'login' &&
             <div className='login'>
-              <div className="login-title">安全管理体系自诊断软件</div>
+              <div className="login-title" onClick={() => this.props.history.push('/')}>安全管理体系自诊断软件</div>
               <div className="login-content">
                 <div className='login-content-title'>登录</div>
                 <UserLogin switchPageType={this.switchPageType} />

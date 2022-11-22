@@ -71,21 +71,22 @@ function UserLogin(props) {
           <Input type='password' placeholder="请输入密码" />
         </Form.Item>
 
-        <Form.Item
-          className="remember"
-          name="remember"
-          valuePropName="checked"     
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <div>
-           <Checkbox defaultChecked={defaultChecked}  onChange={(value) => {setRemember(value.target.checked) }}>
-            <div className="remember-me">记住我</div>
-           </Checkbox>  
-           </div>    
-        </Form.Item>
+        <div className="remember">
+
+          <Form.Item
+            name="remember"
+            valuePropName="checked"
+            wrapperCol={{
+              span: 24,
+            }}
+          >
+            <Checkbox defaultChecked={defaultChecked} onChange={(value) => { setRemember(value.target.checked) }}>
+              <div className="remember-me">记住我</div>
+            </Checkbox>
+
+          </Form.Item>
+          <div className="foget-div"><span onClick={() => props.history.push('forgetPassword')}>忘记密码</span> </div>
+        </div>
 
         <Form.Item
           wrapperCol={{
