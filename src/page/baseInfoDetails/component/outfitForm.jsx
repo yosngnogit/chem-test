@@ -283,6 +283,10 @@ let AccidenttForm = (props, ref) => {
               rules={[{ required: true }]}>
               <Input placeholder='请输入详细地址' maxLength='128' />
             </Form.Item>
+            <Form.Item label="电话" name='address'
+              rules={[{ required: true }]}>
+              <Input placeholder='请输入电话' maxLength='128' />
+            </Form.Item>
 
           </Form>
         </Panel>

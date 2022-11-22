@@ -1,10 +1,14 @@
-import { Button, Form, Input, Table, Select } from 'antd';
+import { Button, Form, Input, Table, Select, DatePicker } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   PlusOutlined
 } from '@ant-design/icons';
 // import 'moment/locale/zh-cn';
+import 'moment/locale/zh-cn';
+import locale from 'antd/es/date-picker/locale/zh_CN';
 const EditableContext = React.createContext(null);
+
+const { RangePicker } = DatePicker;
 const options = [
   {
     label: '是',
@@ -15,6 +19,8 @@ const options = [
     value: false
   }
 ]
+// const monthFormat = ['YYYY-MM', 'YYYY-MM'];
+
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
   return (
@@ -37,15 +43,21 @@ const EditableCell = ({
 }) => {
   const [editing, setEditing] = useState(false);
   const inputRef = useRef(null);
-  const selectRef = useRef(null);
+  const timeRef = useRef(null);
+
+  // const selectRef = useRef(null);
   const form = useContext(EditableContext);
   const [status, setStatus] = useState('')
+  const [timeOpen, setTimeOpen] = useState(true);
   useEffect(() => {
     if (editing) {
-      if (dataIndex === 'holdCertificate') {
-        selectRef.current.focus();
+      // console.log(dataIndex)
+      if (dataIndex === 'time') {
+        timeRef.current.focus();
+      }
 
-      } else {
+      if (dataIndex !== 'aaa' && dataIndex !== 'bbb') {
+        console.log(inputRef)
         inputRef.current.focus();
       }
     }
@@ -57,7 +69,9 @@ const EditableCell = ({
       [dataIndex]: record[dataIndex],
     });
   };
-
+  const changeTime = (val) => {
+    setTimeOpen(val)
+  }
   const save = async () => {
     try {
       const values = await form.validateFields();
@@ -71,12 +85,12 @@ const EditableCell = ({
     childNode = editing ? (
       <Form.Item name={dataIndex} style={{ margin: 0 }}>
         {
-          dataIndex === 'holdCertificate' ?
+          dataIndex === 'aaa' ?
             <Select
               autoFocus={true}
               open={editing}
+              onChange={(e) => onaaaChange(e, dataIndex, index)}
               onBlur={save}
-              ref={selectRef}
               style={{
                 width: 150,
               }}
@@ -88,22 +102,41 @@ const EditableCell = ({
             </Select>
             :
             (
-              dataIndex === 'personNumber' ? <Input style={{
-                width: 150,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                onChange={(e) => onInputChange(e, dataIndex)}
-                placeholder='请输入正整数'
-                status={status}
-              /> : <Input style={{
-                width: 150,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                maxLength='64'
-                onChange={(e) => onInputChange(e, dataIndex)}
-              />
+              dataIndex === 'time' ?
+                <RangePicker
+                  ref={timeRef}
+                  locale={locale}
+                  autoFocus={true}
+                  open={timeOpen}
+                  style={{ width: 250 }}
+                  onChange={(e) => onTimeChange(e, dataIndex, index)}
+                  onOpenChange={changeTime}
+                /> :
+                (
+                  dataIndex === 'bbb' ?
+                    <Select
+                      autoFocus={true}
+                      open={editing}
+                      onBlur={save}
+                      style={{
+                        width: 150,
+                      }}
+                    >{
+                        options.map((item, index) => {
+                          return <Select.Option key={index} value={item.value}>{item.label}</Select.Option>
+                        })
+                      }
+                    </Select> :
+                    <Input style={{
+                      width: 150,
+                    }} ref={inputRef}
+                      onPressEnter={save}
+                      onBlur={save}
+                      onChange={(e) => onInputChange(e, dataIndex)}
+                      placeholder='请输入正整数'
+                      status={status}
+                    />
+                )
             )
         }
       </Form.Item>
@@ -126,12 +159,32 @@ const EditableCell = ({
       }
     }
   }
+  const onTimeChange = async (e, type, ind) => {
+    try {
+      const values = await form.validateFields();
+      handleSave({ ...record, ...values });
+    } catch (errInfo) {
+      // console.log('Save failed:', errInfo);
+    }
+  }
+  const onaaaChange = async (e, type, ind) => {
+    try {
+      const values = await form.validateFields();
+      // console.log(values)
+      handleSave({ ...record, ...values });
+
+    } catch (errInfo) {
+      // console.log('Save failed:', errInfo);
+    }
+  }
+
   return <td {...restProps}>{childNode}</td>;
 };
 
 const AnswerTable = (props) => {
   const [dataSource, setDataSource] = useState(props.dataSource);
   const [count, setCount] = useState(1);
+
 
   const defaultColumns = [
     {
@@ -166,12 +219,12 @@ const AnswerTable = (props) => {
     },
     {
       title: '设计时以满足自动控制要求',
-      dataIndex: 'holdCertificate',
+      dataIndex: 'bbb',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Select
-          value={record.holdCertificate}
+          value={record.bbb}
           style={{
             width: 150,
           }}
@@ -185,13 +238,22 @@ const AnswerTable = (props) => {
     },
     {
       title: '已整改完毕',
-      dataIndex: 'personNumber',
+      dataIndex: 'aaa',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
-        <Input style={{
-          width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        <Select
+          value={record.aaa}
+          style={{
+            width: 150,
+          }}
+        >
+          {
+            options.map((item, index) => {
+              return <Select.Option key={index} value={item.value}>{item.label}</Select.Option>
+            })
+          }
+        </Select>
     },
     {
       title: '正在整改（预计完成时间）',
@@ -199,19 +261,23 @@ const AnswerTable = (props) => {
       editable: true,
       align: 'center',
       render: (text, record, index) =>
-        <Input style={{
+        <DatePicker disabled={record.aaa} style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} />
+      // <Input  placeholder='请输入正整数' value={record.personNumber} />
     },
     {
       title: '尚未整改（预计开始及结束时间）',
-      dataIndex: 'personNumber',
+      dataIndex: 'time',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
-        <Input style={{
-          width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        <RangePicker style={{
+          width: 250,
+        }} />
+      // <Input style={{
+      //   width: 150,
+      // }} placeholder='请输入正整数' value={record.personNumber} />
     },
     {
       title: '操作',
@@ -250,7 +316,6 @@ const AnswerTable = (props) => {
     setDataSource(newData);
     props.setTableData(newData)
   };
-
   const components = {
     body: {
       row: EditableRow,
