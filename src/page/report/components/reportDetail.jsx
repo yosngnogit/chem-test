@@ -105,7 +105,7 @@ class ReportDetails extends Component {
         statisObj: innerObj,
         onSelectedKeys: ['1.1.1'],
         openKeys: ['1', '1.1', '1.1.1'],
-        quesInfo:innerObj['1.1'].filter(item => item.quesNo == '1.1.1')
+        quesInfo: innerObj['1.1'].filter(item => item.quesNo == '1.1.1')
 
       })
     })
@@ -210,11 +210,11 @@ class ReportDetails extends Component {
             alt=''
           />
         </p>
-        <div className='options' onClick={() => this.getDirInfo()}>
+        <div className='options'>
           {['完全满足', '部分满足', '不满足', '不适用'].map(v =>
             <span
               key={v}
-              className={v === (this.state.checkMap[item.quesNo] || item.check) ? 'active' : ''}
+              className={v === item.option ? 'active' : ''}
             >{v}</span>
           )}
         </div>
