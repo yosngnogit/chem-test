@@ -7,6 +7,7 @@ import './index.less'
 import { decrypt } from '@/utils/aes';
 import { Button } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
+import ReportDetail from './components/reportDetail'
 
 
 
@@ -43,12 +44,8 @@ function Report(props) {
   useEffect(() => {
     if (chartData && chartData.length === 0) return
     initRendarChart()
-    if (free == '2') initActive()
+    if (free === '2') initActive()
   }, [chartData, maxAll, valueList])
-
-  const back = () => {
-    props.history.go(-1)
-  }
 
   const initRendarChart = () => {
     const chartTopDom = document.getElementById('rendar-echart');
@@ -273,10 +270,11 @@ function Report(props) {
           <div className='progress-icon' style={{ left: common.score ? `${common.score / maxAll * 275}px` : 0, top: '-150%' }}></div>
         </div>
       </div>
-      <div id='rendar-echart' className='img-style' style={{ width: '368px', height: '252px', margin: 'auto'}}>
+      <div id='rendar-echart' className='img-style' style={{ width: '368px', height: '252px', margin: 'auto' }}>
       </div>
-      {free == '2' ? <div className="active-echart" id='active-echart' style={{ width: '600px', height: '300px', margin: 'auto' }}>
+      {free === '2' ? <div className="active-echart" id='active-echart' style={{ width: '600px', height: '300px', margin: 'auto' }}>
       </div> : ''}
+      <ReportDetail />
 
     </div>
   )

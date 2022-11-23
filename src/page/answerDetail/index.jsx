@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Menu, Message,  } from 'antd';
+import { Menu, Message, } from 'antd';
 import { query, getCookie } from '@/utils';
 import './index.less'
 import { withRouter } from "react-router-dom";
@@ -15,8 +15,8 @@ class AnswerDetail extends Component {
     quesInfo: {},
     checkMap: {},
     markMap: {},
-    markAll:0,
-    
+    markAll: 0,
+
   }
 
   urlObj = query()
@@ -36,24 +36,25 @@ class AnswerDetail extends Component {
   componentDidMount() {
     const entCode = getCookie('entCode');
     this.ws = createWebSocket(`${entCode}/${this.moduleId}`);
-      getDirectory({
-        paperType: this.paperType,
-        moduleId: this.moduleId,
-      }).then(res => {
-        this.setState({ directory: res.data })
-      });
-      this.getInfo(undefined, 'now')
-   
+    getDirectory({
+      paperType: this.paperType,
+      moduleId: this.moduleId,
+    }).then(res => {
+      this.setState({ directory: res.data })
+    });
+    this.getInfo(undefined, 'now')
+
     // 获取左侧menu
     getQuestionInfo({
       paperType: this.paperType,
       moduleId: this.moduleId,
-      quesId:this.leafId ,
-       "operation":'now'
-    }).then(res=>{     
-      this.state.markAll=res.data.markedNum
+      quesId: this.leafId,
+      "operation": 'now'
+    }).then(res => {
+      // this.state.markAll = res.data.markedNum
+      this.setState({ markAll: res.data.markedNum })
     })
-   
+
   }
   componentWillUnmount() {
     this.ws.close()
@@ -64,10 +65,11 @@ class AnswerDetail extends Component {
       paperType: this.paperType,
       moduleId: this.moduleId,
     }).then(res => {
+      console.log(res.data)
       this.setState({ directory: res.data })
     })
   }
- 
+
   nextNotAnswered = () => {
     nextNotAnswered({ paperType: this.paperType, moduleId: this.moduleId, quesId: this.leafId }).then(res => {
       if (!res.data.answerPage) {
@@ -97,7 +99,7 @@ class AnswerDetail extends Component {
     })
   }
 
-   
+
   goSchedule = () => this.props.history.replace(`/answerSchedule?paperId=${this.paperId}`)
 
   onChange = (item, v) => {
@@ -119,21 +121,21 @@ class AnswerDetail extends Component {
   }
   marked = (item) => {
     const { quesId, marked } = item;
-    let { markMap, markAll ,quesInfo} = this.state;
+    let { markMap, markAll, quesInfo } = this.state;
     const newMark = (markMap[item.quesNo] !== undefined ? markMap[item.quesNo] : marked) ? 0 : 1
     this.setState({ markMap: { ...markMap, [item.quesNo]: newMark } })
     markedQuestion({ marked: newMark, quesId }).then(res => {
       if (res.code === 0) {
         Message.info({ content: `${newMark ? '' : '取消'}标记成功` })
-        if(newMark){
-          this.setState({markAll: ++markAll})
-         
+        if (newMark) {
+          this.setState({ markAll: ++markAll })
+
         }
-        else{
-          this.setState({markAll: markAll===0?0:--markAll})
-         
+        else {
+          this.setState({ markAll: markAll === 0 ? 0 : --markAll })
+
         }
-    }
+      }
     })
   }
   goPrev = () => this.getInfo(this.quesId, 'up')
@@ -163,25 +165,26 @@ class AnswerDetail extends Component {
   }
   chooseOrder = (v) => {
     this.getInfo(v.quesId, 'now');
-    this.setState({ activeKey: [v.quesNo]})
+    this.setState({ activeKey: [v.quesNo] })
   }
   renderItem = (item, index) => {
     const { markMap } = this.state;
     return <div key={index} className='question'>
       <p className='second-title'>{item.quesNo}&nbsp;&nbsp;{decrypt(item.subjectContent)}</p>
       <div className='result'>
-        <p onClick={() => {this.marked(item)
-       
+        <p onClick={() => {
+          this.marked(item)
+
         }}>
           <img
-          style={{width:'24px',height:'24px'}}
+            style={{ width: '24px', height: '24px' }}
             src={(markMap[item.quesNo] !== undefined ? markMap[item.quesNo] : item.marked)
               ? require('@/assets/img/answerDetail/star.png')
               : require('@/assets/img/answerDetail/unStar.png')}
             alt=''
           />
         </p>
-        <div className='options' onClick={()=>this.getDirInfo()}>
+        <div className='options' onClick={() => this.getDirInfo()}>
           {['完全满足', '部分满足', '不满足', '不适用'].map(v =>
             <span
               key={v}
@@ -195,13 +198,13 @@ class AnswerDetail extends Component {
   }
 
   render() {
-    const { quesInfo, directory, collapsed,activeKey, markAll,loading} = this.state;
+    const { quesInfo, directory, collapsed, activeKey, markAll, loading } = this.state;
     return (
       <div className='answer-detail' >
         <div className='content'>
           <div className='top'>
             <div className="card-free">
-              <img src={require('@/assets/img/answerEntrance/free.png')} width={38} height={44} fit='fill' />
+              <img src={require('@/assets/img/answerEntrance/free.png')} width={38} height={44} alt='' />
               <div className="free-tip">
                 <div className="free-tip-p">
                   <span>{decrypt(quesInfo.moduleName)}</span>
@@ -217,9 +220,9 @@ class AnswerDetail extends Component {
                 <div className='right-item'>
                   <div className='right-div-null' style={{ width: '15px', height: '15px', borderRadius: '2px', border: '1px solid #ccc' }}></div>
                   <div className='right-font'>未回答 <div className='right-num'>
-                    {quesInfo.quesNum?quesInfo.quesNum-quesInfo.answeredQuesNum:''}
-                    </div>
-                    </div>
+                    {quesInfo.quesNum ? quesInfo.quesNum - quesInfo.answeredQuesNum : ''}
+                  </div>
+                  </div>
                 </div>
                 <div className='right-item'>
                   <div className='right-div-blue'></div>
@@ -229,7 +232,7 @@ class AnswerDetail extends Component {
                 </div>
                 <div className='right-item' style={{ borderRight: '0', paddingRight: '0' }}>
                   <div className='right-div-star'>
-                    <img src={require('@/assets/img/answerDetail/star.png')} width={18} height={18} style={{ marginRight: '12px' }} fit='fill' />
+                    <img src={require('@/assets/img/answerDetail/star.png')} width={18} height={18} style={{ marginRight: '12px' }} alt='' />
                   </div>
                   <div className='right-font'>已标记 <div className='right-num'>{markAll}</div>
                   </div>
@@ -240,18 +243,18 @@ class AnswerDetail extends Component {
           </div>
           <div className='bottom'>
             <div className='bottom-left'>
-              {directory?directory.map((dir, index) => {
+              {directory ? directory.map((dir, index) => {
                 return (
                   <Menu
                     mode="inline"
                     inlineCollapsed={collapsed}
                     key={dir.factorNo}
-                    selectedKeys={activeKey}                
+                    selectedKeys={activeKey}
                   >
                     <Menu.SubMenu
-                    key={dir.factorNo}                                      
+                      key={dir.factorNo}
                       title={
-                        <div className="item" style={{ display:'flex',justifyContent:'space-between' }}>
+                        <div className="item" style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <span className='item-content'>{dir.factorNo}&nbsp;&nbsp;{decrypt(dir.factorContent)}</span>
                         </div>
                       }
@@ -262,20 +265,20 @@ class AnswerDetail extends Component {
                             key={v.quesNo}
                             style={{ paddingLeft: '7px' }}
                           >
-                            <div className={v.check ? 'active' : ''} style={{ paddingLeft: '7px',display:'flex',justifyContent:'space-between' }} onClick={() => {this.chooseOrder(v) }} >
+                            <div className={v.check ? 'active' : ''} style={{ paddingLeft: '7px', display: 'flex', justifyContent: 'space-between' }} onClick={() => { this.chooseOrder(v) }} >
                               <div>{v.quesNo} </div>
-                              {this.paperType==='2'&&<div style={{marginRight:'18px'}}>
-                                <b>{v.answeredQuesNum ? `${v.answeredQuesNum}/` : `0/`}</b>{v.quesNum ? v.quesNum : `0`}                                
-                                </div>}
-                                     
-                              </div>
+                              {this.paperType === '2' && <div style={{ marginRight: '18px' }}>
+                                <b>{v.answeredQuesNum ? `${v.answeredQuesNum}/` : `0/`}</b>{v.quesNum ? v.quesNum : `0`}
+                              </div>}
+
+                            </div>
                           </Menu.Item>
                         ))
                         : ""}
                     </Menu.SubMenu>
                   </Menu>
                 )
-              }):''}
+              }) : ''}
 
             </div>
             <div className='bottom-right'>
