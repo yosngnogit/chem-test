@@ -46,7 +46,7 @@ export default function ForgetPassword(props) {
 function Setp0(props) {
   const { nextStep, setSstep0Form } = props
   const [form] = Form.useForm()
-  const [uuid, setUuid] = useState('');
+  const [uuid, setUuid] = useState(getUUID());
   const [loadingLogin, setLoadingLogin] = useState(false);
 
 
@@ -84,10 +84,10 @@ function Setp0(props) {
 
       <Form.Item
         name="username"
-        label="企业用户名"
-        rules={[{ required: true, message: "请输入企业用户名" }]}
+        label="用户名"
+        rules={[{ required: true, message: "请输入用户名" }]}
       >
-        <Input placeholder="请输入企业用户名" maxLength={20} />
+        <Input placeholder="请输入用户名" maxLength={20} />
       </Form.Item>
 
       <Form.Item

@@ -1,30 +1,34 @@
-.header{
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100vw;
   height: 60px;
-  padding: 16px 24px;
-  background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, 
-  #4472EC 105.19%);
+  // padding: 16px 24px;
+  padding: 0 24px;
+  background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%,
+      #4472EC 105.19%);
   transition: all .2s ease .2s;
 
-  &_transparent{
+  &_transparent {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100vw;
     height: 60px;
-    padding: 16px 24px;
+    // padding: 16px 24px;
+    padding: 0 24px;
+
     background: transparent;
     transition: all .2s ease .2s;
-    .header-user-btn{
+
+    .header-user-btn {
       color: #FFFFFF;
       background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);
     }
   }
 
-  &-content{
+  &-content {
     margin: auto;
     width: 100%;
     max-width: 1440px;
@@ -33,13 +37,13 @@
     align-items: center;
   }
 
-  &-title{
+  &-title {
     font-size: 20px;
     color: #FFFFFF;
     cursor: pointer;
   }
 
-  &-login-btn{
+  &-login-btn {
     margin: 0 30px 0 8px;
     font-weight: 400;
     font-size: 14px;
@@ -47,26 +51,30 @@
     cursor: pointer;
   }
 
-  &-user{
+  &-user {
     display: flex;
     align-items: center;
     cursor: pointer;
-    &-avatar{
+
+    &-avatar {
       width: 34px;
       height: 34px;
     }
-    &-name{
+
+    &-name {
       margin: 0 30px 0 8px;
       font-weight: 400;
       font-size: 14px;
       color: #EFFDFE;
-      &-arrow{
+
+      &-arrow {
         margin-left: 6px;
         transform: translateY(2px);
         font-size: 12px !important;
       }
     }
-    &-btn{
+
+    &-btn {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -83,9 +91,8 @@
   }
 }
 
-.header-fixde{
+.header-fixde {
   position: fixed !important;
   z-index: 999;
   top: 0;
 }
-
