@@ -43,7 +43,7 @@ function AnswerEntrance(props) {
     })
     confirm({
       bodyClassName: 'pay-confirm',
-      content: '是否创建新答题？',
+      content: '已有测试正在进行中，确定是否新建测试？',
       okText: '确认',
       onOk() { goSchedule(item) },
       onCancel() {

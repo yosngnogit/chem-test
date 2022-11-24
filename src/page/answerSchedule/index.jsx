@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Progress, Image, Message,Dropdown, Menu ,Spin} from 'antd'
+import { Progress, Image, Message, Dropdown, Menu, Spin } from 'antd'
 import { RightOutlined, DownOutlined } from '@ant-design/icons'
 import './index.less'
 import { query, getCookie } from '@/utils'
@@ -14,7 +14,7 @@ function AnswerSchedule(props) {
   const [paperId, setPaperId] = useState(params.paperId)
   const [answerModule, setAnswerModule] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [free ,setFree] = useState('')/* 答题类型 */
+  const [free, setFree] = useState('')/* 答题类型 */
 
   const entCode = getCookie('entCode');
   const entName = getCookie('entName')
@@ -39,10 +39,14 @@ function AnswerSchedule(props) {
       })
     }
   }, [])
-  useEffect(()=>{
-    getAnswer(paperId).then(res=>{
-      setFree(res.data.moduleDetail[0].paperType)
-    })
+  useEffect(() => {
+    if (paperId !== 'undefined') {
+      getAnswer(paperId).then(res => {
+        setFree(res.data.moduleDetail[0].paperType)
+      }).catch(err => {
+        console.log(err)
+      })
+    }
   })
 
   const submit = () => {
@@ -52,12 +56,12 @@ function AnswerSchedule(props) {
     }
     submitPaper({ paperId }).then(res => {
       if (res.code === 0) {
-        props.history.push(`/report?paperId=${paperId}&paperType=${free?free:''}`);
+        props.history.push(`/report?paperId=${paperId}&paperType=${free ? free : ''}`);
       }
     })
   }
 
-  const back = () => props.history.go(-1);
+  // const back = () => props.history.go(-1);
 
   const goDetail = (item) => {
     checkLockQuestion({ entCode, moduleId: item.moduleId }).then((res) => {
@@ -65,15 +69,15 @@ function AnswerSchedule(props) {
     }).catch(err => console.log(err))
   }
   const onMenuClick = ({ key }) => {
-    if(key === 'logout'){
+    if (key === 'logout') {
       logOut()
     } else {
       props.history.push('/personalCenter')
     }
   }
-  const goBack=()=>{
+  const goBack = () => {
     props.history.push('/answerEntrance')
-  }  
+  }
   const menu = (
     <Menu
       onClick={onMenuClick}
@@ -83,27 +87,27 @@ function AnswerSchedule(props) {
       ]}
     />
   )
-  return (loading? <Spin className='answer-loading' tip="Loading..."/>:
+  return (loading ? <Spin className='answer-loading' tip="Loading..." /> :
     <div className='answer-schedule'>
       <div className='header-top'>
-      <div className={`${transparent ? 'header_transparent' : 'header'} ${fixed?'header-fixde': ''}`}>
-      <div className="header-left">
-        <div className="header-title" onClick={goBack}>企业安全自诊断平台</div>
-      </div>
-      <div className="header-right">
-       
-          <div className="header-user">
-            <img className='header-user-avatar' src={require('@/assets/img/index/avatar.png')} alt="" />
-            <Dropdown overlay={menu}>
-              <div className='header-user-name'>
-                {entName}<DownOutlined className='header-user-name-arrow'/>
-              </div>
-            </Dropdown>
-            
-            <div className="header-user-btn"  onClick={submit}>提交</div>
+        <div className={`${transparent ? 'header_transparent' : 'header'} ${fixed ? 'header-fixde' : ''}`}>
+          <div className="header-left">
+            <div className="header-title" onClick={goBack}>企业安全自诊断平台</div>
           </div>
-      </div>
-    </div>
+          <div className="header-right">
+
+            <div className="header-user">
+              <img className='header-user-avatar' src={require('@/assets/img/index/avatar.png')} alt="" />
+              <Dropdown overlay={menu}>
+                <div className='header-user-name'>
+                  {entName}<DownOutlined className='header-user-name-arrow' />
+                </div>
+              </Dropdown>
+
+              <div className="header-user-btn" onClick={submit}>提交</div>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="answer-main">
         <div className="answer-main-list">
