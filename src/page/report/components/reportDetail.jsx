@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {  Tooltip, Tree } from 'antd';
+import { Tooltip, Tree } from 'antd';
 import { query } from '@/utils';
 import './index.less'
 import { withRouter } from "react-router-dom";
@@ -93,9 +93,7 @@ class ReportDetails extends Component {
         quesNo: this.markQuestNo
       }
     ).then(({ data: res }) => {
-      // console.log(res)
       this.activeKey = res.quesNo
-
       // 免费
       if (this.paperType === '1') {
         let nextArray = this.state.statisObj[res.factorNo].filter(item => item.quesNo === res.quesNo)
@@ -107,7 +105,9 @@ class ReportDetails extends Component {
         this.setState({
           quesInfo: nextArray,
           onSelectedKeys: [res.quesNo],
-          openKeys: nextOpen
+          openKeys: nextOpen,
+          firstName: this.state.nameObj[res.moduleNo],
+          secondName: this.state.nameObj[res.factorNo]
         })
       } else {
         this.markParentNo = res.parentNo;
@@ -122,7 +122,9 @@ class ReportDetails extends Component {
           this.setState({
             quesInfo: nextArray,
             onSelectedKeys: [res.parentNo],
-            openKeys: nextOpen
+            openKeys: nextOpen,
+            firstName: this.state.nameObj[res.moduleNo],
+            secondName: this.state.nameObj[res.factorNo]
           })
         }
       }
