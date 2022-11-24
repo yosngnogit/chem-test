@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Modal, Progress, Message, } from 'antd'
-import { getVersionInfo, getRecordInfo, deleteEntPaper,getInfoPerfect } from "../../api/answer";
+import { getVersionInfo, getRecordInfo, deleteEntPaper, getInfoPerfect } from "../../api/answer";
 import { getCookie } from '@/utils'
 
 import './index.less'
@@ -22,8 +22,7 @@ function AnswerEntrance(props) {
     getRecordInfo(entCode).then(res => {
       setListData(res.data)
     })
-    getInfoPerfect(entCode).then(res=>{
-
+    getInfoPerfect(entCode).then(res => {
       setInfoPerfect(res.data)
     })
   }, [])
@@ -38,15 +37,36 @@ function AnswerEntrance(props) {
   }
 
   const goCreate = (item) => {
-   confirm({
+    let innerArray = []
+    listData.map(v => {
+      v.active = false
+    })
+    confirm({
       bodyClassName: 'pay-confirm',
       content: '是否创建新答题？',
-      okText:'确认',
-      onOk () { goSchedule(item) }
+      okText: '确认',
+      onOk() { goSchedule(item) },
+      onCancel() {
+        innerArray = JSON.parse(JSON.stringify(listData));
+        if (item.paperType === '1') {
+          innerArray.forEach(i => {
+            if (i.paperStatus === '0' && i.paperType === '1') {
+              i.active = true
+            }
+            // if (i.paperStatus === '0' && item.paperType === '2') i.payactive = true
+          })
+        }
+        else {
+          innerArray.forEach(i => {
+            if (i.paperStatus === '0' && i.paperType === '2') {
+              i.active = true
+            }
+          })
+        }
+        setListData(innerArray)
+      }
     })
   }
-
-  const goIndex = () => props.history.go(-1)
 
   const goPay = () => {
     if (info.pay.canAnswer) {
@@ -76,21 +96,27 @@ function AnswerEntrance(props) {
     })
   }
   const onLookReport = (item) => {
-    console.log(item.paperId)
     props.history.push(`/report?paperId=${item.paperId}&paperType=${item.paperType}`)
   }
+  const resetActive = () => {
+    listData.forEach(v => {
+      v.active = false
+    })
+    let innerArray = JSON.parse(JSON.stringify(listData));
+    setListData(innerArray)
+  }
   return (
-    <div className='answerEntrance'>
+    <div className='answerEntrance' onClick={resetActive}>
       <div className="answer-main">
         <div className='answer-perfect'>
-          <div>企业信息已完成{infoPerfect?infoPerfect:0}%,</div>
+          <div>企业信息已完成{infoPerfect ? infoPerfect : 0}%,</div>
           <div className='answer-perfect-div' onClick={() => { props.history.push('/baseInfo') }}>去完善</div><img src={require('@/assets/img/answerEntrance/Vector.png')} style={{ width: '6px', height: '10px' }} alt="" />
         </div>
         <div className="answer-main-list">
 
           <div className="answer-cards">
-            <div className="card-free" onClick={() => { goCreate({ versionNo: info.versionNo, paperType: '1', quesNum: info.free.quesNum })}}>
-              <img src={require('@/assets/img/answerEntrance/free.png')} width={38} height={44} fit='fill' />
+            <div className="card-free" onClick={() => { goCreate({ versionNo: info.versionNo, paperType: '1', quesNum: info.free.quesNum }) }}>
+              <img src={require('@/assets/img/answerEntrance/free.png')} width={38} height={44} alt='' />
               <div className="free-tip">
                 <div className="free-tip-p">
                   <span>免费版</span>
@@ -99,26 +125,26 @@ function AnswerEntrance(props) {
               </div>
             </div>
             <div className="card-notfree" onClick={goPay}>
-              <img src={require('@/assets/img/answerEntrance/notfree.png')} width={46} height={46} fit='fill' />
+              <img src={require('@/assets/img/answerEntrance/notfree.png')} width={46} height={46} alt='' />
 
               <div className="free-tip">
                 <div>
-                  <div className="free-tip-p"> {info.pay.canAnswer?<img src={require('@/assets/img/answerEntrance/unLock.png')} width={26} height={24} style={{ marginRight: '6px' }} fit='fill' />:<img src={require('@/assets/img/answerEntrance/lock.png')} width={21} height={24} style={{ marginRight: '6px' }} fit='fill' />}
+                  <div className="free-tip-p"> {info.pay.canAnswer ?
+                    <img src={require('@/assets/img/answerEntrance/unLock.png')} width={26} height={24} style={{ marginRight: '6px' }} alt='' /> :
+                    <img src={require('@/assets/img/answerEntrance/lock.png')} width={21} height={24} style={{ marginRight: '6px' }} alt='' />}
                     <span>付费版</span>
                   </div>
                 </div>
                 <span className='tip-span'> {info.pay.quesNum}题，精确诊断</span>
               </div>
             </div>
-
-
           </div>
           <div className='answer-tips'> <span>Tips:</span> 请联系当地中控5S店解锁付费版，获得更精准的诊断结果</div>
-          <div style={{width:'1440px',height:'8px',margin:'auto',backgroundColor:'#F8F8FA'}}></div>
+          <div style={{ width: '1440px', height: '8px', margin: 'auto', backgroundColor: '#F8F8FA' }}></div>
           <ul className="answer-list">
             {
               listData.map((item, index) => {
-                return <li key={index}>
+                return <li key={index} className={item.active ? 'active-border' : ''} >
                   <div className="list-top">
                     <div className={item.free ? "list-title-true" : "list-title-false"}>
                       <div>
@@ -130,7 +156,7 @@ function AnswerEntrance(props) {
                   <div className="list-bottom">
                     <div className='list-bottom-name'>{item.paperName}</div>
                     <div className='list-bottom-time'>开始时间：{item.beginTime}</div>
-                    <div className={item.paperStatus === '1'?'list-finish':'list-status'} >{item.paperStatus === '1' ? '已完成' : '进行中'}</div>
+                    <div className={item.paperStatus === '1' ? 'list-finish' : 'list-status'} >{item.paperStatus === '1' ? '已完成' : '进行中'}</div>
                     <div style={{ display: 'flex' }}>
                       <Progress
                         percent={item.overallProgress}
@@ -148,8 +174,8 @@ function AnswerEntrance(props) {
                       }
                     </div>
                     <div className='list-button'>
-                     
-                      <div className='list-button-con' onClick={() => {item.paperStatus === '1' ?onLookReport(item): goSchedule(item) }}>
+
+                      <div className='list-button-con' onClick={() => { item.paperStatus === '1' ? onLookReport(item) : goSchedule(item) }}>
                         {item.paperStatus === '1' ? '查看报告' : '继续答题'}
                       </div>
                       <div className='list-button-del' onClick={() => { onDelete(item) }}>删除记录</div>
