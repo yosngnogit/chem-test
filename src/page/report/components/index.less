@@ -5,7 +5,8 @@ body {
     // width: 1440px;
     // min-height: 100% !important;
     margin: auto;
-    background: #F8F8FA;;
+    background: #F8F8FA;
+    ;
 
     .content {
       width: 1440px;
@@ -14,7 +15,18 @@ body {
       background-color: #F8F8FA;
     }
 
- 
+    .tips {
+      font-family: 'PingFang SC';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      color: #3A3E43;
+      padding: 15px 0;
+      border-bottom: 1px solid #4074FF;
+      margin-bottom: 20px;
+    }
+
+
 
     .bottom {
       // width: 100%;
@@ -22,6 +34,55 @@ body {
       display: flex;
       margin-top: 8px;
       padding-bottom: 20px;
+
+      .bottom-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 44px 0 44px;
+        // padding-bottom: 0;
+
+        p {
+          margin: 0;
+          font-family: 'Roboto';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          /* identical to box height, or 157% */
+
+          display: flex;
+          align-items: center;
+
+          /* Character / Secondary .45 */
+
+          color: rgba(0, 0, 0, 0.45);
+
+          span {
+
+            display: inline-block;
+            margin-left: 5px;
+            color: rgba(0, 0, 0, 0.85);
+          }
+        }
+
+        .nextMark {
+          width: 130px;
+          height: 32px;
+          border-radius: 50px;
+          border: 1px solid #4074FF;
+          text-align: center;
+          line-height: 30px;
+          font-family: 'SF Pro Text';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 16px;
+          /* identical to box height */
+          cursor: pointer;
+
+          color: rgb(68, 114, 236);
+
+        }
+      }
 
       .bottom-left {
         width: 353px;
@@ -42,6 +103,7 @@ body {
           position: relative;
           padding-bottom: 80px;
           padding: 20px 20px 80px 20px;
+          // padding-top: 0;
 
           .question {
             position: relative;
@@ -53,6 +115,12 @@ body {
             align-items: center;
             height: 132px;
             border-bottom: 1px solid #EEEEEE;
+            margin-bottom: 3px;
+            border-radius: 3px;
+
+            &:last-child {
+              margin-bottom: 0;
+            }
 
 
             .second-title {
@@ -109,6 +177,7 @@ body {
                 display: flex;
                 color: #646b73;
                 font-size: 14px;
+                overflow: hidden;
 
                 >span {
                   width: 68px;
@@ -134,9 +203,16 @@ body {
                   background: linear-gradient(263.91deg,
                       rgba(64, 116, 255, 0.86) 17.25%,
                       #4472ec 105.19%);
+                  // height: 32px;
+                  box-sizing: initial;
+                  // border: none;
                 }
               }
             }
+          }
+
+          #activeShadow {
+            box-shadow: 0px 1px 8px 0px rgba(68, 114, 236, .5);
           }
 
           .bottom {
@@ -148,6 +224,7 @@ body {
               margin: 12px 0;
               font-size: 16px;
               color: #1f2229;
+              // margin-top: 20px;
             }
           }
 
@@ -185,43 +262,16 @@ body {
               color: #fff;
             }
           }
-        }
 
-        // .footer{
-        //   position: absolute;
-        //   width: 100%;
-        //   height: 46px;
-        //   display: flex;
-        //   justify-content: center;
-        //   margin:auto;
-        //   gap:32px;
-        //   margin-top: 20px;       
-        //   .btn {
-        //     box-sizing: border-box;
-        //     width: 242px;
-        //     height: 46px;
-        //     line-height: 46px;
-        //     background: #FFFFFF;
-        //     border: 1px solid #4074FF;
-        //     border-radius: 38px;
-        //     text-align: center;
-        //     font-weight: bolder;
-        //     font-family: 'Roboto';
-        //     font-style: normal;
-        //     font-weight: 400;
-        //     font-size: 14px;          
-        //     color: #4074FF;
-        //     cursor: pointer;        
-        //   }
-        //   .two{         
-        //     background: linear-gradient(263.91deg, rgba(64, 116, 255, 0.86) 17.25%, #4472EC 105.19%);
-        //     color:#fff;        
-        //   }
-        // }
+          // .nofree-bottom {
+          //   margin-top: 20px;
+          // }
+        }
       }
 
       .tree-div {
         overflow: hidden;
+
         .ant-tree-switcher {
           // display: none;
           position: absolute;
@@ -247,27 +297,33 @@ body {
           width: 340px;
           overflow: hidden; //超出的文本隐藏
           text-overflow: ellipsis; //溢出用省略号显示
-          white-space: nowrap;  // 默认不换行；
-          .inner-title{
+          white-space: nowrap; // 默认不换行；
+
+          .inner-title {
             width: 290px;
             overflow: hidden; //超出的文本隐藏
             text-overflow: ellipsis; //溢出用省略号显示
-            white-space: nowrap;  // 默认不换行；
+            white-space: nowrap; // 默认不换行；
 
           }
+
           border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-          
-        }
-       .ant-tree-treenode:hover::before{
-        background: rgba(2, 99, 255, 0.3);
 
         }
-       .ant-tree-treenode-selected:hover::before{
-        background: rgba(2, 99, 255, 0.3);
 
-       }
-        .ant-tree-treenode-selected::before{
+        .ant-tree-treenode:hover::before {
           background: rgba(2, 99, 255, 0.3);
+
+        }
+
+        .ant-tree-treenode-selected:hover::before {
+          background: rgba(2, 99, 255, 0.3);
+
+        }
+
+        .ant-tree-treenode-selected::before {
+          background: rgba(2, 99, 255, 0.3);
+          color: #fff;
         }
       }
     }

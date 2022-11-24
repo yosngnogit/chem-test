@@ -1,24 +1,15 @@
 import React, { Component } from 'react'
-import { Menu, Message, Tooltip, Tree } from 'antd';
-import { query, getCookie } from '@/utils';
+import {  Tooltip, Tree } from 'antd';
+import { query } from '@/utils';
 import './index.less'
 import { withRouter } from "react-router-dom";
-import { getDirectory, getQuestionInfo, markedQuestion, nextMarked, nextNotAnswered, saveQuestion, submitModule } from "@/api/answer";
-import { createWebSocket } from '@/utils/socket';
 import { decrypt } from '@/utils/aes';
-import { report } from '@/api/report'
+import { report, nextMark } from '@/api/report'
 const { DirectoryTree } = Tree;
-
-
 class ReportDetails extends Component {
   state = {
-    directory: [],
-    collapsed: false,
     quesInfo: [],
-    checkMap: {},
-    markMap: {},
-    markAll: 0,
-    gData: [],
+    treeData: [],
     fieldNames: {
       title: 'subjectContent',
       key: 'quesNo',
@@ -26,18 +17,21 @@ class ReportDetails extends Component {
 
     },
     statisObj: {},
+    nameObj: {},
+    firstName: '',
+    secondName: '',
     onSelectedKeys: [],
-    openKeys: []
+    openKeys: [],
+    markParentNo: '',
+    markQuestNo: ''
   }
-
   urlObj = query()
-
-
   paperType = this.urlObj.paperType;
-
-  moduleId = this.urlObj.moduleId;
-
   paperId = this.urlObj.paperId;
+  markParentNo = '';
+  markQuestNo = '';
+
+  activeKey = ''
   scoreMap = {
     '完全满足': "allSatisfyScore", //全部满足得分
     '部分满足': "partSatisfyScore", //部分满足得分
@@ -46,119 +40,94 @@ class ReportDetails extends Component {
   }
 
   componentDidMount() {
-    // const entCode = getCookie('entCode');
-    // this.ws = createWebSocket(`${entCode}/${this.moduleId}`);
-    // getDirectory({
-    //   paperType: this.paperType,
-    //   moduleId: this.moduleId,
-    // }).then(res => {
-    //   this.setState({ directory: res.data })
-    // });
-    // this.getInfo(undefined, 'now')
-
-    // // 获取左侧menu
-    // getQuestionInfo({
-    //   paperType: this.paperType,
-    //   moduleId: this.moduleId,
-    //   quesId: this.leafId,
-    //   "operation": 'now'
-    // }).then(res => {
-    //   // this.state.markAll=res.data.markedNum
-    //   this.setState({ markAll: res.data.markedNum })
-    // })
+    if (this.paperType === '1') {
+      this.markParentNo = '';
+      this.markQuestNo = '1.1.1';
+    } else {
+      this.markParentNo = '1.1.1';
+      this.markQuestNo = '1.1.1.1';
+    }
     report(this.paperId).then(res => {
-      console.log(res.data.diagnosisPaperTreeList)
-      //  this.concatArray(res.data.diagnosisPaperTreeList)
       let innerArray = JSON.parse(JSON.stringify(res.data.diagnosisPaperTreeList));
-      // console.log(this.concatArray(innerArray))
       let innerObj = {}
-      // let eChildrenlist = []
-      innerArray.map((item) => {
-        // item.subjectContent =
-        // item.quesNo + "、" + decrypt(item.subjectContent);
+      let innerNameObj = {}
+      let nameArray = []
+      innerArray.forEach((item) => {
+        nameArray.push(item)
         item.childrenList.forEach((i) => {
-          // i.subjectContent = i.quesNo + "、" + decrypt(i.subjectContent);
           i.totalArray = [];
+          nameArray.push(i)
           i.childrenList.forEach((e) => {
-            // e.subjectContent = e.quesNo + "、" + decrypt(e.subjectContent);
             i.totalArray.push(e);
             innerObj[i.quesNo] = i.totalArray;
-            // delete i.childrenList;
-            // console.log(i.totalArray)
             i.eChildrenlist = JSON.parse(JSON.stringify(i.childrenList));
             // 有四级
             if (e.childrenList) {
               e.eChildrenlist = JSON.parse(JSON.stringify(e.childrenList));
               e.childrenList = []
-              // i.totalArray = i.totalArray.push(e.eChildrenlist || []);
-            }
-            else {
-              // i.totalArray = i.totalArray.concat(e.childrenList || []);
             }
           });
         });
       });
-      console.log(innerObj)
+      nameArray.forEach(v => {
+        innerNameObj[v.quesNo] = decrypt(v.subjectContent)
+      })
       this.setState({
-        // directory: res.data.diagnosisPaperTreeList,
-        gData: innerArray,
+        treeData: innerArray,
         statisObj: innerObj,
+        nameObj: innerNameObj,
         onSelectedKeys: ['1.1.1'],
         openKeys: ['1', '1.1', '1.1.1'],
-        quesInfo: innerObj['1.1'].filter(item => item.quesNo == '1.1.1')
-
+        quesInfo: innerObj['1.1'].filter(item => item.quesNo === '1.1.1'),
+        firstName: innerNameObj['1'],
+        secondName: innerNameObj['1.1']
       })
     })
   }
 
-  componentWillUnmount() {
-    // this.ws.close()
-  }
-  nextNotAnswered = () => {
-    nextNotAnswered({ paperType: this.paperType, moduleId: this.moduleId, quesId: this.leafId }).then(res => {
-      if (!res.data.answerPage) {
-        Message.info('已答完所有题目')
-        this.getDirInfo()
-        return;
-      }
-      // console.log(' res.data', res.data)
-      this.setState({ quesInfo: res.data.answerPage })
-    })
-  }
   nextMarked = () => {
-    if (!this.nMarked) { this.nextMarkedId = this.leafId }
-    nextMarked({ paperType: this.paperType, moduleId: this.moduleId, quesId: this.nextMarkedId }).then(res => {
-      if (!res.data.answerPage) {
-        Message.info('没有标记的题目')
-        return
+    nextMark(
+      {
+        paperId: this.paperId,
+        parentNo: this.markParentNo,
+        quesNo: this.markQuestNo
       }
-      this.nMarked = true;
-      this.nextMarkedId = res.data.quesId;
-      this.setState({ quesInfo: res.data.answerPage })
+    ).then(({ data: res }) => {
+      // console.log(res)
+      this.activeKey = res.quesNo
+
+      // 免费
+      if (this.paperType === '1') {
+        let nextArray = this.state.statisObj[res.factorNo].filter(item => item.quesNo === res.quesNo)
+        let nextOpen = []
+        for (let key in res) {
+          if (res[key]) nextOpen.push(res[key])
+        }
+        this.markQuestNo = res.quesNo;
+        this.setState({
+          quesInfo: nextArray,
+          onSelectedKeys: [res.quesNo],
+          openKeys: nextOpen
+        })
+      } else {
+        this.markParentNo = res.parentNo;
+        this.markQuestNo = res.quesNo;
+        let nextArray = []
+        if (res.factorNo) {
+          nextArray = this.state.statisObj[res.factorNo].filter(item => item.quesNo === res.parentNo)
+          let nextOpen = []
+          for (let key in res) {
+            if (res[key]) nextOpen.push(res[key])
+          }
+          this.setState({
+            quesInfo: nextArray,
+            onSelectedKeys: [res.parentNo],
+            openKeys: nextOpen
+          })
+        }
+      }
     })
   }
-
-  marked = (item) => {
-    const { quesId, marked } = item;
-    let { markMap, markAll, quesInfo } = this.state;
-    const newMark = (markMap[item.quesNo] !== undefined ? markMap[item.quesNo] : marked) ? 0 : 1
-    this.setState({ markMap: { ...markMap, [item.quesNo]: newMark } }, () => {
-      console.log(2222, this.state.markMap)
-    })
-    // console.log(first)
-    markedQuestion({ marked: newMark, quesId }).then(res => {
-      if (res.code === 0) {
-        Message.info({ content: `${newMark ? '' : '取消'}标记成功` })
-        if (newMark) {
-          this.setState({ markAll: ++markAll })
-        }
-        else {
-          this.setState({ markAll: markAll === 0 ? 0 : --markAll })
-        }
-      }
-    })
-  }
-
 
   titleRender = (nodeData) => {
     const text = <div className='inner-title'> <span>{nodeData.quesNo}、</span> {decrypt(nodeData.subjectContent)}</div>
@@ -175,14 +144,32 @@ class ReportDetails extends Component {
   }
   onTreeSelect = (selectedKeys, e) => {
     let selectArray = []
-    // console.log(selectedKeys, e)
     let selectStr = ''
+    let fisrtNameKey = ''
+    let firstName = ''
+    let secondName = ''
+    this.activeKey = ''
     if (selectedKeys[0].split('.').length === 3) {
+      // console.log('lalall', selectedKeys[0].split('.')[0])
+      // 免费版
+      if (this.paperType === '1') {
+        this.markQuestNo = selectedKeys[0]
+      } else {
+        // 父级
+        this.markParentNo = selectedKeys[0]
+        // 当前
+        this.markQuestNo = selectedKeys[0] + '.1'
+      }
       selectStr = selectedKeys[0].split('.')[0] + '.' + selectedKeys[0].split('.')[1]
       selectArray = this.state.statisObj[selectStr]
+      fisrtNameKey = selectedKeys[0].split('.')[0]
+      firstName = this.state.nameObj[fisrtNameKey]
+      secondName = this.state.nameObj[selectStr]
       this.setState({
-        quesInfo: selectArray.filter(item => item.quesNo == selectedKeys),
-        onSelectedKeys: selectedKeys
+        quesInfo: selectArray.filter(item => item.quesNo === selectedKeys[0]),
+        onSelectedKeys: selectedKeys,
+        firstName: firstName,
+        secondName: secondName,
       })
     }
   }
@@ -194,14 +181,10 @@ class ReportDetails extends Component {
     )
   }
   renderItem = (item, index) => {
-    // console.log(1111111, item)
-    const { markMap } = this.state;
-    return <div key={index} className='question'>
+    return <div key={index} className='question' id={this.activeKey === item.quesNo ? 'activeShadow' : ''}>
       <p className='second-title'>{item.quesNo}&nbsp;&nbsp;{decrypt(item.subjectContent)}</p>
       <div className='result'>
-        <p onClick={() => {
-          this.marked(item)
-        }}>
+        <p>
           <img
             style={{ width: '24px', height: '24px' }}
             src={(item.marked === 1)
@@ -221,12 +204,12 @@ class ReportDetails extends Component {
       </div>
     </div>
   }
-
   render() {
-    const { quesInfo, directory, collapsed, activeKey, markAll, loading, fieldNames, gData, onSelectedKeys, openKeys } = this.state;
+    const { quesInfo, firstName, secondName, fieldNames, treeData, onSelectedKeys, openKeys } = this.state;
     return (
       <div className='answer-detail' >
         <div className='content'>
+          <div className='tips'>答题情况</div>
           <div className='bottom'>
             <div className='bottom-left'>
               <DirectoryTree
@@ -234,7 +217,8 @@ class ReportDetails extends Component {
                 fieldNames={fieldNames}
                 expandedKeys={openKeys}
                 selectedKeys={onSelectedKeys}
-                treeData={gData}
+                defaultExpandParent
+                treeData={treeData}
                 rootClassName='tree-div'
                 onSelect={this.onTreeSelect}
                 onExpand={
@@ -246,38 +230,29 @@ class ReportDetails extends Component {
               />
             </div>
             <div className='bottom-right'>
+              <div className='bottom-title'>
+                <p>{firstName} / <span>{secondName}</span></p>
+                <div className='nextMark' onClick={this.nextMarked}>下一标记</div>
+              </div>
               <div className='bottom-right-content'>
-                {/* {quesInfo.map((info,index) => {
-                  return <div key={info.quesNo}>
-                    {
-                       return  this.renderItem(info, index)
-                    }
-                  </div>
-                })} */}
-                {
-
-                  <div>
-                    {this.paperType === '1' ? quesInfo.map((item, index) => {
-                      // this.quesId = item.quesId;
-                      // this.leafId = item.quesId;
-
-                      return this.renderItem(item, index)
-
-                    }) :
-                      quesInfo.map(prop => {
-                        this.quesId = prop.quesId;
-                        return <div className='nofree-bottom' key={prop.quesNo}>
-                          <p className='first-title'>{prop.quesNo}&nbsp;&nbsp;{decrypt(prop.subjectContent)}</p>
-                          {(prop.eChildrenlist || []).map((child, index) => {
-                            // this.leafId = prop.eChildrenlist[0].quesId;
-                            return this.renderItem(child, index)
-                          })}
-                        </div>
-                      })}
-                  </div>
-                }
-
-
+                <div>
+                  {/* 免费版本 */}
+                  {this.paperType === '1' ? quesInfo.map((item, index) => {
+                    // this.quesId = item.quesId;
+                    // this.leafId = item.quesId;
+                    return this.renderItem(item, index)
+                  }) :
+                    quesInfo.map(prop => {
+                      this.quesId = prop.quesId;
+                      return <div className='nofree-bottom' key={prop.quesNo}>
+                        <p className='first-title'>{prop.quesNo}&nbsp;&nbsp;{decrypt(prop.subjectContent)}</p>
+                        {(prop.eChildrenlist || []).map((child, index) => {
+                          // this.leafId = prop.eChildrenlist[0].quesId;
+                          return this.renderItem(child, index)
+                        })}
+                      </div>
+                    })}
+                </div>
               </div>
             </div>
           </div>
