@@ -31,6 +31,11 @@ function baseInfo(props) {
             </div>
             <div className="info-icon">
               <Image
+                width={18}
+                preview={false}
+                src={require('@/assets/img/baseInfo/complete.png')}
+              />
+              <Image
                 width={10}
                 preview={false}
                 src={require('@/assets/img/baseInfo/Vectorinfo-right.png')}
