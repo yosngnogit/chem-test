@@ -5,13 +5,14 @@ import './index.less'
 import { query, getCookie } from '@/utils'
 import { decrypt } from '@/utils/aes';
 import { withRouter } from "react-router-dom";
-import { checkLockQuestion, createAnswer, getAnswer, submitPaper } from "../../api/answer";
+import { checkLockQuestion, createAnswer, getAnswer, submitPaper } from "@/api/answer";
 import { logOut } from '@/api/login'
 
 function AnswerSchedule(props) {
-  const params = query()
+  // const params = query()
+  const paperId = query().paperId
   const [data, setData] = useState([])
-  const [paperId, setPaperId] = useState(params.paperId)
+  // const [paperId, setPaperId] = useState(params.paperId)
   const [answerModule, setAnswerModule] = useState(null)
   const [loading, setLoading] = useState(true)
   const [free, setFree] = useState('')/* 答题类型 */
@@ -19,35 +20,22 @@ function AnswerSchedule(props) {
   const entCode = getCookie('entCode');
   const entName = getCookie('entName')
   const { transparent = false, fixed = false } = props
-
   useEffect(() => {
-    if (paperId !== 'undefined') {
-      getAnswer(paperId).then(res => {
-        setLoading(false)
-        setAnswerModule(res.data.moduleDetail)
-        setData(res.data)
-      })
-    } else {
-      const data = JSON.parse(params.body)
-      createAnswer({ ...data, entCode }).then(res => {
-        setLoading(false)
-        setPaperId(res.data)
-        getAnswer(res.data).then(res => {
-          setAnswerModule(res.data.moduleDetail)
-          setData(res.data)
-        })
-      })
-    }
+    getAnswer(paperId).then(res => {
+      setLoading(false)
+      setAnswerModule(res.data.moduleDetail)
+      setFree(res.data.moduleDetail[0].paperType)
+      setData(res.data)
+    })
   }, [])
-  useEffect(() => {
-    if (paperId !== 'undefined') {
-      getAnswer(paperId).then(res => {
-        setFree(res.data.moduleDetail[0].paperType)
-      }).catch(err => {
-        console.log(err)
-      })
-    }
-  })
+  // useEffect(() => {
+  //   if (paperId !== 'undefined') {
+  //     getAnswer(paperId).then(res => {
+  //     }).catch(err => {
+  //       console.log(err)
+  //     })
+  //   }
+  // })
 
   const submit = () => {
     if (data.incompleteModule) {
@@ -60,8 +48,6 @@ function AnswerSchedule(props) {
       }
     })
   }
-
-  // const back = () => props.history.go(-1);
 
   const goDetail = (item) => {
     checkLockQuestion({ entCode, moduleId: item.moduleId }).then((res) => {
@@ -103,7 +89,6 @@ function AnswerSchedule(props) {
                   {entName}<DownOutlined className='header-user-name-arrow' />
                 </div>
               </Dropdown>
-
               <div className="header-user-btn" onClick={submit}>提交</div>
             </div>
           </div>

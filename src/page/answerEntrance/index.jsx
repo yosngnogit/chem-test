@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Modal, Progress, Message, } from 'antd'
-import { getVersionInfo, getRecordInfo, deleteEntPaper, getInfoPerfect } from "../../api/answer";
+import { getVersionInfo, getRecordInfo, deleteEntPaper, getInfoPerfect, createAnswer } from "../../api/answer";
 import { getCookie } from '@/utils'
 
 import './index.less'
@@ -26,14 +26,21 @@ function AnswerEntrance(props) {
       setInfoPerfect(res.data)
     })
   }, [])
-
-  const goSchedule = (item) => {
-    if (item.paperStatus === '1') {
-      props.history.push(`/report?paperId=${item.paperId}&paperType=${item.paperType}`)
+  const goSchedule = (item, type) => {
+    // console.log(item)
+    // 判断是新建还是继续答题
+    if (type === 'add') {
+      createAnswer({ ...item, entCode }).then(res => {
+        // console.log(res.data)
+        // props.history.push(`/report?paperId=${res.data}&paperType=${item.paperType}`)
+        props.history.push(`/answerSchedule?paperId=${res.data}`)
+      })
       return;
+    } else {
+      props.history.push(`/answerSchedule?paperId=${item.paperId}`)
     }
-    const str = JSON.stringify({ versionNo: item.versionNo, paperType: item.paperType, quesNum: item.quesNum });
-    props.history.push(`/answerSchedule?paperId=${item.paperId}&body=${str}`)
+    // const str = JSON.stringify({ versionNo: item.versionNo, paperType: item.paperType, quesNum: item.quesNum });
+    // props.history.push(`/answerSchedule?paperId=${item.paperId}&body=${str}`)
   }
 
   const goCreate = (item) => {
@@ -45,9 +52,10 @@ function AnswerEntrance(props) {
       bodyClassName: 'pay-confirm',
       content: '已有测试正在进行中，确定是否新建测试？',
       okText: '确认',
-      onOk() { goSchedule(item) },
+      onOk() { goSchedule(item, 'add') },
       onCancel() {
         innerArray = JSON.parse(JSON.stringify(listData));
+        // 免费
         if (item.paperType === '1') {
           innerArray.forEach(i => {
             if (i.paperStatus === '0' && i.paperType === '1') {
@@ -56,6 +64,7 @@ function AnswerEntrance(props) {
             // if (i.paperStatus === '0' && item.paperType === '2') i.payactive = true
           })
         }
+        // 付费
         else {
           innerArray.forEach(i => {
             if (i.paperStatus === '0' && i.paperType === '2') {
@@ -87,10 +96,15 @@ function AnswerEntrance(props) {
     confirm({
       content: '确定删除此条答题记录？',
       onOk: () => {
-        const data = listData.filter(l => l.paperId !== item.paperId);
-        setListData(data);
+        // const data = listData.filter(l => l.paperId !== item.paperId);
+        // setListData(data);
         deleteEntPaper({ paperId: item.paperId }).then(res => {
-          if (res.data) Message.info({ content: '删除成功' })
+          if (res.data) {
+            Message.info({ content: '删除成功' })
+            getRecordInfo(entCode).then(res => {
+              setListData(res.data)
+            })
+          }
         })
       }
     })
@@ -175,7 +189,7 @@ function AnswerEntrance(props) {
                     </div>
                     <div className='list-button'>
 
-                      <div className='list-button-con' onClick={() => { item.paperStatus === '1' ? onLookReport(item) : goSchedule(item) }}>
+                      <div className='list-button-con' onClick={() => { item.paperStatus === '1' ? onLookReport(item) : goSchedule(item, 'edit') }}>
                         {item.paperStatus === '1' ? '查看报告' : '继续答题'}
                       </div>
                       <div className='list-button-del' onClick={() => { onDelete(item) }}>删除记录</div>
