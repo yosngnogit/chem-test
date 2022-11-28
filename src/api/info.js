@@ -6,6 +6,12 @@ export const getInfo = (entCode) => {
     url: ``,
   })
 }
+// 企业基本信息
+export const getComponyList = (entCode) => {
+  return http.request({
+    url: `/front/enterprise/table/tableList/info/${entCode}`,
+  })
+}
 
 //保存企业基本情况
 export const saveUpdate = (data) => {

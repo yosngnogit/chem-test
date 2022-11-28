@@ -71,40 +71,22 @@ const EditableCell = ({
     childNode = editing ? (
       <Form.Item name={dataIndex} style={{ margin: 0 }}>
         {
-          dataIndex === 'holdCertificate' ?
-            <Select
-              autoFocus={true}
-              open={editing}
-              onBlur={save}
-              ref={selectRef}
-              style={{
-                width: 150,
-              }}
-            >{
-                options.map((item, index) => {
-                  return <Select.Option key={index} value={item.value}>{item.label}</Select.Option>
-                })
-              }
-            </Select>
-            :
-            (
-              dataIndex === 'personNumber' ? <Input style={{
-                width: 150,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                onChange={(e) => onInputChange(e, dataIndex)}
-                placeholder='请输入正整数'
-                status={status}
-              /> : <Input style={{
-                width: 150,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                maxLength='64'
-                onChange={(e) => onInputChange(e, dataIndex)}
-              />
-            )
+          dataIndex === 'yearYield' ? <Input style={{
+            width: 200,
+          }} ref={inputRef}
+            onPressEnter={save}
+            onBlur={save}
+            onChange={(e) => onInputChange(e, dataIndex)}
+            placeholder='请输入正整数'
+            status={status}
+          /> : <Input style={{
+            width: 400,
+          }} ref={inputRef}
+            onPressEnter={save}
+            onBlur={save}
+            maxLength='64'
+            onChange={(e) => onInputChange(e, dataIndex)}
+          />
         }
       </Form.Item>
     ) : (
@@ -114,7 +96,7 @@ const EditableCell = ({
     );
   }
   const onInputChange = (e, type) => {
-    if (type === 'personNumber') {
+    if (type === 'yearYield') {
       const reg = /^[1-9]([0-9])*$/;
       let inputValue = e.target.value
       if (reg.test(inputValue) || inputValue === '') {
@@ -144,24 +126,24 @@ const AnswerTable = (props) => {
     },
     {
       title: '主要原料名称',
-      dataIndex: 'mainWorkTypeName',
+      dataIndex: 'name',
       editable: true,
       align: 'center',
       width: 500,
       render: (text, record, index) =>
         <Input style={{
           width: 400,
-        }} value={record.mainWorkTypeName} />
+        }} value={record.name} />
     },
     {
-      title: '年产量（T）',
-      dataIndex: 'personNumber',
+      title: '年产量（T）/年用量（T）',
+      dataIndex: 'yearYield',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
-          width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+          width: 200,
+        }} placeholder='请输入正整数' value={record.yearYield} />
     },
     {
       title: '操作',
@@ -177,8 +159,8 @@ const AnswerTable = (props) => {
   const handleAdd = () => {
     const newData = {
       key: count,
-      mainWorkTypeName: '',
-      personNumber: '',
+      name: '',
+      yearYield: '',
       holdCertificate: '',
     };
     setDataSource([...dataSource, newData]);

@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState } from 'react'
 import { Modal, Form, Input, Select, DatePicker, Checkbox, Radio, Space, Cascader, Spin, message } from 'antd';
 import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
+import { getComponyList } from '@/api/info'
+
 
 import { Image } from 'antd';
 
@@ -94,6 +96,13 @@ function BaseInfoDetails(props) {
   const { confirm } = Modal;
 
   useEffect(() => {
+    console.log(getCookie('entCode'))
+    // getComponyList(getCookie('entCode')).then(res=>{
+    //   console.log(res)
+    // }).catch(err=>{
+    //   console.log(err)
+    // })
+   
     // setLoading(true)
     // Promise.all([
     //   getDictListByName('ECONOMY_TYPE'),

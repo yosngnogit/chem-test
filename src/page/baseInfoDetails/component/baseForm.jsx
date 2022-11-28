@@ -65,9 +65,20 @@ let BaseForm = (props, ref) => {
     return list;
   }
   const onFinish = async (values) => {
+    // console.log(values)
+    // let formParams = {}
+    // formParams = { ...values }
+    const arr2 = [...values.autoControlSituation]
+    arr2.forEach(item => {
+      if (item.notRectification) {
+        item.notRectification = item.notRectification.map(v => v.format('YYYY-MM-DD'))
+      } else {
+        item.notRectification = []
+      }
+    })
     try {
       if (saveLoading) return
-      setSaveLoading(true)
+      // setSaveLoading(true)
       let { regionList, safeMeasures, entEstablishDatetime, economicType, mainDangerChemicalReactionType, personDistributionSituation } = values
       let params = {
         entCode: getCookie('entCode'),
@@ -109,6 +120,7 @@ let BaseForm = (props, ref) => {
       if (id) {
         params.id = id
       }
+      console.log(params)
       setSaveLoading(false)
       await saveUpdate(params).then(res => {
         if (res.code === 0) message.success('保存成功'); setIsEdit(true)
@@ -123,6 +135,7 @@ let BaseForm = (props, ref) => {
   }
   const initBaseInfo = async () => {
     let res = await getBaseInfo(getCookie('entCode'))
+    console.log(res)
     form.setFieldsValue({ entRegisterName: res.data.entRegisterName })
     form.setFieldsValue({ legalPerson: res.data.legalPerson })
     form.setFieldsValue({ produceName: '生产安全许可证' })
@@ -148,7 +161,11 @@ let BaseForm = (props, ref) => {
       reactionExothermicDegree,
       productionFactorsDanger,
       certificatesSituationMap,
-      personDistributionSituation
+      personDistributionSituation,
+      mainDangerProductName,
+      mainDangerIntermediateName,
+      mainDangerMaterialName,
+      autoControlSituation
     } = res.data
     setId(id)
     if (safeMeasures?.indexOf('其他') > -1) {
@@ -193,7 +210,6 @@ let BaseForm = (props, ref) => {
       dangerLicenseNumber: danger?.certificatesCode,
       dangerLicenseArea: danger?.productionManageRange,
     }
-    // console.log(personDistributionSituation)
     if (personDistributionSituation.length === 0) {
       // console.log(params.personDistributionSituation)
       personDistributionSituation.push(
@@ -207,6 +223,70 @@ let BaseForm = (props, ref) => {
       params.personDistributionSituation = personDistributionSituation
     } else {
       params.personDistributionSituation = personDistributionSituation.map(item => {
+        item.key = Math.random()
+        return item
+      })
+    }
+    if (mainDangerProductName.length === 0) {
+      mainDangerProductName.push(
+        {
+          key: Math.random(),
+          name: '',
+          yearYield: '',
+        }
+      )
+      params.mainDangerProductName = mainDangerProductName
+    } else {
+      params.mainDangerProductName = mainDangerProductName.map(item => {
+        item.key = Math.random()
+        return item
+      })
+    }
+    if (mainDangerIntermediateName.length === 0) {
+      mainDangerIntermediateName.push(
+        {
+          key: Math.random(),
+          name: '',
+          yearYield: '',
+        }
+      )
+      params.mainDangerIntermediateName = mainDangerIntermediateName
+    } else {
+      params.mainDangerIntermediateName = mainDangerIntermediateName.map(item => {
+        item.key = Math.random()
+        return item
+      })
+    }
+    if (mainDangerMaterialName.length === 0) {
+      mainDangerMaterialName.push(
+        {
+          key: Math.random(),
+          name: '',
+          yearYield: '',
+        }
+      )
+      params.mainDangerMaterialName = mainDangerMaterialName
+    } else {
+      params.mainDangerMaterialName = mainDangerMaterialName.map(item => {
+        item.key = Math.random()
+        return item
+      })
+    }
+    if (autoControlSituation.length === 0) {
+      autoControlSituation.push(
+        {
+          key: Math.random(),
+          dangerProductDeviceName: '',
+          autoControlUseSituation: '',
+          autoControlAsk: '',//布尔
+          completeRectification: '',//布尔值
+          inRectification: '',//时间
+          notRectification: []//时间段
+        }
+      )
+      params.autoControlSituation = autoControlSituation
+    } else {
+      params.autoControlSituation = autoControlSituation.map(item => {
         item.key = Math.random()
         return item
       })
@@ -230,6 +310,27 @@ let BaseForm = (props, ref) => {
   const setTableData = (data) => {
     form.setFieldsValue({
       personDistributionSituation: data
+    })
+  }
+  const setProductTableData = (data) => {
+    form.setFieldsValue({
+      mainDangerProductName: data
+    })
+  }
+
+  const setMidbodyTableData = (data) => {
+    form.setFieldsValue({
+      mainDangerIntermediateName: data
+    })
+  }
+  const setMaterialTableData = (data) => {
+    form.setFieldsValue({
+      mainDangerMaterialName: data
+    })
+  }
+  const setControlTableData = (data) => {
+    form.setFieldsValue({
+      autoControlSituation: data
     })
   }
   const formItemLayout = {
@@ -570,9 +671,9 @@ let BaseForm = (props, ref) => {
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 disabled={isEdit}
                 className='base-form-add'>
-                <Form.Item name="personDistributionSituation" valuePropName='dataSource'
+                <Form.Item name="mainDangerProductName" valuePropName='dataSource'
                 >
-                  <BaseProductTable setTableData={setTableData} />
+                  <BaseProductTable setTableData={setProductTableData} />
                 </Form.Item>
               </Form>
             </Panel>
@@ -580,9 +681,9 @@ let BaseForm = (props, ref) => {
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 disabled={isEdit}
                 className='base-form-add'>
-                <Form.Item name="personDistributionSituation" valuePropName='dataSource'
+                <Form.Item name="mainDangerIntermediateName" valuePropName='dataSource'
                 >
-                  <BaseMidbodyTable setTableData={setTableData} />
+                  <BaseMidbodyTable setTableData={setMidbodyTableData} />
                 </Form.Item>
               </Form>
             </Panel>
@@ -590,9 +691,9 @@ let BaseForm = (props, ref) => {
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 disabled={isEdit}
                 className='base-form-add'>
-                <Form.Item name="personDistributionSituation" valuePropName='dataSource'
+                <Form.Item name="mainDangerMaterialName" valuePropName='dataSource'
                 >
-                  <BaseMaterialTable setTableData={setTableData} />
+                  <BaseMaterialTable setTableData={setMaterialTableData} />
                 </Form.Item>
               </Form>
             </Panel>
@@ -603,14 +704,14 @@ let BaseForm = (props, ref) => {
           <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
             disabled={isEdit}
             className='base-form-add'>
-            <Form.Item name="personDistributionSituation" valuePropName='dataSource'
+            <Form.Item name="autoControlSituation" valuePropName='dataSource'
             >
-              <BaseDeviceTable setTableData={setTableData} />
+              <BaseDeviceTable setTableData={setControlTableData} />
 
             </Form.Item>
           </Form>
         </Panel>
-        <Panel header={BaseHeader('高危岗位情况')} key="12" forceRender>
+        <Panel header={BaseHeader('作业人员')} key="12" forceRender>
           <div className='form-tip-btns'>
             <div className="dowload">下载模板</div>
             <Upload {...uploadProps} >

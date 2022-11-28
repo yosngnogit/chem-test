@@ -52,11 +52,11 @@ const EditableCell = ({
   useEffect(() => {
     if (editing) {
       // console.log(dataIndex)
-      if (dataIndex === 'time') {
+      if (dataIndex === 'notRectification' || dataIndex === 'inRectification') {
         timeRef.current.focus();
       }
 
-      if (dataIndex !== 'aaa' && dataIndex !== 'bbb') {
+      else if (dataIndex !== 'completeRectification' && dataIndex !== 'autoControlAsk') {
         console.log(inputRef)
         inputRef.current.focus();
       }
@@ -73,6 +73,7 @@ const EditableCell = ({
     setTimeOpen(val)
   }
   const save = async () => {
+    // console.log(editing)
     try {
       const values = await form.validateFields();
       toggleEdit();
@@ -80,16 +81,25 @@ const EditableCell = ({
     } catch (errInfo) {
     }
   };
+  const onSelectChange = async () => {
+    try {
+      const values = await form.validateFields();
+      toggleEdit();
+      handleSave({ ...record, ...values });
+    } catch (errInfo) {
+    }
+    // setEditing(false);
+  }
   let childNode = children;
   if (editable) {
     childNode = editing ? (
       <Form.Item name={dataIndex} style={{ margin: 0 }}>
         {
-          dataIndex === 'aaa' ?
+          dataIndex === 'completeRectification' ?
             <Select
               autoFocus={true}
               open={editing}
-              onChange={(e) => onaaaChange(e, dataIndex, index)}
+              onChange={(e) => onSelectChange(e, dataIndex, index)}
               onBlur={save}
               style={{
                 width: 150,
@@ -101,8 +111,9 @@ const EditableCell = ({
               }
             </Select>
             :
+            // 时间段
             (
-              dataIndex === 'time' ?
+              dataIndex === 'notRectification' ?
                 <RangePicker
                   ref={timeRef}
                   locale={locale}
@@ -113,11 +124,11 @@ const EditableCell = ({
                   onOpenChange={changeTime}
                 /> :
                 (
-                  dataIndex === 'bbb' ?
+                  dataIndex === 'autoControlAsk' ?
                     <Select
                       autoFocus={true}
                       open={editing}
-                      onBlur={save}
+                      onChange={onSelectChange}
                       style={{
                         width: 150,
                       }}
@@ -127,15 +138,27 @@ const EditableCell = ({
                         })
                       }
                     </Select> :
-                    <Input style={{
-                      width: 150,
-                    }} ref={inputRef}
-                      onPressEnter={save}
-                      onBlur={save}
-                      onChange={(e) => onInputChange(e, dataIndex)}
-                      placeholder='请输入正整数'
-                      status={status}
-                    />
+                    (
+                      dataIndex === 'inRectification' ? <DatePicker
+                        ref={timeRef}
+                        style={{
+                          width: 150,
+                        }}
+                        locale={locale}
+                        autoFocus={true}
+                        open={timeOpen}
+                        onChange={(e) => onTimeChange(e, dataIndex, index)}
+                        onOpenChange={changeTime}
+                      /> :
+                        <Input style={{
+                          width: 150,
+                        }} ref={inputRef}
+                          onPressEnter={save}
+                          onBlur={save}
+                          onChange={(e) => onInputChange(e, dataIndex)}
+                          status={status}
+                        />
+                    )
                 )
             )
         }
@@ -160,6 +183,8 @@ const EditableCell = ({
     }
   }
   const onTimeChange = async (e, type, ind) => {
+    // console.log(e)
+    // console.log(type)
     try {
       const values = await form.validateFields();
       handleSave({ ...record, ...values });
@@ -167,10 +192,14 @@ const EditableCell = ({
       // console.log('Save failed:', errInfo);
     }
   }
-  const onaaaChange = async (e, type, ind) => {
+  const oncompleteRectificationChange = async (e, type, ind) => {
     try {
       const values = await form.validateFields();
-      // console.log(values)
+      // if (values.completeRectification) {
+      //   form.setFieldValue({
+      //     inRectification: ''
+      //   })
+      // }
       handleSave({ ...record, ...values });
 
     } catch (errInfo) {
@@ -199,32 +228,32 @@ const AnswerTable = (props) => {
     },
     {
       title: '高危生产装置名称',
-      dataIndex: 'mainWorkTypeName',
+      dataIndex: 'dangerProductDeviceName',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} value={record.mainWorkTypeName} />
+        }} value={record.dangerProductDeviceName} />
     },
     {
       title: '自动装置采用情况',
-      dataIndex: 'personNumber',
+      dataIndex: 'autoControlUseSituation',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.autoControlUseSituation} />
     },
     {
       title: '设计时以满足自动控制要求',
-      dataIndex: 'bbb',
+      dataIndex: 'autoControlAsk',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Select
-          value={record.bbb}
+          value={record.autoControlAsk}
           style={{
             width: 150,
           }}
@@ -238,12 +267,12 @@ const AnswerTable = (props) => {
     },
     {
       title: '已整改完毕',
-      dataIndex: 'aaa',
+      dataIndex: 'completeRectification',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Select
-          value={record.aaa}
+          value={record.completeRectification}
           style={{
             width: 150,
           }}
@@ -257,24 +286,29 @@ const AnswerTable = (props) => {
     },
     {
       title: '正在整改（预计完成时间）',
-      dataIndex: 'personNumber',
+      dataIndex: 'inRectification',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
-        <DatePicker disabled={record.aaa} style={{
+
+        //       <p>
+        //  {record.completeRectification}
+
+        //       </p> 
+        <DatePicker disabled={record.completeRectification || record.completeRectification === ''} style={{
           width: 150,
-        }} />
+        }} value={record.inRectification} />
       // <Input  placeholder='请输入正整数' value={record.personNumber} />
     },
     {
       title: '尚未整改（预计开始及结束时间）',
-      dataIndex: 'time',
+      dataIndex: 'notRectification',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
-        <RangePicker style={{
+        <RangePicker disabled={record.completeRectification || record.completeRectification === ''} style={{
           width: 250,
-        }} />
+        }} value={record.notRectification} />
       // <Input style={{
       //   width: 150,
       // }} placeholder='请输入正整数' value={record.personNumber} />
@@ -295,9 +329,12 @@ const AnswerTable = (props) => {
   const handleAdd = () => {
     const newData = {
       key: count,
-      mainWorkTypeName: '',
-      personNumber: '',
-      holdCertificate: '',
+      dangerProductDeviceName: '',
+      autoControlUseSituation: '',
+      autoControlAsk: '',//布尔
+      completeRectification: '',//布尔值
+      inRectification: '',//时间
+      notRectification: []//时间段
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1)
@@ -314,6 +351,12 @@ const AnswerTable = (props) => {
     const item = newData[index];
     newData.splice(index, 1, { ...item, ...row });
     setDataSource(newData);
+    newData.forEach(item => {
+      // console.log(item)
+      if (item.inRectification !== '') {
+        item.inRectification = item.inRectification.format('YYYY-MM-DD')
+      }
+    })
     props.setTableData(newData)
   };
   const components = {
