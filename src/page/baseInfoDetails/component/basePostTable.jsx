@@ -1,19 +1,35 @@
-import { Button, Form, Input, Table, Select } from 'antd';
+import { Button, Form, Input, Table, Select, message } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   PlusOutlined
 } from '@ant-design/icons';
 // import 'moment/locale/zh-cn';
+import { positiveIntegerRegPoint, cardNumberRge } from '@/utils/reg'
 const EditableContext = React.createContext(null);
 const options = [
   {
-    label: '是',
-    value: true
+    label: '小学',
+    value: '小学'
   },
   {
-    label: '否',
-    value: false
-  }
+    label: '初中',
+    value: '初中'
+  }, {
+    label: '高中',
+    value: '高中'
+  }, {
+    label: '专科',
+    value: '专科'
+  }, {
+    label: '本科',
+    value: '本科'
+  }, {
+    label: '研究生',
+    value: '研究生'
+  }, {
+    label: '博士',
+    value: '博士'
+  },
 ]
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
@@ -42,9 +58,8 @@ const EditableCell = ({
   const [status, setStatus] = useState('')
   useEffect(() => {
     if (editing) {
-      if (dataIndex === 'holdCertificate') {
+      if (dataIndex === 'education') {
         selectRef.current.focus();
-
       } else {
         inputRef.current.focus();
       }
@@ -58,24 +73,37 @@ const EditableCell = ({
     });
   };
 
-  const save = async () => {
+  const save = async (dataIndex) => {
     try {
       const values = await form.validateFields();
-      toggleEdit();
-      handleSave({ ...record, ...values });
+      let inputValue = values.safeCertificatesCode
+      if (dataIndex === 'safeCertificatesCode') {
+        if (cardNumberRge.test(inputValue) || inputValue === '') {
+          setStatus('')
+          toggleEdit();
+          handleSave({ ...record, ...values });
+        } else {
+          setStatus('error')
+          message.warning('请输入正确安全培训号');
+        }
+      } else {
+        toggleEdit();
+        handleSave({ ...record, ...values });
+      }
     } catch (errInfo) {
     }
   };
   let childNode = children;
   if (editable) {
     childNode = editing ? (
-      <Form.Item name={dataIndex} style={{ margin: 0 }}>
+      <Form.Item name={dataIndex} style={{ margin: 0 }}
+      >
         {
-          dataIndex === 'holdCertificate' ?
+          dataIndex === 'education' ?
             <Select
               autoFocus={true}
               open={editing}
-              onBlur={save}
+              onChange={save}
               ref={selectRef}
               style={{
                 width: 150,
@@ -87,24 +115,14 @@ const EditableCell = ({
               }
             </Select>
             :
-            (
-              dataIndex === 'personNumber' ? <Input style={{
-                width: 150,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                onChange={(e) => onInputChange(e, dataIndex)}
-                placeholder='请输入正整数'
-                status={status}
-              /> : <Input style={{
-                width: 150,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                maxLength='64'
-                onChange={(e) => onInputChange(e, dataIndex)}
-              />
-            )
+            <Input style={{
+              width: 150,
+            }} ref={inputRef}
+              onPressEnter={save}
+              onBlur={() => save(dataIndex)}
+              onChange={(e) => onInputChange(e, dataIndex)}
+              status={status}
+            />
         }
       </Form.Item>
     ) : (
@@ -114,17 +132,47 @@ const EditableCell = ({
     );
   }
   const onInputChange = (e, type) => {
-    if (type === 'personNumber') {
-      const reg = /^[1-9]([0-9])*$/;
+    if (type === 'workingSeniority') {
       let inputValue = e.target.value
-      if (reg.test(inputValue) || inputValue === '') {
+      if (positiveIntegerRegPoint.test(inputValue) || inputValue === '') {
+        setStatus('')
+        form.setFieldValue(type, inputValue)
+      } else {
+        let errorLength = ''
+        if (inputValue.split('.')[1]) {
+          errorLength = inputValue.split('.')[1].length
+        }
+        if (errorLength === 3) {
+          setStatus('')
+        } else {
+          setStatus('error')
+        }
+        form.setFieldValue(type, dealInputVal(inputValue))
+      }
+    }
+    if (type === 'safeCertificatesCode') {
+      let inputValue = e.target.value
+      if (cardNumberRge.test(inputValue) || inputValue === '') {
         setStatus('')
         form.setFieldValue(type, inputValue)
       } else {
         setStatus('error')
-        form.setFieldValue(type, '')
+        form.setFieldValue(type, inputValue)
       }
     }
+  }
+  const dealInputVal = (value) => {
+    value = value.replace(/^0*(0\.|[1-9])/, "$1");
+    value = value.replace(/[^\d.]/g, ""); // 清除"数字"和"."以外的字符
+    value = value.replace(/^\./g, ""); // 验证第一个字符是数字而不是字符
+    value = value.replace(/\.{1,}/g, "."); // 只保留第一个.清除多余的
+    value = value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+    value = value.replace(/^(\-)*(\d*)\.(\d\d).*$/, "$1$2.$3"); // 只能输入两个小数
+    value =
+      value.indexOf(".") > 0
+        ? value.split(".")[0].substring(0, 10) + "." + value.split(".")[1]
+        : value.substring(0, 10);
+    return value;
   }
   return <td {...restProps}>{childNode}</td>;
 };
@@ -146,32 +194,34 @@ const AnswerTable = (props) => {
     },
     {
       title: '危险岗位名称',
-      dataIndex: 'mainWorkTypeName',
+      dataIndex: 'dangerPostName',
       editable: true,
       align: 'center',
+      maxLength: 64,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} value={record.mainWorkTypeName} />
+        }} value={record.dangerPostName} />
     },
     {
       title: '姓名',
-      dataIndex: 'personNumber',
+      dataIndex: 'name',
       editable: true,
       align: 'center',
+      maxLength: 64,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.name} />
     },
     {
       title: '学历',
-      dataIndex: 'holdCertificate',
+      dataIndex: 'education',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Select
-          value={record.holdCertificate}
+          value={record.education}
           style={{
             width: 150,
           }}
@@ -185,33 +235,34 @@ const AnswerTable = (props) => {
     },
     {
       title: '专业',
-      dataIndex: 'personNumber',
+      dataIndex: 'major',
       editable: true,
       align: 'center',
+      maxLength: 64,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.major} />
     },
     {
       title: '化工从业年限',
-      dataIndex: 'personNumber',
+      dataIndex: 'workingSeniority',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.workingSeniority} />
     },
     {
       title: '安全培训证号',
-      dataIndex: 'personNumber',
+      dataIndex: 'safeCertificatesCode',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.safeCertificatesCode} />
     },
     {
       title: '操作',
@@ -229,9 +280,12 @@ const AnswerTable = (props) => {
   const handleAdd = () => {
     const newData = {
       key: count,
-      mainWorkTypeName: '',
-      personNumber: '',
-      holdCertificate: '',
+      dangerPostName: '',
+      name: '',
+      education: '',//
+      major: '',//
+      workingSeniority: '',//
+      safeCertificatesCode: ''
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1)
@@ -269,6 +323,7 @@ const AnswerTable = (props) => {
         dataIndex: col.dataIndex,
         title: col.title,
         index,
+        maxLength: col.maxLength,
         handleSave,
       }),
     };

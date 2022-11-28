@@ -23,12 +23,14 @@ import BasePostTable from './basePostTable'
 
 import moment from 'moment';
 import '.././index.less'
+let token = getCookie("access_token");
 
 let BaseForm = (props, ref) => {
   const { Panel } = Collapse;
   const { Option } = Select;
   const { TextArea } = Input;
   const [form] = Form.useForm()
+  const [entCode, setEntCode] = useState(getCookie('entCode'))
   const [id, setId] = useState('')
   const [saveLoading, setSaveLoading] = useState(false)
   const [showSafeInput, setShowSafeInput] = useState(false)
@@ -65,20 +67,23 @@ let BaseForm = (props, ref) => {
     return list;
   }
   const onFinish = async (values) => {
-    // console.log(values)
+    // console.log(111111111, values)
     // let formParams = {}
     // formParams = { ...values }
-    const arr2 = [...values.autoControlSituation]
+    const arr2 = JSON.parse(JSON.stringify([...values.autoControlSituation]))
     arr2.forEach(item => {
+      if (item.inRectification) {
+        item.inRectification = moment(item.inRectification).format('YYYY-MM-DD')
+      }
       if (item.notRectification) {
-        item.notRectification = item.notRectification.map(v => v.format('YYYY-MM-DD'))
+        item.notRectification = item.notRectification.map(v => moment(v).format('YYYY-MM-DD'))
       } else {
         item.notRectification = []
       }
     })
     try {
       if (saveLoading) return
-      // setSaveLoading(true)
+      setSaveLoading(true)
       let { regionList, safeMeasures, entEstablishDatetime, economicType, mainDangerChemicalReactionType, personDistributionSituation } = values
       let params = {
         entCode: getCookie('entCode'),
@@ -120,7 +125,6 @@ let BaseForm = (props, ref) => {
       if (id) {
         params.id = id
       }
-      console.log(params)
       setSaveLoading(false)
       await saveUpdate(params).then(res => {
         if (res.code === 0) message.success('保存成功'); setIsEdit(true)
@@ -135,7 +139,6 @@ let BaseForm = (props, ref) => {
   }
   const initBaseInfo = async () => {
     let res = await getBaseInfo(getCookie('entCode'))
-    console.log(res)
     form.setFieldsValue({ entRegisterName: res.data.entRegisterName })
     form.setFieldsValue({ legalPerson: res.data.legalPerson })
     form.setFieldsValue({ produceName: '生产安全许可证' })
@@ -165,7 +168,8 @@ let BaseForm = (props, ref) => {
       mainDangerProductName,
       mainDangerIntermediateName,
       mainDangerMaterialName,
-      autoControlSituation
+      autoControlSituation,
+      dangerPostTaskPerson
     } = res.data
     setId(id)
     if (safeMeasures?.indexOf('其他') > -1) {
@@ -286,11 +290,39 @@ let BaseForm = (props, ref) => {
       )
       params.autoControlSituation = autoControlSituation
     } else {
-      params.autoControlSituation = autoControlSituation.map(item => {
+      params.autoControlSituation =
+        autoControlSituation.map((item) => {
+          item.key = Math.random()
+          let timeArr = []
+          // if(item.inRectification)
+          if (item.inRectification !== '') item.inRectification = (moment(item.inRectification, 'YYYY-MM-DD'))
+          item.notRectification.forEach(i => {
+            if (i !== 'null') timeArr.push(moment(i, 'YYYY-MM-DD'))
+          })
+          item.notRectification = timeArr
+          return item;
+        });
+    }
+    if (dangerPostTaskPerson.length === 0) {
+      dangerPostTaskPerson.push(
+        {
+          key: Math.random(),
+          dangerPostName: '',
+          name: '',
+          education: '',//
+          major: '',//
+          workingSeniority: '',//
+          safeCertificatesCode: ''
+        }
+      )
+      params.dangerPostTaskPerson = dangerPostTaskPerson
+    } else {
+      params.dangerPostTaskPerson = dangerPostTaskPerson.map(item => {
         item.key = Math.random()
         return item
       })
     }
+    // console.log(autoControlSituation)
     form.setFieldsValue(params)
   }
   const onFinishFailed = () => {
@@ -329,8 +361,15 @@ let BaseForm = (props, ref) => {
     })
   }
   const setControlTableData = (data) => {
+    // console.log('FUQIN', data)
     form.setFieldsValue({
       autoControlSituation: data
+    })
+  }
+  const setPostTableData = (data) => {
+    // console.log('FUQIN', data)
+    form.setFieldsValue({
+      dangerPostTaskPerson: data
     })
   }
   const formItemLayout = {
@@ -374,28 +413,35 @@ let BaseForm = (props, ref) => {
   );
   const uploadProps = {
     name: 'file',
-    action: uploadApi + "/help/fileupload/sys/aliOssUpload",
+    action: uploadApi + `/help/enterprise/table/importExcel`,
     headers: {
-      authorization: 'authorization-text',
+      authorization: 'Bearer' + '' + token,
+      ContentType: 'multipart/form-data'
+    },
+    data: {
+      entCode: entCode,
+      type: 1
     },
     showUploadList: false,
-    accept: '.png',
+    accept: '.xls,.xlsx',
     beforeUpload: (file) => {
-      const isPNG = file.type === 'image/png';
-      if (!isPNG) {
-        message.error(`${file.name} is not a png file`);
-      }
-      return isPNG || Upload.LIST_IGNORE;
+      console.log(file)
+      // const isPNG = file.type === 'image/png';
+      // if (!isPNG) {
+      //   message.error(`${file.name} is not a png file`);
+      // }
+      // return isPNG || Upload.LIST_IGNORE;
     },
     onChange(info) {
-      if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
+      console.log(info)
+      // if (info.file.status !== 'uploading') {
+      //   console.log(info.file, info.fileList);
+      // }
+      // if (info.file.status === 'done') {
+      //   message.success(`${info.file.name} file uploaded successfully`);
+      // } else if (info.file.status === 'error') {
+      //   message.error(`${info.file.name} file upload failed.`);
+      // }
     },
   };
 
@@ -724,9 +770,9 @@ let BaseForm = (props, ref) => {
             wrapperCol={{ span: 24 }}
             disabled={isEdit}
             className='base-form-add'>
-            <Form.Item name="personDistributionSituation" valuePropName='dataSource'
+            <Form.Item name="dangerPostTaskPerson" valuePropName='dataSource'
             >
-              <BasePostTable setTableData={setTableData} />
+              <BasePostTable setTableData={setPostTableData} />
             </Form.Item>
           </Form>
         </Panel>

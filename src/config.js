@@ -3,7 +3,7 @@ let baseURL = 'http://10.52.24.21:8021/api'
 let appCode = 'CBRAIN_OFFICIAL'
 let clientId = 'android'
 let SmsTemplate = 'SMS_154950909'
-let uploadApi = "http://101.68.70.242:10260/api"
+let uploadApi = "http://10.52.24.21:8021/api"
 
 
 if (env === 'production') {

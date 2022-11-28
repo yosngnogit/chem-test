@@ -33,7 +33,7 @@ function BaseInfoDetails(props) {
         componentName: 'BaseForm'
       },
       {
-        name: '危险源（点）监控管理表',
+        name: '危险源（点）监控管理登记表',
         status: true,
         componentName: 'SourceForm',
       }, {
@@ -96,12 +96,12 @@ function BaseInfoDetails(props) {
   const { confirm } = Modal;
 
   useEffect(() => {
-    console.log(getCookie('entCode'))
-    // getComponyList(getCookie('entCode')).then(res=>{
-    //   console.log(res)
-    // }).catch(err=>{
-    //   console.log(err)
-    // })
+    // console.log(getCookie('entCode'))
+    getComponyList(getCookie('entCode')).then(res=>{
+      console.log(res)
+    }).catch(err=>{
+      // console.log(err)
+    })
    
     // setLoading(true)
     // Promise.all([

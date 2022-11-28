@@ -39,6 +39,7 @@ const EditableCell = ({
   dataIndex,
   record,
   handleSave,
+  maxLength,
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false);
@@ -156,7 +157,7 @@ const EditableCell = ({
                           onPressEnter={save}
                           onBlur={save}
                           onChange={(e) => onInputChange(e, dataIndex)}
-                          status={status}
+                          maxLength={maxLength}
                         />
                     )
                 )
@@ -170,21 +171,10 @@ const EditableCell = ({
     );
   }
   const onInputChange = (e, type) => {
-    if (type === 'personNumber') {
-      const reg = /^[1-9]([0-9])*$/;
-      let inputValue = e.target.value
-      if (reg.test(inputValue) || inputValue === '') {
-        setStatus('')
-        form.setFieldValue(type, inputValue)
-      } else {
-        setStatus('error')
-        form.setFieldValue(type, '')
-      }
-    }
+    let inputValue = e.target.value
+    form.setFieldValue(type, inputValue)
   }
   const onTimeChange = async (e, type, ind) => {
-    // console.log(e)
-    // console.log(type)
     try {
       const values = await form.validateFields();
       handleSave({ ...record, ...values });
@@ -192,28 +182,12 @@ const EditableCell = ({
       // console.log('Save failed:', errInfo);
     }
   }
-  const oncompleteRectificationChange = async (e, type, ind) => {
-    try {
-      const values = await form.validateFields();
-      // if (values.completeRectification) {
-      //   form.setFieldValue({
-      //     inRectification: ''
-      //   })
-      // }
-      handleSave({ ...record, ...values });
-
-    } catch (errInfo) {
-      // console.log('Save failed:', errInfo);
-    }
-  }
-
   return <td {...restProps}>{childNode}</td>;
 };
 
 const AnswerTable = (props) => {
   const [dataSource, setDataSource] = useState(props.dataSource);
   const [count, setCount] = useState(1);
-
 
   const defaultColumns = [
     {
@@ -231,6 +205,7 @@ const AnswerTable = (props) => {
       dataIndex: 'dangerProductDeviceName',
       editable: true,
       align: 'center',
+      maxLength: 64,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -241,6 +216,7 @@ const AnswerTable = (props) => {
       dataIndex: 'autoControlUseSituation',
       editable: true,
       align: 'center',
+      maxLength: 200,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -290,15 +266,9 @@ const AnswerTable = (props) => {
       editable: true,
       align: 'center',
       render: (text, record, index) =>
-
-        //       <p>
-        //  {record.completeRectification}
-
-        //       </p> 
         <DatePicker disabled={record.completeRectification || record.completeRectification === ''} style={{
           width: 150,
         }} value={record.inRectification} />
-      // <Input  placeholder='请输入正整数' value={record.personNumber} />
     },
     {
       title: '尚未整改（预计开始及结束时间）',
@@ -351,12 +321,13 @@ const AnswerTable = (props) => {
     const item = newData[index];
     newData.splice(index, 1, { ...item, ...row });
     setDataSource(newData);
-    newData.forEach(item => {
-      // console.log(item)
-      if (item.inRectification !== '') {
-        item.inRectification = item.inRectification.format('YYYY-MM-DD')
-      }
-    })
+    // newData.forEach(item => {
+    //   // console.log(item)
+    //   if (item.inRectification !== '') {
+    //     item.inRectification.format('YYYY-MM-DD')
+    //   }
+    // })
+    // console.log(1111111,newData)
     props.setTableData(newData)
   };
   const components = {
@@ -377,6 +348,7 @@ const AnswerTable = (props) => {
         dataIndex: col.dataIndex,
         title: col.title,
         index,
+        maxLength:col.maxLength,
         handleSave,
       }),
     };

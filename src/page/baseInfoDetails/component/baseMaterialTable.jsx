@@ -4,17 +4,10 @@ import {
   PlusOutlined
 } from '@ant-design/icons';
 // import 'moment/locale/zh-cn';
+import { positiveIntegerRegPoint } from '@/utils/reg'
+
 const EditableContext = React.createContext(null);
-const options = [
-  {
-    label: '是',
-    value: true
-  },
-  {
-    label: '否',
-    value: false
-  }
-]
+
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
   return (
@@ -33,6 +26,7 @@ const EditableCell = ({
   dataIndex,
   record,
   handleSave,
+  maxLength,
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false);
@@ -77,14 +71,13 @@ const EditableCell = ({
             onPressEnter={save}
             onBlur={save}
             onChange={(e) => onInputChange(e, dataIndex)}
-            placeholder='请输入正整数'
             status={status}
           /> : <Input style={{
             width: 400,
           }} ref={inputRef}
             onPressEnter={save}
             onBlur={save}
-            maxLength='64'
+            maxLength={maxLength}
             onChange={(e) => onInputChange(e, dataIndex)}
           />
         }
@@ -97,16 +90,36 @@ const EditableCell = ({
   }
   const onInputChange = (e, type) => {
     if (type === 'yearYield') {
-      const reg = /^[1-9]([0-9])*$/;
       let inputValue = e.target.value
-      if (reg.test(inputValue) || inputValue === '') {
+      if (positiveIntegerRegPoint.test(inputValue) || inputValue === '') {
         setStatus('')
         form.setFieldValue(type, inputValue)
       } else {
-        setStatus('error')
-        form.setFieldValue(type, '')
+        let errorLength = ''
+        if (inputValue.split('.')[1]) {
+          errorLength = inputValue.split('.')[1].length
+        }
+        if (errorLength === 3) {
+          setStatus('')
+        } else {
+          setStatus('error')
+        }
+        form.setFieldValue(type, dealInputVal(inputValue))
       }
     }
+  }
+  const dealInputVal = (value) => {
+    value = value.replace(/^0*(0\.|[1-9])/, "$1");
+    value = value.replace(/[^\d.]/g, ""); // 清除"数字"和"."以外的字符
+    value = value.replace(/^\./g, ""); // 验证第一个字符是数字而不是字符
+    value = value.replace(/\.{1,}/g, "."); // 只保留第一个.清除多余的
+    value = value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+    value = value.replace(/^(\-)*(\d*)\.(\d\d).*$/, "$1$2.$3"); // 只能输入两个小数
+    value =
+      value.indexOf(".") > 0
+        ? value.split(".")[0].substring(0, 10) + "." + value.split(".")[1]
+        : value.substring(0, 10);
+    return value;
   }
   return <td {...restProps}>{childNode}</td>;
 };
@@ -130,6 +143,7 @@ const AnswerTable = (props) => {
       editable: true,
       align: 'center',
       width: 500,
+      maxLength: 64,
       render: (text, record, index) =>
         <Input style={{
           width: 400,
@@ -143,7 +157,7 @@ const AnswerTable = (props) => {
       render: (text, record, index) =>
         <Input style={{
           width: 200,
-        }} placeholder='请输入正整数' value={record.yearYield} />
+        }} value={record.yearYield} />
     },
     {
       title: '操作',
@@ -198,6 +212,7 @@ const AnswerTable = (props) => {
         editable: col.editable,
         dataIndex: col.dataIndex,
         title: col.title,
+        maxLength:col.maxLength,
         index,
         handleSave,
       }),

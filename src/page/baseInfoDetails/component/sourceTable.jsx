@@ -7,12 +7,20 @@ import {
 const EditableContext = React.createContext(null);
 const options = [
   {
-    label: '是',
-    value: true
+    label: '一级危险源（A级）',
+    value: '一级危险源（A级）'
   },
   {
-    label: '否',
-    value: false
+    label: '二级危险源（B级）',
+    value: '二级危险源（B级）'
+  },
+  {
+    label: '三级危险源（C级）',
+    value: '三级危险源（C级）'
+  },
+  {
+    label: '四级危险源（D级）',
+    value: '四级危险源（D级）'
   }
 ]
 const EditableRow = ({ index, ...props }) => {
@@ -42,7 +50,7 @@ const EditableCell = ({
   const [status, setStatus] = useState('')
   useEffect(() => {
     if (editing) {
-      if (dataIndex === 'holdCertificate') {
+      if (dataIndex === 'level') {
         selectRef.current.focus();
 
       } else {
@@ -71,11 +79,11 @@ const EditableCell = ({
     childNode = editing ? (
       <Form.Item name={dataIndex} style={{ margin: 0 }}>
         {
-          dataIndex === 'holdCertificate' ?
+          dataIndex === 'level' ?
             <Select
               autoFocus={true}
               open={editing}
-              onBlur={save}
+              onChange={save}
               ref={selectRef}
               style={{
                 width: 150,
@@ -88,13 +96,13 @@ const EditableCell = ({
             </Select>
             :
             (
-              dataIndex === 'personNumber' ? <Input style={{
+              dataIndex === 'dangerPosition' ? <Input style={{
                 width: 150,
               }} ref={inputRef}
                 onPressEnter={save}
                 onBlur={save}
                 onChange={(e) => onInputChange(e, dataIndex)}
-                placeholder='请输入正整数'
+
                 status={status}
               /> : <Input style={{
                 width: 150,
@@ -114,7 +122,7 @@ const EditableCell = ({
     );
   }
   const onInputChange = (e, type) => {
-    if (type === 'personNumber') {
+    if (type === 'dangerPosition') {
       const reg = /^[1-9]([0-9])*$/;
       let inputValue = e.target.value
       if (reg.test(inputValue) || inputValue === '') {
@@ -134,42 +142,34 @@ const AnswerTable = (props) => {
   const [count, setCount] = useState(1);
 
   const defaultColumns = [
-    // {
-    //   title: '序号',
-    //   dataIndex: '',
-    //   align: 'center',
-    //   width: 80,
-    //   render: (text, record, index) =>
-    //     <span>{index + 1}</span>
-    // },
     {
       title: '单位名称',
-      dataIndex: 'mainWorkTypeName',
+      dataIndex: 'unitName',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} value={record.mainWorkTypeName} />
+        }} value={record.unitName} />
     },
     {
       title: '危险源(点)名称',
-      dataIndex: 'personNumber',
+      dataIndex: 'dangerPosition',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.dangerPosition} />
     },
     {
       title: '级别',
-      dataIndex: 'holdCertificate',
+      dataIndex: 'level',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Select
-          value={record.holdCertificate}
+          value={record.level}
           style={{
             width: 150,
           }}
@@ -183,83 +183,83 @@ const AnswerTable = (props) => {
     },
     {
       title: '所在部位',
-      dataIndex: 'personNumber',
+      dataIndex: 'inPosition',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.inPosition} />
     },
     {
       title: '等级评定机构名称',
-      dataIndex: 'personNumber',
+      dataIndex: 'levelJudgeMechanismName',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.levelJudgeMechanismName} />
     },
     {
       title: '危险因素',
-      dataIndex: 'personNumber',
+      dataIndex: 'riskFactors',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.riskFactors} />
     },
     {
       title: '可能发生的危险（害）',
-      dataIndex: 'personNumber',
+      dataIndex: 'possibleDanger',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.possibleDanger} />
     },
     {
       title: '第一责任人',
-      dataIndex: 'personNumber',
+      dataIndex: 'mainLiablePerson',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.mainLiablePerson} />
     },
     {
       title: '监控责任人',
-      dataIndex: 'personNumber',
+      dataIndex: 'monitorLiablePerson',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.monitorLiablePerson} />
     },
     {
       title: '监测情况',
-      dataIndex: 'personNumber',
+      dataIndex: 'detection',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.detection} />
     },
     {
       title: '评估情况',
-      dataIndex: 'personNumber',
+      dataIndex: 'assessment',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.assessment} />
     },
 
     {
@@ -278,9 +278,17 @@ const AnswerTable = (props) => {
   const handleAdd = () => {
     const newData = {
       key: count,
-      mainWorkTypeName: '',
-      personNumber: '',
-      holdCertificate: '',
+      unitName: '',
+      dangerPosition: '',
+      level: '',
+      inPosition: '',
+      levelJudgeMechanismName: '',
+      riskFactors: '',
+      possibleDanger: '',
+      mainLiablePerson: '',
+      monitorLiablePerson: '',
+      detection: '',
+      assessment: ''
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1)
