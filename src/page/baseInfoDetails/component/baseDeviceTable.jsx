@@ -58,7 +58,7 @@ const EditableCell = ({
       }
 
       else if (dataIndex !== 'completeRectification' && dataIndex !== 'autoControlAsk') {
-        console.log(inputRef)
+        // console.log(inputRef)
         inputRef.current.focus();
       }
     }

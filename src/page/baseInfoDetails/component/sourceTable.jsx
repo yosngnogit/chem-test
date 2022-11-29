@@ -41,6 +41,7 @@ const EditableCell = ({
   dataIndex,
   record,
   handleSave,
+  maxLength,
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false);
@@ -86,7 +87,7 @@ const EditableCell = ({
               onChange={save}
               ref={selectRef}
               style={{
-                width: 150,
+                width: 180,
               }}
             >{
                 options.map((item, index) => {
@@ -95,24 +96,13 @@ const EditableCell = ({
               }
             </Select>
             :
-            (
-              dataIndex === 'dangerPosition' ? <Input style={{
-                width: 150,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                onChange={(e) => onInputChange(e, dataIndex)}
-
-                status={status}
-              /> : <Input style={{
-                width: 150,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                maxLength='64'
-                onChange={(e) => onInputChange(e, dataIndex)}
-              />
-            )
+            <Input style={{
+              width: 150,
+            }} ref={inputRef}
+              onPressEnter={save}
+              onBlur={save}
+              maxLength={maxLength}
+            />
         }
       </Form.Item>
     ) : (
@@ -121,19 +111,19 @@ const EditableCell = ({
       </div>
     );
   }
-  const onInputChange = (e, type) => {
-    if (type === 'dangerPosition') {
-      const reg = /^[1-9]([0-9])*$/;
-      let inputValue = e.target.value
-      if (reg.test(inputValue) || inputValue === '') {
-        setStatus('')
-        form.setFieldValue(type, inputValue)
-      } else {
-        setStatus('error')
-        form.setFieldValue(type, '')
-      }
-    }
-  }
+  // const onInputChange = (e, type) => {
+  //   if (type === 'dangerPosition') {
+  //     const reg = /^[1-9]([0-9])*$/;
+  //     let inputValue = e.target.value
+  //     if (reg.test(inputValue) || inputValue === '') {
+  //       setStatus('')
+  //       form.setFieldValue(type, inputValue)
+  //     } else {
+  //       setStatus('error')
+  //       form.setFieldValue(type, '')
+  //     }
+  //   }
+  // }
   return <td {...restProps}>{childNode}</td>;
 };
 
@@ -147,6 +137,7 @@ const AnswerTable = (props) => {
       dataIndex: 'unitName',
       editable: true,
       align: 'center',
+      maxLength: 128,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -154,13 +145,14 @@ const AnswerTable = (props) => {
     },
     {
       title: '危险源(点)名称',
-      dataIndex: 'dangerPosition',
+      dataIndex: 'dangerSourceName',
       editable: true,
       align: 'center',
+      maxLength: 64,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} value={record.dangerPosition} />
+        }} value={record.dangerSourceName} />
     },
     {
       title: '级别',
@@ -171,7 +163,7 @@ const AnswerTable = (props) => {
         <Select
           value={record.level}
           style={{
-            width: 150,
+            width: 180,
           }}
         >
           {
@@ -186,6 +178,8 @@ const AnswerTable = (props) => {
       dataIndex: 'inPosition',
       editable: true,
       align: 'center',
+      maxLength: 64,
+
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -196,6 +190,7 @@ const AnswerTable = (props) => {
       dataIndex: 'levelJudgeMechanismName',
       editable: true,
       align: 'center',
+      maxLength: 128,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -206,6 +201,7 @@ const AnswerTable = (props) => {
       dataIndex: 'riskFactors',
       editable: true,
       align: 'center',
+      maxLength: 200,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -216,6 +212,7 @@ const AnswerTable = (props) => {
       dataIndex: 'possibleDanger',
       editable: true,
       align: 'center',
+      maxLength: 200,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -226,6 +223,8 @@ const AnswerTable = (props) => {
       dataIndex: 'mainLiablePerson',
       editable: true,
       align: 'center',
+      maxLength: 64,
+
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -236,6 +235,7 @@ const AnswerTable = (props) => {
       dataIndex: 'monitorLiablePerson',
       editable: true,
       align: 'center',
+      maxLength: 64,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -246,6 +246,7 @@ const AnswerTable = (props) => {
       dataIndex: 'detection',
       editable: true,
       align: 'center',
+      maxLength: 200,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -256,6 +257,7 @@ const AnswerTable = (props) => {
       dataIndex: 'assessment',
       editable: true,
       align: 'center',
+      maxLength: 200,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -326,6 +328,7 @@ const AnswerTable = (props) => {
         dataIndex: col.dataIndex,
         title: col.title,
         index,
+        maxLength: col.maxLength,
         handleSave,
       }),
     };

@@ -70,8 +70,8 @@ let BaseForm = (props, ref) => {
     // console.log(111111111, values)
     // let formParams = {}
     // formParams = { ...values }
-    const arr2 = JSON.parse(JSON.stringify([...values.autoControlSituation]))
-    arr2.forEach(item => {
+    const timeArray = JSON.parse(JSON.stringify([...values.autoControlSituation]))
+    timeArray.forEach(item => {
       if (item.inRectification) {
         item.inRectification = moment(item.inRectification).format('YYYY-MM-DD')
       }
@@ -127,7 +127,11 @@ let BaseForm = (props, ref) => {
       }
       setSaveLoading(false)
       await saveUpdate(params).then(res => {
-        if (res.code === 0) message.success('保存成功'); setIsEdit(true)
+        if (res.code === 0) {
+
+          message.success('保存成功'); setIsEdit(true)
+          initBaseInfo()
+        }
       }).catch(err => {
         throw err
       })
@@ -169,7 +173,10 @@ let BaseForm = (props, ref) => {
       mainDangerIntermediateName,
       mainDangerMaterialName,
       autoControlSituation,
-      dangerPostTaskPerson
+      dangerPostTaskPerson,
+      residentialDistance,
+      industrialNeighbors,
+      monitoredDangerChemistryName
     } = res.data
     setId(id)
     if (safeMeasures?.indexOf('其他') > -1) {
@@ -183,6 +190,9 @@ let BaseForm = (props, ref) => {
     let danger = certificatesSituationMap['危化品经营许可证']
     let regionList = [provinceCode, city, area]
     let params = {
+      monitoredDangerChemistryName,
+      residentialDistance,
+      industrialNeighbors,
       entRegisterName,
       economicType,
       entEstablishDatetime: moment(entEstablishDatetime),
@@ -510,6 +520,21 @@ let BaseForm = (props, ref) => {
             >
               <Input placeholder='请输入厂区面积' maxLength='99999999' />
             </Form.Item>
+            <Form.Item label='公司与最近居民区的距离（公里）' name='residentialDistance'
+              rules={[
+                { required: true },
+                { pattern: positiveIntegerRegPoint, message: '请输入正确的数值' },
+              ]}
+            >
+              <Input placeholder='请输入公里数' />
+            </Form.Item>
+            <Form.Item label='工业邻居（工业区里）' name='industrialNeighbors'
+              rules={[
+                { required: true }
+              ]}
+            >
+              <Input placeholder='请输入工业邻居' maxLength='200' />
+            </Form.Item>
             <Form.Item label='企业法定代表人名称' name='legalPerson'
               rules={[{ required: true }]}>
               <Input maxLength='64' disabled />
@@ -542,6 +567,10 @@ let BaseForm = (props, ref) => {
                   { label: '偶氮化工艺', value: '偶氮化工艺' },
                 ]}
               />
+            </Form.Item>
+            <Form.Item label='重点监管的危险化学品名称' name='monitoredDangerChemistryName'
+              rules={[{ required: true }]}>
+              <Input placeholder='请输入重点监管的危险化学品名称' maxLength='200' />
             </Form.Item>
             <Form.Item label='现有的安全措施水平' name='safeMeasures'
             >

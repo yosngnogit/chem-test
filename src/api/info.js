@@ -35,9 +35,23 @@ export const getSourceForm = (entCode) => {
   })
 }
 // 保存saveSourceForm
-export const saveSourceForm = (data) => {
+export const saveSourceForm = (entcode, data) => {
   return http.request({
-    url: `/front/enterprise/table/tableDangerSourceMonitorManageRegister/saveOrUpdate`,
+    url: `/front/enterprise/table/tableDangerSourceMonitorManageRegister/saveOrUpdate?entCode=${entcode}`,
+    method: 'post',
+    data
+  })
+}
+// 获取安全生产组织
+export const getProductionSafetyForm = (entCode) => {
+  return http.request({
+    url: `/front/enterprise/table/tableSafeProductionMechanismRegister/info/${entCode}`,
+  })
+}
+// 保存saveSourceForm
+export const saveProductionSafetyForm = (entcode, data) => {
+  return http.request({
+    url: `/front/enterprise/table/tableDangerSourceMonitorManageRegister/saveOrUpdate?entCode=${entcode}`,
     method: 'post',
     data
   })

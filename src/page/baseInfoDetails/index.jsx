@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { Modal, Form, Input, Select, DatePicker, Checkbox, Radio, Space, Cascader, Spin, message } from 'antd';
+import { Modal, Form, Input, Select, DatePicker, Checkbox, Radio, Space, Cascader, Spin, message, Tooltip } from 'antd';
 import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
 import { getComponyList } from '@/api/info'
@@ -97,12 +97,12 @@ function BaseInfoDetails(props) {
 
   useEffect(() => {
     // console.log(getCookie('entCode'))
-    getComponyList(getCookie('entCode')).then(res=>{
+    getComponyList(1).then(res => {
       console.log(res)
-    }).catch(err=>{
+    }).catch(err => {
       // console.log(err)
     })
-   
+
     // setLoading(true)
     // Promise.all([
     //   getDictListByName('ECONOMY_TYPE'),
@@ -135,6 +135,8 @@ function BaseInfoDetails(props) {
           setIsActive(index)
           setComponentName(e.componentName)
           setFormName(e.name)
+          setComponentEdit(false)
+
         },
         onCancel() {
           setIsActive(index)
@@ -222,7 +224,13 @@ function BaseInfoDetails(props) {
                   key={i.componentName}
                   className={index === isActive ? 'activebtn' : ''}
                   onClick={() => searchForm(i, index)}>
-                  <p>  <span>*</span> {i.name}</p>
+                  <Tooltip title={i.name}>
+                    <p>
+
+                      <span>*</span> {i.name}
+                    </p>
+                  </Tooltip>
+
                   <div className='icons'>
                     {
                       i.status ?
@@ -254,7 +262,7 @@ function BaseInfoDetails(props) {
             componentName === 'BaseForm' ? <BaseForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
-            componentName === 'SourceForm' ? <SourceForm setEdit={setEdit} /> : ''
+            componentName === 'SourceForm' ? <SourceForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
             componentName === 'ProductionSafetyForm' ? <ProductionSafetyForm setEdit={setEdit} ref={refbase} /> : ''

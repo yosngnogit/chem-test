@@ -1,19 +1,39 @@
-import { Button, Form, Input, Table, Select } from 'antd';
+import { Button, Form, Input, Table, Select, DatePicker } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   PlusOutlined
 } from '@ant-design/icons';
-// import 'moment/locale/zh-cn';
+import 'moment/locale/zh-cn';
+import locale from 'antd/es/date-picker/locale/zh_CN';
+
+import { positiveIntegerReg } from '@/utils/reg'
+
 const EditableContext = React.createContext(null);
+const { RangePicker } = DatePicker;
 const options = [
   {
-    label: '是',
-    value: true
+    label: '小学',
+    value: '小学'
   },
   {
-    label: '否',
-    value: false
-  }
+    label: '初中',
+    value: '初中'
+  }, {
+    label: '高中',
+    value: '高中'
+  }, {
+    label: '专科',
+    value: '专科'
+  }, {
+    label: '本科',
+    value: '本科'
+  }, {
+    label: '研究生',
+    value: '研究生'
+  }, {
+    label: '博士',
+    value: '博士'
+  },
 ]
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
@@ -33,20 +53,26 @@ const EditableCell = ({
   dataIndex,
   record,
   handleSave,
+  maxLength,
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false);
   const inputRef = useRef(null);
   const selectRef = useRef(null);
+  const timeRef = useRef(null);
+  const [timeOpen, setTimeOpen] = useState(true);
+
   const form = useContext(EditableContext);
   const [status, setStatus] = useState('')
   useEffect(() => {
     if (editing) {
-      if (dataIndex === 'holdCertificate') {
-        selectRef.current.focus();
-
-      } else {
+      if (dataIndex === 'appointmentTime') {
+        // selectRef.current.focus();
+        timeRef.current.focus();
+      }
+      else if(dataIndex !== 'education') {
         inputRef.current.focus();
+
       }
     }
   }, [editing, dataIndex]);
@@ -66,46 +92,57 @@ const EditableCell = ({
     } catch (errInfo) {
     }
   };
+  const changeTime = (val) => {
+    setTimeOpen(val)
+  }
+  const onSelectChange = async () => {
+    try {
+      const values = await form.validateFields();
+      toggleEdit();
+      handleSave({ ...record, ...values });
+    } catch (errInfo) {
+    }
+    // setEditing(false);
+  }
   let childNode = children;
   if (editable) {
     childNode = editing ? (
       <Form.Item name={dataIndex} style={{ margin: 0 }}>
-        {
-          dataIndex === 'holdCertificate' ?
-            <Select
+        {(
+          dataIndex === 'appointmentTime' ?
+            <DatePicker
+              ref={timeRef}
+              locale={locale}
               autoFocus={true}
-              open={editing}
-              onBlur={save}
-              ref={selectRef}
-              style={{
-                width: 100,
-              }}
-            >{
-                options.map((item, index) => {
-                  return <Select.Option key={index} value={item.value}>{item.label}</Select.Option>
-                })
-              }
-            </Select>
-            :
+              open={timeOpen}
+              style={{ width: 150 }}
+              onChange={(e) => onTimeChange(e, dataIndex, index)}
+              onOpenChange={changeTime}
+            /> :
             (
-              dataIndex === 'personNumber' ? <Input style={{
-                width: 100,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                onChange={(e) => onInputChange(e, dataIndex)}
-                placeholder='请输入正整数'
-                status={status}
-              /> : <Input style={{
-                width: 100,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                maxLength='64'
-                onChange={(e) => onInputChange(e, dataIndex)}
-              />
+              dataIndex === 'education' ?
+                <Select
+                  autoFocus={true}
+                  open={editing}
+                  onChange={onSelectChange}
+                  style={{
+                    width: 150,
+                  }}
+                >{
+                    options.map((item, index) => {
+                      return <Select.Option key={index} value={item.value}>{item.label}</Select.Option>
+                    })
+                  }
+                </Select> :
+                <Input style={{
+                  width: 150,
+                }} ref={inputRef}
+                  onPressEnter={save}
+                  onBlur={save}
+                  maxLength={maxLength}
+                />
             )
-        }
+        )}
       </Form.Item>
     ) : (
       <div onClick={toggleEdit}>
@@ -113,17 +150,12 @@ const EditableCell = ({
       </div>
     );
   }
-  const onInputChange = (e, type) => {
-    if (type === 'personNumber') {
-      const reg = /^[1-9]([0-9])*$/;
-      let inputValue = e.target.value
-      if (reg.test(inputValue) || inputValue === '') {
-        setStatus('')
-        form.setFieldValue(type, inputValue)
-      } else {
-        setStatus('error')
-        form.setFieldValue(type, '')
-      }
+  const onTimeChange = async (e, type, ind) => {
+    try {
+      const values = await form.validateFields();
+      handleSave({ ...record, ...values });
+    } catch (errInfo) {
+      // console.log('Save failed:', errInfo);
     }
   }
   return <td {...restProps}>{childNode}</td>;
@@ -134,93 +166,80 @@ const AnswerTable = (props) => {
   const [count, setCount] = useState(1);
 
   const defaultColumns = [
-    // {
-    //   title: '序号',
-    //   dataIndex: '',
-    //   align: 'center',
-    //   width: 80,
-    //   render: (text, record, index) =>
-    //     <span>{index + 1}</span>
-    // },
     {
-      title: '单位名称',
-      dataIndex: 'mainWorkTypeName',
+      title: '任命组织机构成员时间',
+      dataIndex: 'appointmentTime',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
-        <Input style={{
-          width: 100,
-        }} value={record.mainWorkTypeName} />
+        <DatePicker style={{
+          width: 150,
+        }} value={record.appointmentTime} />
     },
     {
-      title: '主要负责人',
-      dataIndex: 'personNumber',
+      title: '成员姓名',
+      dataIndex: 'memberName',
       editable: true,
       align: 'center',
+      maxLength: 64,
       render: (text, record, index) =>
         <Input style={{
-          width: 100,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+          width: 150,
+        }} value={record.memberName} />
     },
     {
-      title: '安全机构名称',
-      dataIndex: 'personNumber',
+      title: '学历',
+      dataIndex: 'education',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
-        <Input style={{
-          width: 100,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        <Select
+          value={record.education}
+          style={{
+            width: 150,
+          }}
+        >
+          {
+            options.map((item, index) => {
+              return <Select.Option key={index} value={item.value}>{item.label}</Select.Option>
+            })
+          }
+        </Select>
     },
     {
-      title: '科室数（个）',
-      dataIndex: 'personNumber',
+      title: '职务',
+      dataIndex: 'post',
       editable: true,
       align: 'center',
+      maxLength: 64,
+
       render: (text, record, index) =>
         <Input style={{
-          width: 100,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+          width: 150,
+        }} value={record.post} />
     },
     {
-      title: '车间数（个）',
-      dataIndex: 'personNumber',
+      title: '职称',
+      dataIndex: 'title',
       editable: true,
       align: 'center',
+      maxLength: 64,
+
       render: (text, record, index) =>
         <Input style={{
-          width: 100,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+          width: 150,
+        }} value={record.title} />
     },
     {
-      title: '班组数（个）',
-      dataIndex: 'personNumber',
+      title: '备注',
+      dataIndex: 'remark',
       editable: true,
       align: 'center',
+      maxLength: 200,
       render: (text, record, index) =>
         <Input style={{
-          width: 100,
-        }} placeholder='请输入正整数' value={record.personNumber} />
-    },
-    {
-      title: '职工总数数（名）',
-      dataIndex: 'personNumber',
-      editable: true,
-      align: 'center',
-      render: (text, record, index) =>
-        <Input style={{
-          width: 100,
-        }} placeholder='请输入正整数' value={record.personNumber} />
-    },
-    {
-      title: '专兼职安全员（名）',
-      dataIndex: 'personNumber',
-      editable: true,
-      align: 'center',
-      render: (text, record, index) =>
-        <Input style={{
-          width: 100,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+          width: 150,
+        }} value={record.remark} />
     },
     {
       title: '操作',
@@ -238,9 +257,12 @@ const AnswerTable = (props) => {
   const handleAdd = () => {
     const newData = {
       key: count,
-      mainWorkTypeName: '',
-      personNumber: '',
-      holdCertificate: '',
+      appointmentTime: '',
+      memberName: '',
+      education: '',
+      post: '',
+      title: '',
+      remark: ''
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1)
@@ -278,6 +300,7 @@ const AnswerTable = (props) => {
         dataIndex: col.dataIndex,
         title: col.title,
         index,
+        maxLength: col.maxLength,
         handleSave,
       }),
     };

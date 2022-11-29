@@ -3,57 +3,35 @@ import React, {
   useImperativeHandle,
 } from 'react'
 import { RightOutlined } from '@ant-design/icons';
-import { Collapse, Form, Input, Select, DatePicker, Checkbox, Radio, Space, Cascader, Spin, message } from 'antd';
+import { Collapse, Form, Spin, message } from 'antd';
 // import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
-import { getRegionTree, getDictListByName } from '@/api/common'
-import { positiveIntegerReg, positiveIntegerRegPoint, cardNumberRge } from '@/utils/reg'
-
 import { saveSourceForm, getSourceForm } from '@/api/info'
 import AnswerTable from './sourceTable'
 
-import moment from 'moment';
+// import moment from 'moment';
 import '.././index.less'
 
 let SourceForm = (props, ref) => {
   const { Panel } = Collapse;
-  const { Option } = Select;
-  const { TextArea } = Input;
   const [form] = Form.useForm()
   const [id, setId] = useState('')
   const [saveLoading, setSaveLoading] = useState(false)
-  const [showSafeInput, setShowSafeInput] = useState(false)
-  const [economicTypeList, setEconomicType] = useState([])
-  const [regionTree, setRegionTree] = useState([])
-  const [otherSafe, setOtherSafe] = useState('')
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(true);
 
   useEffect(() => {
-    // setLoading(true)
+    setLoading(true)
+
     if (isEdit) initBaseInfo()
   }, [isEdit])
   const onFinish = async (values) => {
     try {
       if (saveLoading) return
       setSaveLoading(true)
-      console.log(values)
-      values.tableDangerSourceMonitorManageRegister.map(item => {
-        item.entCode = getCookie('entCode')
-        return item
-      })
-      // let { regionList, safeMeasures, entEstablishDatetime, economicType, mainDangerChemicalReactionType, personDistributionSituation } = values
-      let params = {
-        // entCode: getCookie('entCode'),
-        ...values,
-      }
-      if (id) {
-        params.id = id
-      }
-      // console.log(params)
+      let paramsArray = values.tableDangerSourceMonitorManageRegister
       setSaveLoading(false)
-      await saveSourceForm(params).then(res => {
-        console.log(res)
+      await saveSourceForm(getCookie('entCode'), paramsArray).then(res => {
         if (res.code === 0) message.success('保存成功'); setIsEdit(true)
       }).catch(err => {
         throw err
@@ -65,28 +43,23 @@ let SourceForm = (props, ref) => {
     }
   }
   const initBaseInfo = async () => {
-    let res = await getSourceForm(getCookie('entCode'))
-    console.log(res)
-    form.setFieldsValue({
-      tableDangerSourceMonitorManageRegister: [
-        {
-          key: 0,
-          unitName: '',
-          dangerPosition: '',
-          level: '',
-          inPosition: '',
-          levelJudgeMechanismName: '',
-          riskFactors: '',
-          possibleDanger: '',
-          mainLiablePerson: '',
-          monitorLiablePerson: '',
-          detection: '',
-          assessment: ''
-        }
-      ]
-    })
 
-    // form.setFieldsValue(params)
+    try {
+      let res = await getSourceForm(getCookie('entCode'))
+      res.data.map(item => {
+        item.key = Math.random()
+        return item
+      })
+      form.setFieldsValue({
+        tableDangerSourceMonitorManageRegister: res.data
+      })
+      setLoading(false)
+
+    } catch (err) {
+      setLoading(false)
+      throw err
+    }
+
   }
   const onFinishFailed = () => {
     message.warning('请检查并完成必填项');
@@ -138,6 +111,7 @@ let SourceForm = (props, ref) => {
             disabled={isEdit}
             className='base-form-add'
           >
+
             <Form.Item name="tableDangerSourceMonitorManageRegister" valuePropName='dataSource'
             >
               <AnswerTable setTableData={setTableData} />
