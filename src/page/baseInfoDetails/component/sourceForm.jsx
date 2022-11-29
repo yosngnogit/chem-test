@@ -21,7 +21,6 @@ let SourceForm = (props, ref) => {
   const [isEdit, setIsEdit] = useState(true);
 
   useEffect(() => {
-    setLoading(true)
 
     if (isEdit) initBaseInfo()
   }, [isEdit])
@@ -45,7 +44,7 @@ let SourceForm = (props, ref) => {
     }
   }
   const initBaseInfo = async () => {
-
+    setLoading(true)
     try {
       let res = await getSourceForm(getCookie('entCode'))
       res.data.map(item => {
@@ -55,6 +54,7 @@ let SourceForm = (props, ref) => {
       form.setFieldsValue({
         tableDangerSourceMonitorManageRegister: res.data
       })
+      console.log(1)
       setLoading(false)
 
     } catch (err) {
