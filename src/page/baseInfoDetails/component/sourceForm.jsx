@@ -30,10 +30,12 @@ let SourceForm = (props, ref) => {
       if (saveLoading) return
       setSaveLoading(true)
       let paramsArray = values.tableDangerSourceMonitorManageRegister
-      setSaveLoading(false)
       await saveSourceForm(getCookie('entCode'), paramsArray).then(res => {
+        setSaveLoading(false)
         if (res.code === 0) message.success('保存成功'); setIsEdit(true)
       }).catch(err => {
+        setIsEdit(true)
+
         throw err
       })
     } catch (err) {

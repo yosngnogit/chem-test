@@ -98,26 +98,18 @@ function BaseInfoDetails(props) {
   useEffect(() => {
     // console.log(getCookie('entCode'))
     getComponyList(1).then(res => {
-      console.log(res)
-    }).catch(err => {
-      // console.log(err)
-    })
+      let btnList = res.data
+      btnList.map(item => {
+        item.componentName = setComponentType(item.type)
+        return item
+      })
+      btnList.sort((a, b) => {
+        return a.type - b.type;
+      })
+      console.log(btnList)
 
-    // setLoading(true)
-    // Promise.all([
-    //   getDictListByName('ECONOMY_TYPE'),
-    //   getRegionTree(),
-    // ]).then(res => {
-    //   let setEconomicTypeArray = res[0].data.map(item => {
-    //     return { value: item.code, label: item.value }
-    //   })
-    //   setEconomicType(setEconomicTypeArray)
-    //   setRegionTree(handleRegionTree(res[1].data))
-    //   initBaseInfo()
-    //   setLoading(false)
-    // }).catch(err => {
-    //   setLoading(false)
-    // })
+    }).catch(err => {
+    })
   }, [])
 
 
@@ -131,12 +123,10 @@ function BaseInfoDetails(props) {
         okText: '确认',
         onOk() {
           refbase.current.onCallback();
-          // setComponentType(e.componentName)
           setIsActive(index)
           setComponentName(e.componentName)
           setFormName(e.name)
           setComponentEdit(false)
-
         },
         onCancel() {
           setIsActive(index)
@@ -161,51 +151,38 @@ function BaseInfoDetails(props) {
     refbase.current.onCallback();
 
   }
-  // const setComponentType = (param) => {
-  //   switch (param) {
-  //     case 'BaseForm':
-  //       refbase.current.onCallback();
-  //       break
-  //     case 'SourceForm':
-  //       console.log('2')
-  //       break
-  //     case 'ProductionSafetyForm':
-  //       refbase.current.onCallback();
-  //       break
-  //     case 'ObtainEvidenceForm':
-  //       console.log('2')
-  //       break
-  //     case 'CertificateForm':
-  //       refbase.current.onCallback();
-  //       break
-  //     case 'EquipmentForm':
-  //       console.log('2')
-  //       break
-  //     case 'AccidentForm':
-  //       refbase.current.onCallback();
-  //       break
-  //     case 'MaterialForm':
-  //       console.log('2')
-  //       break
-  //     case 'LedgerForm':
-  //       refbase.current.onCallback();
-  //       break
-  //     case 'HarmForm':
-  //       console.log('2')
-  //       break
-  //     case 'InputForm':
-  //       console.log('2')
-  //       break
-  //     case 'RescueForm':
-  //       console.log('2')
-  //       break
-  //     case 'OutfitForm':
-  //       console.log('2')
-  //       break
-  //     default:
-  //       console.log('default')
-  //   }
-  // }
+  const setComponentType = (param) => {
+    switch (param) {
+      case 1:
+        return 'BaseForm'
+      case 2:
+        return 'SourceForm'
+      case 3:
+        return 'ProductionSafetyForm'
+      case 4:
+        return 'ObtainEvidenceForm'
+      case 5:
+        return 'CertificateForm'
+      case 6:
+        return 'EquipmentForm'
+      case 7:
+        return 'AccidentForm'
+      case 8:
+        return 'MaterialForm'
+      case 9:
+        return 'LedgerForm'
+      case 10:
+        return 'HarmForm'
+      case 11:
+        return 'InputForm'
+      case 12:
+        return 'RescueForm'
+      case 13:
+        return 'OutfitForm'
+      default:
+        console.log('default')
+    }
+  }
   return (
     <div className='baseInfoDetails'>
       <div className='background'>

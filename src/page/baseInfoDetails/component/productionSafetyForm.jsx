@@ -29,7 +29,6 @@ let ProductionSafetyForm = (props, ref) => {
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(true);
   useEffect(() => {
-    setLoading(true)
     // Promise.all([
     //   getDictListByName('ECONOMY_TYPE'),
     //   getRegionTree(),
@@ -43,10 +42,9 @@ let ProductionSafetyForm = (props, ref) => {
     // }).catch(err => {
     //   setLoading(false)
     // })
-    initBaseInfo()
-  }, [])
+    if (isEdit) initBaseInfo()
+  }, [isEdit])
   const onFinish = async (values) => {
-    console.log(values)
     const timeArray = JSON.parse(JSON.stringify([...values.tableMechanismMemberDetailsVoList]))
     timeArray.forEach(item => {
       if (item.appointmentTime) {
@@ -68,7 +66,6 @@ let ProductionSafetyForm = (props, ref) => {
         tableMechanismMemberDetailsVoList } = values
       let params = {
         entCode: getCookie('entCode'),
-        ...values,
         unitName,
         mainLiablePerson,
         entEstablishDatetime,
@@ -80,13 +77,13 @@ let ProductionSafetyForm = (props, ref) => {
         safetyOfficerNumber,
         tableMechanismMemberDetailsVoList
       }
-      if (id) {
-        params.id = id
-      }
-      setSaveLoading(false)
+      console.log(params)
       await saveProductionSafetyForm(params).then(res => {
         if (res.code === 0) message.success('保存成功'); setIsEdit(true)
+        setSaveLoading(false)
+
       }).catch(err => {
+        setIsEdit(true)
         throw err
       })
     } catch (err) {
@@ -96,10 +93,10 @@ let ProductionSafetyForm = (props, ref) => {
     }
   }
   const initBaseInfo = async () => {
+    setLoading(true)
     try {
       let res = await getProductionSafetyForm(getCookie('entCode'))
       if (res.code === -1) setLoading(false)
-      if (!res.data.id) return
       let {
         id,
         unitName,
@@ -128,37 +125,31 @@ let ProductionSafetyForm = (props, ref) => {
         tableMechanismMemberDetailsVoList
       }
       // console.log(personDistributionSituation)
-      if (tableMechanismMemberDetailsVoList.length === 0) {
+      if (!tableMechanismMemberDetailsVoList) {
         // console.log(params.personDistributionSituation)
+        tableMechanismMemberDetailsVoList = []
         tableMechanismMemberDetailsVoList.push(
           {
             key: Math.random(),
-            mainWorkTypeName: '',
-            personNumber: '',
-            holdCertificate: '',
+            appointmentTime: '',
+            memberName: '',
+            education: '',
+            post: '',
+            title: '',
+            remark: ''
           }
         )
         params.tableMechanismMemberDetailsVoList = tableMechanismMemberDetailsVoList
       } else {
         params.tableMechanismMemberDetailsVoList = tableMechanismMemberDetailsVoList.map(item => {
           item.key = Math.random()
-          if (item.appointmentTime !== '') item.appointmentTime = (moment(item.appointmentTime, 'YYYY-MM-DD'))
+          if (item.appointmentTime) item.appointmentTime = (moment(item.appointmentTime, 'YYYY-MM-DD'))
           return item
         })
       }
       form.setFieldsValue(params)
+      setLoading(false)
     } catch (err) {
-      form.setFieldsValue({
-        tableMechanismMemberDetailsVoList: [{
-          key: 0,
-          appointmentTime: '',
-          memberName: '',
-          education: '',
-          post: '',
-          title: '',
-          remark: ''
-        }]
-      })
       setLoading(false)
       throw err
     }
@@ -168,7 +159,7 @@ let ProductionSafetyForm = (props, ref) => {
   }
   const setTableData = (data) => {
     form.setFieldsValue({
-      personDistributionSituation: data
+      tableMechanismMemberDetailsVoList: data
     })
   }
   const formItemLayout = {
