@@ -306,9 +306,11 @@ let BaseForm = (props, ref) => {
           let timeArr = []
           // if(item.inRectification)
           if (item.inRectification !== '') item.inRectification = (moment(item.inRectification, 'YYYY-MM-DD'))
-          item.notRectification.forEach(i => {
-            if (i !== 'null') timeArr.push(moment(i, 'YYYY-MM-DD'))
-          })
+          if (item.notRectification) {
+            item.notRectification.forEach(i => {
+              if (i !== 'null') timeArr.push(moment(i, 'YYYY-MM-DD'))
+            })
+          }
           item.notRectification = timeArr
           return item;
         });

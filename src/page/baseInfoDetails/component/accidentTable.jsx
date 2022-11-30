@@ -141,8 +141,11 @@ const EditableCell = ({
         form.setFieldValue(type, inputValue)
       } else {
         setStatus('error')
+        if (inputValue.includes('.') && inputValue.length === 2) {
+          message.warning('请输入正整数！');
+        } else {
+        }
         form.setFieldValue(type, '')
-        message.warning('请输入正整数！');
       }
     }
     if (type === 'workYear') {

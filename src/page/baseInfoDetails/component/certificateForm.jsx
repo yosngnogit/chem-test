@@ -82,7 +82,6 @@ let ProductionSafetyForm = (props, ref) => {
   }
   const initBaseInfo = async () => {
     let res = await getCertificateForm(getCookie('entCode'))
-    console.log(1111, res)
     let personDistributionSituation = res.data
     // console.log(personDistributionSituation)
     if (personDistributionSituation.length === 0) {
@@ -106,14 +105,17 @@ let ProductionSafetyForm = (props, ref) => {
     } else {
       personDistributionSituation.map(item => {
         item.key = Math.random()
-        if (item.birthday !== '') item.birthday = (moment(item.birthday, 'YYYY-MM-DD'))
-        if (item.trainingTime !== '') item.trainingTime = (moment(item.trainingTime, 'YYYY-MM-DD'))
-        if (item.reviewTime !== '') item.reviewTime = (moment(item.reviewTime, 'YYYY-MM-DD'))
+        if (item.birthday) item.birthday = (moment(item.birthday, 'YYYY-MM-DD'))
+        else item.birthday = ''
+        if (item.trainingTime) item.trainingTime = (moment(item.trainingTime, 'YYYY-MM-DD'))
+        else item.trainingTime = ''
+        if (item.reviewTime) item.reviewTime = (moment(item.reviewTime, 'YYYY-MM-DD'))
+        else item.reviewTime = ''
         return item
       })
     }
     form.setFieldsValue({
-      personDistributionSituation:personDistributionSituation
+      personDistributionSituation: personDistributionSituation
     })
   }
   const onFinishFailed = () => {

@@ -112,3 +112,17 @@ export const saveAccidentForm = (entCode, data) => {
     data
   })
 }
+// 获取消防器材、防护配置情况登记表
+export const getMaterialForm = (entCode) => {
+  return http.request({
+    url: `/front/enterprise/table/tableProtectionConfigurationRegister/info/${entCode}`,
+  })
+}
+// 保存saveSourceForm
+export const saveMaterialForm = (entCode, data) => {
+  return http.request({
+    url: `/front/enterprise/table/tableProtectionConfigurationRegister/saveOrUpdate?entCode=${entCode}`,
+    method: 'post',
+    data
+  })
+}
