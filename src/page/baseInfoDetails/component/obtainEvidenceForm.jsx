@@ -51,7 +51,6 @@ let ProductionSafetyForm = (props, ref) => {
           item.reviewDate = moment(item.reviewDate).format('YYYY-MM-DD')
         }
       })
-      console.log(1111,timeArray)
       if (saveLoading) return
       setSaveLoading(true)
       await saveObtainEvidenceForm(getCookie('entCode'), timeArray).then(res => {

@@ -84,3 +84,31 @@ export const saveCertificateForm = (entCode, data) => {
     data
   })
 }
+// 获取特种设备登记表
+export const getEquipmentForm = (entCode) => {
+  return http.request({
+    url: `/front/enterprise/table/tableSpecialEquipmentRegister/info/${entCode}`,
+  })
+}
+// 保存saveSourceForm
+export const saveEquipmentForm = (entCode, data) => {
+  return http.request({
+    url: `/front/enterprise/table/tableSpecialEquipmentRegister/saveOrUpdate?entCode=${entCode}`,
+    method: 'post',
+    data
+  })
+}
+// 获取生产安全事故
+export const getAccidentForm = (entCode) => {
+  return http.request({
+    url: `/front/enterprise/table/tableSafeAccidentStatistics/info/${entCode}`,
+  })
+}
+// 保存saveSourceForm
+export const saveAccidentForm = (entCode, data) => {
+  return http.request({
+    url: `/front/enterprise/table/tableSafeAccidentStatistics/saveOrUpdate?entCode=${entCode}`,
+    method: 'post',
+    data
+  })
+}
