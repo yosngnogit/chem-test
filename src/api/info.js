@@ -63,9 +63,23 @@ export const getObtainEvidenceForm = (entCode) => {
   })
 }
 // 保存saveSourceForm
-export const saveObtainEvidenceForm = (data) => {
+export const saveObtainEvidenceForm = (entCode, data) => {
   return http.request({
-    url: `/front/enterprise/table/tableForensicRecord/saveOrUpdate`,
+    url: `/front/enterprise/table/tableForensicRecord/saveOrUpdate?entCode=${entCode}`,
+    method: 'post',
+    data
+  })
+}
+// 获取特种作业人员培训考核持证
+export const getCertificateForm = (entCode) => {
+  return http.request({
+    url: `/front/enterprise/table/tableHoldCertificateRegister/info/${entCode}`,
+  })
+}
+// 保存saveSourceForm
+export const saveCertificateForm = (entCode, data) => {
+  return http.request({
+    url: `/front/enterprise/table/tableHoldCertificateRegister/saveOrUpdate?entCode=${entCode}`,
     method: 'post',
     data
   })

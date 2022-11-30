@@ -47,13 +47,14 @@ let ProductionSafetyForm = (props, ref) => {
         if (item.issuingDate) {
           item.issuingDate = moment(item.issuingDate).format('YYYY-MM-DD')
         }
-        if (item.trainDate) {
+        if (item.reviewDate) {
           item.reviewDate = moment(item.reviewDate).format('YYYY-MM-DD')
         }
       })
+      console.log(1111,timeArray)
       if (saveLoading) return
       setSaveLoading(true)
-      await saveObtainEvidenceForm(timeArray).then(res => {
+      await saveObtainEvidenceForm(getCookie('entCode'), timeArray).then(res => {
         setSaveLoading(false)
         if (res.code === 0) message.success('保存成功'); setIsEdit(true)
       }).catch(err => {
@@ -70,6 +71,7 @@ let ProductionSafetyForm = (props, ref) => {
   const initBaseInfo = async () => {
     try {
       let res = await getObtainEvidenceForm(getCookie('entCode'))
+      console.log('企业主要负责人', res)
       let tableForensicRecord = res.data
       if (tableForensicRecord.length === 0) {
         tableForensicRecord.push(
@@ -81,6 +83,7 @@ let ProductionSafetyForm = (props, ref) => {
             trainDate: '',
             testScores: '',
             // 缺少发证部门
+            issuingAuthority: '',
             issuingDate: '',
             certificateNumber: '',
             reviewDate: '',
@@ -90,9 +93,12 @@ let ProductionSafetyForm = (props, ref) => {
       } else {
         tableForensicRecord.map(item => {
           item.key = Math.random()
-          if (item.trainDate !== '') item.trainDate = (moment(item.trainDate, 'YYYY-MM-DD'))
-          if (item.issuingDate !== '') item.issuingDate = (moment(item.issuingDate, 'YYYY-MM-DD'))
-          if (item.reviewDate !== '') item.reviewDate = (moment(item.reviewDate, 'YYYY-MM-DD'))
+          if (item.trainDate) item.trainDate = (moment(item.trainDate, 'YYYY-MM-DD'))
+          else item.trainDate = ''
+          if (item.issuingDate) item.issuingDate = (moment(item.issuingDate, 'YYYY-MM-DD'))
+          else item.issuingDate = ''
+          if (item.reviewDate) item.reviewDate = (moment(item.reviewDate, 'YYYY-MM-DD'))
+          else item.reviewDate = ''
           return item
         })
       }
@@ -103,7 +109,6 @@ let ProductionSafetyForm = (props, ref) => {
     } catch (err) {
       console.log(err)
       setLoading(false)
-
     }
 
   }

@@ -1,5 +1,6 @@
 const env = process.env.NODE_ENV
 let baseURL = 'http://10.52.24.21:8021/api'
+// let baseURL = 'http://192.168.190.18:8500'
 let appCode = 'CBRAIN_OFFICIAL'
 let clientId = 'android'
 let SmsTemplate = 'SMS_154950909'

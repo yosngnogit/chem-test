@@ -1,10 +1,12 @@
-import { Button, Form, Input, Table, Select, DatePicker } from 'antd';
+import { Button, Form, Input, Table, Select, DatePicker, message } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   PlusOutlined
 } from '@ant-design/icons';
 // import 'moment/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
+import { positiveIntegerRegPoint, cardNumberRge } from '@/utils/reg'
+
 
 const EditableContext = React.createContext(null);
 const options = [
@@ -35,6 +37,7 @@ const EditableCell = ({
   dataIndex,
   record,
   handleSave,
+  maxLength,
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false);
@@ -63,11 +66,23 @@ const EditableCell = ({
     });
   };
 
-  const save = async () => {
+  const save = async (dataIndex) => {
     try {
       const values = await form.validateFields();
-      toggleEdit();
-      handleSave({ ...record, ...values });
+      let inputValue = values.certificateNumber
+      if (dataIndex === 'certificateNumber') {
+        if (cardNumberRge.test(inputValue) || inputValue === '') {
+          setStatus('')
+          toggleEdit();
+          handleSave({ ...record, ...values });
+        } else {
+          setStatus('error')
+          message.warning('请输入正确证书编号');
+        }
+      } else {
+        toggleEdit();
+        handleSave({ ...record, ...values });
+      }
     } catch (errInfo) {
     }
   };
@@ -107,8 +122,8 @@ const EditableCell = ({
                 width: 150,
               }} ref={inputRef}
                 onPressEnter={save}
-                onBlur={save}
-                maxLength='64'
+                onBlur={() => save(dataIndex)}
+                maxLength={maxLength}
                 status={status}
                 onChange={(e) => onInputChange(e, dataIndex)}
               />
@@ -122,24 +137,53 @@ const EditableCell = ({
     );
   }
   const onInputChange = (e, type) => {
-    if (type === 'personNumber') {
-      const reg = /^[1-9]([0-9])*$/;
+    if (type === 'testScores') {
       let inputValue = e.target.value
-      if (reg.test(inputValue) || inputValue === '') {
+      if (positiveIntegerRegPoint.test(inputValue) || inputValue === '') {
+        setStatus('')
+        form.setFieldValue(type, inputValue)
+      } else {
+        let errorLength = ''
+        if (inputValue.split('.')[1]) {
+          errorLength = inputValue.split('.')[1].length
+        }
+        if (errorLength === 3) {
+          setStatus('')
+        } else {
+          setStatus('error')
+        }
+        form.setFieldValue(type, dealInputVal(inputValue))
+      }
+    }
+    if (type === 'certificateNumber') {
+      let inputValue = e.target.value
+      if (cardNumberRge.test(inputValue) || inputValue === '') {
         setStatus('')
         form.setFieldValue(type, inputValue)
       } else {
         setStatus('error')
-        form.setFieldValue(type, '')
+        form.setFieldValue(type, inputValue)
       }
     }
+  }
+  const dealInputVal = (value) => {
+    value = value.replace(/^0*(0\.|[1-9])/, "$1");
+    value = value.replace(/[^\d.]/g, ""); // 清除"数字"和"."以外的字符
+    value = value.replace(/^\./g, ""); // 验证第一个字符是数字而不是字符
+    value = value.replace(/\.{1,}/g, "."); // 只保留第一个.清除多余的
+    value = value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+    value = value.replace(/^(\-)*(\d*)\.(\d\d).*$/, "$1$2.$3"); // 只能输入两个小数
+    value =
+      value.indexOf(".") > 0
+        ? value.split(".")[0].substring(0, 10) + "." + value.split(".")[1]
+        : value.substring(0, 10);
+    return value;
   }
   const onTimeChange = async (e, type, ind) => {
     try {
       const values = await form.validateFields();
       handleSave({ ...record, ...values });
     } catch (errInfo) {
-      // console.log('Save failed:', errInfo);
     }
   }
   return <td {...restProps}>{childNode}</td>;
@@ -155,6 +199,7 @@ const AnswerTable = (props) => {
       dataIndex: 'name',
       editable: true,
       align: 'center',
+      maxLength: 64,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -184,6 +229,7 @@ const AnswerTable = (props) => {
       dataIndex: 'post',
       editable: true,
       align: 'center',
+      maxLength: 64,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -211,13 +257,14 @@ const AnswerTable = (props) => {
     },
     {
       title: '发证部门',
-      dataIndex: 'personNumber',
+      dataIndex: 'issuingAuthority',
       editable: true,
       align: 'center',
+      maxLength: 64,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} value={record.personNumber} />
+        }} value={record.issuingAuthority} />
     },
     {
       title: '发证日期',
@@ -254,6 +301,7 @@ const AnswerTable = (props) => {
       dataIndex: 'remark',
       editable: true,
       align: 'center',
+      maxLength: 200,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -280,7 +328,7 @@ const AnswerTable = (props) => {
       post: '',
       trainDate: '',
       testScores: '',
-      // 缺少发证部门
+      issuingAuthority: '',
       issuingDate: '',
       certificateNumber: '',
       reviewDate: '',
@@ -322,6 +370,7 @@ const AnswerTable = (props) => {
         dataIndex: col.dataIndex,
         title: col.title,
         index,
+        maxLength: col.maxLength,
         handleSave,
       }),
     };

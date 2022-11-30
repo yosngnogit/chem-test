@@ -126,9 +126,9 @@ let BaseForm = (props, ref) => {
         params.id = id
       }
       setSaveLoading(false)
+      params.id = id
       await saveUpdate(params).then(res => {
         if (res.code === 0) {
-
           message.success('保存成功'); setIsEdit(true)
           initBaseInfo()
         }
