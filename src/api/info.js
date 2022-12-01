@@ -126,3 +126,17 @@ export const saveMaterialForm = (entCode, data) => {
     data
   })
 }
+// 安全设备设施登记使用管理台账
+export const getLedgerForm = (entCode) => {
+  return http.request({
+    url: `/front/enterprise/table/tableSafeEquipmentUseRegister/info/${entCode}`,
+  })
+}
+// 保存saveSourceForm
+export const saveLedgerForm = (entCode, data) => {
+  return http.request({
+    url: `/front/enterprise/table/tableSafeEquipmentUseRegister/saveOrUpdate?entCode=${entCode}`,
+    method: 'post',
+    data
+  })
+}
