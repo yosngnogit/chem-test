@@ -59,14 +59,14 @@ let AccidenttForm = (props, ref) => {
     try {
       if (saveLoading) return
       setSaveLoading(true)
-      let { regionList, safeMeasures, entEstablishDatetime, economicType, mainDangerChemicalReactionType, personDistributionSituation } = values
+      let { rescueTeamAddress, safeMeasures, entEstablishDatetime, economicType, mainDangerChemicalReactionType, personDistributionSituation } = values
       let params = {
         entCode: getCookie('entCode'),
         ...values,
         economicType,
-        provinceCode: regionList[0],
-        city: regionList[1],
-        area: regionList[2],
+        provinceCode: rescueTeamAddress[0],
+        city: rescueTeamAddress[1],
+        area: rescueTeamAddress[2],
         other: otherSafe,
         safeMeasures: safeMeasures?.join(','),
         mainDangerChemicalReactionType: mainDangerChemicalReactionType?.join(','),
@@ -151,12 +151,12 @@ let AccidenttForm = (props, ref) => {
     let business = certificatesSituationMap['企业工商营业执照']
     let produce = certificatesSituationMap['安全生产许可证']
     let danger = certificatesSituationMap['危化品经营许可证']
-    let regionList = [provinceCode, city, area]
+    let rescueTeamAddress = [provinceCode, city, area]
     let params = {
       entRegisterName,
       economicType,
       entEstablishDatetime: moment(entEstablishDatetime),
-      regionList,
+      rescueTeamAddress,
       address,
       workersNumber,
       plantArea,
@@ -267,14 +267,14 @@ let AccidenttForm = (props, ref) => {
       <Collapse
         defaultActiveKey={['1', '2']} expandIconPosition='end'
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
-        <Panel header={BaseHeader('企业消防设施器材、应急救援器材装备登记表')} key="1"
+        <Panel header={BaseHeader('企业医疗救护组织、人员、装备和药物登记表')} key="1"
           showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
           <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
             {...formItemLayout}
             disabled={isEdit}
             className='base-form'
           >
-            <Form.Item label="企业所在/省/市/区" name='regionList'
+            <Form.Item label="企业所在/省/市/区" name='rescueTeamAddress'
               rules={[{ required: true }]}
             >
               <Cascader options={regionTree}>
@@ -285,7 +285,7 @@ let AccidenttForm = (props, ref) => {
               rules={[{ required: true }]}>
               <Input placeholder='请输入详细地址' maxLength='128' />
             </Form.Item>
-            <Form.Item label="电话" name='address'
+            <Form.Item label="电话" name='telephone'
               rules={[{ required: true }]}>
               <Input placeholder='请输入电话' maxLength='128' />
             </Form.Item>
@@ -293,6 +293,17 @@ let AccidenttForm = (props, ref) => {
           </Form>
         </Panel>
         <Panel header={BaseHeader('医疗救护组人员')} key="2" forceRender>
+          <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
+            disabled={isEdit}
+            className='base-form-add'
+          >
+            <Form.Item name="personDistributionSituation" valuePropName='dataSource'
+            >
+              <AnswerTable setTableData={setTableData} />
+            </Form.Item>
+          </Form>
+        </Panel>
+        <Panel header={BaseHeader('医疗装备和药物')} key="3" forceRender>
           <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
             disabled={isEdit}
             className='base-form-add'

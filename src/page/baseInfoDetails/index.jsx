@@ -20,6 +20,9 @@ import LedgerForm from './component/ledgerForm'
 import HarmForm from './component/harmForm';
 import InputForm from './component/inputForm'
 import RescueForm from './component/rescueForm'
+import FireEquipmentForm from './component/fireEquipmentForm'
+
+
 import OutfitForm from './component/outfitForm';
 // import { kdf } from 'crypto-js';
 
@@ -80,8 +83,15 @@ function BaseInfoDetails(props) {
         name: '企业应急救援管理机构、人员统计表',
         status: true,
         componentName: 'RescueForm',
-      }, {
+      },
+      // 新添加的表
+      {
         name: '企业消防设施器材、应急救援器材装备登记表',
+        status: true,
+        componentName: 'FireEquipmentForm',
+      },
+      {
+        name: '企业医疗救护组织、人员、装备和药物登记表',
         status: false,
         componentName: 'OutfitForm',
       }
@@ -178,6 +188,8 @@ function BaseInfoDetails(props) {
       case 12:
         return 'RescueForm'
       case 13:
+        return 'FireEquipmentForm'
+      case 14:
         return 'OutfitForm'
       default:
         console.log('default')
@@ -270,6 +282,9 @@ function BaseInfoDetails(props) {
           }
           {
             componentName === 'RescueForm' ? <RescueForm setEdit={setEdit} ref={refbase} /> : ''
+          }
+          {
+            componentName === 'FireEquipmentForm' ? <FireEquipmentForm setEdit={setEdit} ref={refbase} /> : ''
           }
           {
             componentName === 'OutfitForm' ? <OutfitForm setEdit={setEdit} ref={refbase} /> : ''

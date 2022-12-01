@@ -168,3 +168,31 @@ export const saveInputForm = (entCode, data) => {
     data
   })
 }
+// 职业危害管理登记表 getRescueForm, saveRescueForm
+export const getRescueForm = (entCode) => {
+  return http.request({
+    url: `/front/enterprise/table/tableEnterpriseRescueManagePresonRegister/info/${entCode}`,
+  })
+}
+// 保存saveSourceForm
+export const saveRescueForm = (entCode, data) => {
+  return http.request({
+    url: `/front/enterprise/table/tableEnterpriseRescueManagePresonRegister/saveOrUpdate?entCode=${entCode}`,
+    method: 'post',
+    data
+  })
+}
+// 职业危害管理登记表 getFireEquipmentForm, saveFireEquipmentForm
+export const getFireEquipmentForm = (entCode) => {
+  return http.request({
+    url: `/front/enterprise/table/tableEnterpriseRescueManageEquipmentRegister/info/${entCode}`,
+  })
+}
+// 保存saveSourceForm
+export const saveFireEquipmentForm = (entCode, data) => {
+  return http.request({
+    url: `/front/enterprise/table/tableEnterpriseRescueManageEquipmentRegister/saveOrUpdate?entCode=${entCode}`,
+    method: 'post',
+    data
+  })
+}

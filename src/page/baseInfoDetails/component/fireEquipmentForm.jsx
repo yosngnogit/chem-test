@@ -9,8 +9,8 @@ import { getCookie } from '@/utils'
 import { getRegionTree, getDictListByName } from '@/api/common'
 import { positiveIntegerReg, positiveIntegerRegPoint, cardNumberRge } from '@/utils/reg'
 
-import { getRescueForm, saveRescueForm } from '@/api/info'
-import AnswerTable from './rescueTable'
+import { getFireEquipmentForm, saveFireEquipmentForm } from '@/api/info'
+import AnswerTable from './fireEquipmentFormTable'
 
 import moment from 'moment';
 import '.././index.less'
@@ -21,10 +21,8 @@ let AccidenttForm = (props, ref) => {
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(true);
   const [tableObj, setTableObj] = useState({
-    leader: 'AnswerTable1',
-    expert: 'AnswerTable2',
-    office: 'AnswerTable3',
-    pluralismt: 'AnswerTable4'
+    emergency: 'AnswerTable1',
+    firecontrol: 'AnswerTable2',
   });
 
   useEffect(() => {
@@ -48,11 +46,12 @@ let AccidenttForm = (props, ref) => {
   const onFinish = async (values) => {
     try {
       let paramsArray = []
-      paramsArray = [...values.AnswerTable1, ...values.AnswerTable2, ...values.AnswerTable3, ...values.AnswerTable4]
+      console.log(1111111, values)
+      paramsArray = [...values.AnswerTable1, ...values.AnswerTable2]
       if (saveLoading) return
       paramsArray = paramsArray.filter(v => v.type !== '')
       setSaveLoading(true)
-      await saveRescueForm(getCookie('entCode'), paramsArray).then(res => {
+      await saveFireEquipmentForm(getCookie('entCode'), paramsArray).then(res => {
         if (res.code === 0) message.success('保存成功'); setIsEdit(true)
         setSaveLoading(false)
 
@@ -68,33 +67,33 @@ let AccidenttForm = (props, ref) => {
     }
   }
   const initBaseInfo = async () => {
-    let res = await getRescueForm(getCookie('entCode'))
+    let res = await getFireEquipmentForm(getCookie('entCode'))
     let personDistributionSituation = res.data
     let AnswerTable = []
     let params = {
       AnswerTable1: [],
       AnswerTable2: [],
-      AnswerTable3: [],
-      AnswerTable4: []
     }
-    // console.log(personDistributionSituation)
+    console.log(personDistributionSituation)
     if (personDistributionSituation.length === 0) {
       AnswerTable.push(
         {
           key: Math.random(),
           name: '',
-          emergencyWork: '',
-          post: '',
-          liableDivide: '',
-          telephone: '',
+          number: '',
+          specification: '',
+          storageLocation: '',
+          maintainOrValid: '',
+          purpose: '',
+          liablePerson: '',
           type: ''
         }
       )
-      params.AnswerTable1 = params.AnswerTable2 = params.AnswerTable3 = params.AnswerTable4 = AnswerTable
+      params.AnswerTable1 = params.AnswerTable2 = AnswerTable
     } else {
       personDistributionSituation.map(item => {
         item.key = Math.random()
-        if (item.type === 'leader') params.AnswerTable1.push(item)
+        if (item.type === 'emergency') params.AnswerTable1.push(item)
         else params.AnswerTable1.push({
           key: Math.random(),
           name: '',
@@ -104,9 +103,9 @@ let AccidenttForm = (props, ref) => {
           maintainOrValid: '',
           purpose: '',
           liablePerson: '',
-          type: 'leader'
+          type: 'emergency'
         })
-        if (item.type === 'expert') params.AnswerTable2.push(item)
+        if (item.type === 'firecontrol') params.AnswerTable2.push(item)
         else params.AnswerTable2.push({
           key: Math.random(),
           name: '',
@@ -116,41 +115,20 @@ let AccidenttForm = (props, ref) => {
           maintainOrValid: '',
           purpose: '',
           liablePerson: '',
-          type: 'expert'
-        })
-        if (item.type === 'office') params.AnswerTable3.push(item)
-        else params.AnswerTable3.push({
-          key: Math.random(),
-          name: '',
-          number: '',
-          specification: '',
-          storageLocation: '',
-          maintainOrValid: '',
-          purpose: '',
-          liablePerson: '',
-          type: 'office'
-        })
-        if (item.type === 'pluralismt') params.AnswerTable4.push(item)
-        else params.AnswerTable4.push({
-          key: Math.random(),
-          name: '',
-          number: '',
-          specification: '',
-          storageLocation: '',
-          maintainOrValid: '',
-          purpose: '',
-          liablePerson: '',
-          type: 'pluralismt'
+          type: 'firecontrol'
         })
         return item
       })
     }
+    console.log(
+      params)
     form.setFieldsValue(params)
   }
   const onFinishFailed = () => {
     message.warning('请检查并完成必填项');
   }
   const setTableData = (data, type) => {
+    console.log(data, tableObj[type])
     form.setFieldValue(
       tableObj[type], data
     )
@@ -191,50 +169,29 @@ let AccidenttForm = (props, ref) => {
     <Spin spinning={loading}>
       <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
-        <Panel header={BaseHeader('企业应急救援管理机构、人员统计表')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
+        <Panel header={BaseHeader('企业消防设施器材、应急救援器材装备登记表')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
           <Collapse expandIconPosition='end' defaultActiveKey={['8']}
             expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
-            <Panel header={BaseHeader('应急管理领导小组')} key="8" className='inner-header' forceRender>
+            <Panel header={BaseHeader('应急救援器材装备')} key="8" className='inner-header' forceRender>
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 disabled={isEdit}
                 className='base-form-add'>
                 <Form.Item name="AnswerTable1" valuePropName='dataSource'
                 >
-                  <AnswerTable setTableData={setTableData} tableType='leader' />
+                  <AnswerTable setTableData={setTableData} tableType='emergency' />
                 </Form.Item>
               </Form>
             </Panel>
-            <Panel header={BaseHeader('应急救援专家')} key="9" className='inner-header' forceRender>
+            <Panel header={BaseHeader('消防设施器材')} key="9" className='inner-header' forceRender>
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 disabled={isEdit}
                 className='base-form-add'>
                 <Form.Item name="AnswerTable2" valuePropName='dataSource'
                 >
-                  <AnswerTable setTableData={setTableData} tableType='expert' />
+                  <AnswerTable setTableData={setTableData} tableType='firecontrol' />
                 </Form.Item>
               </Form>
             </Panel>
-            <Panel header={BaseHeader('应急救援管理办公室')} key="10" className='inner-header' forceRender>
-              <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
-                disabled={isEdit}
-                className='base-form-add'>
-                <Form.Item name="AnswerTable3" valuePropName='dataSource'
-                >
-                  <AnswerTable setTableData={setTableData} tableType='office' />
-                </Form.Item>
-              </Form>
-            </Panel>
-            <Panel header={BaseHeader('应急救援兼职队员')} key="11" className='inner-header' forceRender>
-              <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
-                disabled={isEdit}
-                className='base-form-add'>
-                <Form.Item name="AnswerTable4" valuePropName='dataSource'
-                >
-                  <AnswerTable setTableData={setTableData} tableType='pluralismt' />
-                </Form.Item>
-              </Form>
-            </Panel>
-
           </Collapse>
         </Panel>
 
