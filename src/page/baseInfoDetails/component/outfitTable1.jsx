@@ -1,18 +1,20 @@
-import { Button, Form, Input, Table, Select } from 'antd';
+import { Button, Form, Input, Table, Select, message } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   PlusOutlined
 } from '@ant-design/icons';
 // import 'moment/locale/zh-cn';
+import { tellReg } from '@/utils/reg'
+
 const EditableContext = React.createContext(null);
 const options = [
   {
-    label: '是',
-    value: true
+    label: '男',
+    value: '男'
   },
   {
-    label: '否',
-    value: false
+    label: '女',
+    value: '女'
   }
 ]
 const EditableRow = ({ index, ...props }) => {
@@ -33,6 +35,7 @@ const EditableCell = ({
   dataIndex,
   record,
   handleSave,
+  maxLength,
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false);
@@ -42,10 +45,7 @@ const EditableCell = ({
   const [status, setStatus] = useState('')
   useEffect(() => {
     if (editing) {
-      if (dataIndex === 'holdCertificate') {
-        selectRef.current.focus();
-
-      } else {
+      if (dataIndex !== 'sex') {
         inputRef.current.focus();
       }
     }
@@ -61,8 +61,21 @@ const EditableCell = ({
   const save = async () => {
     try {
       const values = await form.validateFields();
-      toggleEdit();
-      handleSave({ ...record, ...values });
+      if (dataIndex === 'telephone') {
+        if (tellReg.test(values.telephone) || values.telephone === '') {
+          setStatus('')
+          form.setFieldValue(dataIndex, values.telephone)
+          toggleEdit();
+          handleSave({ ...record, ...values });
+        } else {
+          setStatus('error')
+          form.setFieldValue(dataIndex, values.telephone)
+          message.warning('请输入正确号码！');
+        }
+      } else {
+        toggleEdit();
+        handleSave({ ...record, ...values });
+      }
     } catch (errInfo) {
     }
   };
@@ -71,11 +84,11 @@ const EditableCell = ({
     childNode = editing ? (
       <Form.Item name={dataIndex} style={{ margin: 0 }}>
         {
-          dataIndex === 'holdCertificate' ?
+          dataIndex === 'sex' ?
             <Select
               autoFocus={true}
               open={editing}
-              onBlur={save}
+              onChange={save}
               ref={selectRef}
               style={{
                 width: 150,
@@ -87,24 +100,15 @@ const EditableCell = ({
               }
             </Select>
             :
-            (
-              dataIndex === 'personNumber' ? <Input style={{
-                width: 150,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                onChange={(e) => onInputChange(e, dataIndex)}
-                placeholder='请输入正整数'
-                status={status}
-              /> : <Input style={{
-                width: 150,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                maxLength='64'
-                onChange={(e) => onInputChange(e, dataIndex)}
-              />
-            )
+            <Input style={{
+              width: 150,
+            }} ref={inputRef}
+              onPressEnter={save}
+              onBlur={save}
+              maxLength={maxLength}
+              status={status}
+              onChange={(e) => onInputChange(e, dataIndex)}
+            />
         }
       </Form.Item>
     ) : (
@@ -114,15 +118,14 @@ const EditableCell = ({
     );
   }
   const onInputChange = (e, type) => {
-    if (type === 'personNumber') {
-      const reg = /^[1-9]([0-9])*$/;
+    if (type === 'telephone') {
       let inputValue = e.target.value
-      if (reg.test(inputValue) || inputValue === '') {
+      if (tellReg.test(inputValue) || inputValue === '') {
         setStatus('')
         form.setFieldValue(type, inputValue)
       } else {
         setStatus('error')
-        form.setFieldValue(type, '')
+        form.setFieldValue(type, inputValue)
       }
     }
   }
@@ -134,42 +137,25 @@ const AnswerTable = (props) => {
   const [count, setCount] = useState(1);
 
   const defaultColumns = [
-    // {
-    //   title: '序号',
-    //   dataIndex: '',
-    //   align: 'center',
-    //   width: 80,
-    //   render: (text, record, index) =>
-    //     <span>{index + 1}</span>
-    // },
     {
       title: '姓名',
-      dataIndex: 'mainWorkTypeName',
+      dataIndex: 'name',
       editable: true,
       align: 'center',
+      maxLength:64,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} value={record.mainWorkTypeName} />
+        }} value={record.name} />
     },
     {
       title: '性别',
-      dataIndex: 'personNumber',
-      editable: true,
-      align: 'center',
-      render: (text, record, index) =>
-        <Input style={{
-          width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
-    },
-    {
-      title: '救援工作职务',
-      dataIndex: 'holdCertificate',
+      dataIndex: 'sex',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Select
-          value={record.holdCertificate}
+          value={record.sex}
           style={{
             width: 150,
           }}
@@ -182,34 +168,49 @@ const AnswerTable = (props) => {
         </Select>
     },
     {
+      title: '救援工作职务',
+      dataIndex: 'rescueWorkPost',
+      editable: true,
+      align: 'center',
+      maxLength:64,
+
+      render: (text, record, index) =>
+        <Input style={{
+          width: 150,
+        }} value={record.rescueWorkPost} />
+    },
+    {
       title: '电话',
-      dataIndex: 'personNumber',
+      dataIndex: 'telephone',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.telephone} />
     },
     {
       title: '职责划分',
-      dataIndex: 'personNumber',
+      dataIndex: 'liableDivide',
       editable: true,
       align: 'center',
+      maxLength:200,
+
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.liableDivide} />
     },
     {
       title: '备注',
-      dataIndex: 'personNumber',
+      dataIndex: 'remark',
       editable: true,
       align: 'center',
+      maxLength:200,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.remark} />
     },
     {
       title: '操作',
@@ -227,9 +228,12 @@ const AnswerTable = (props) => {
   const handleAdd = () => {
     const newData = {
       key: count,
-      mainWorkTypeName: '',
-      personNumber: '',
-      holdCertificate: '',
+      name: '',
+      sex: '',
+      telephone: '',
+      rescueWorkPost: '',
+      liableDivide: '',
+      remark: ''
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1)
@@ -266,6 +270,7 @@ const AnswerTable = (props) => {
         editable: col.editable,
         dataIndex: col.dataIndex,
         title: col.title,
+        maxLength: col.maxLength,
         index,
         handleSave,
       }),

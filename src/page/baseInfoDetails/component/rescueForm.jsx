@@ -50,12 +50,12 @@ let AccidenttForm = (props, ref) => {
       let paramsArray = []
       paramsArray = [...values.AnswerTable1, ...values.AnswerTable2, ...values.AnswerTable3, ...values.AnswerTable4]
       if (saveLoading) return
+      console.log(paramsArray)
       paramsArray = paramsArray.filter(v => v.type !== '')
       setSaveLoading(true)
       await saveRescueForm(getCookie('entCode'), paramsArray).then(res => {
         if (res.code === 0) message.success('保存成功'); setIsEdit(true)
         setSaveLoading(false)
-
       }).catch(err => {
         setSaveLoading(false)
         setIsEdit(true)

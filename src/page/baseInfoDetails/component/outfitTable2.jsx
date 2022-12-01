@@ -1,11 +1,10 @@
-import { Button, Form, Input, Table, message } from 'antd';
+import { Button, Form, Input, Table, Select, message } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   PlusOutlined
 } from '@ant-design/icons';
 // import 'moment/locale/zh-cn';
-import { tellReg } from '@/utils/reg'
-
+import { positiveIntegerReg } from '@/utils/reg'
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
@@ -30,7 +29,6 @@ const EditableCell = ({
 }) => {
   const [editing, setEditing] = useState(false);
   const inputRef = useRef(null);
-
   const form = useContext(EditableContext);
   const [status, setStatus] = useState('')
   useEffect(() => {
@@ -46,24 +44,11 @@ const EditableCell = ({
     });
   };
 
-  const save = async (dataIndex) => {
+  const save = async () => {
     try {
       const values = await form.validateFields();
-      if (dataIndex === 'telephone') {
-        if (tellReg.test(values.telephone) || values.telephone === '') {
-          setStatus('')
-          form.setFieldValue(dataIndex, values.telephone)
-          toggleEdit();
-          handleSave({ ...record, ...values });
-        } else {
-          setStatus('error')
-          form.setFieldValue(dataIndex, values.telephone)
-          message.warning('请输入正确号码！');
-        }
-      } else {
-        toggleEdit();
-        handleSave({ ...record, ...values });
-      }
+      toggleEdit();
+      handleSave({ ...record, ...values });
     } catch (errInfo) {
     }
   };
@@ -76,7 +61,7 @@ const EditableCell = ({
             width: 150,
           }} ref={inputRef}
             onPressEnter={save}
-            onBlur={() => save(dataIndex)}
+            onBlur={save}
             maxLength={maxLength}
             status={status}
             onChange={(e) => onInputChange(e, dataIndex)}
@@ -90,14 +75,18 @@ const EditableCell = ({
     );
   }
   const onInputChange = (e, type) => {
-    if (type === 'telephone') {
+    if (type === 'number') {
       let inputValue = e.target.value
-      if (tellReg.test(inputValue) || inputValue === '') {
+      if (positiveIntegerReg.test(inputValue) || inputValue === '') {
         setStatus('')
         form.setFieldValue(type, inputValue)
       } else {
         setStatus('error')
-        form.setFieldValue(type, inputValue)
+        if (inputValue.includes('.') && inputValue.length === 2) {
+          message.warning('请输入正整数！');
+        } else {
+        }
+        form.setFieldValue(type, '')
       }
     }
   }
@@ -106,12 +95,11 @@ const EditableCell = ({
 
 const AnswerTable = (props) => {
   const [dataSource, setDataSource] = useState(props.dataSource);
-
   const [count, setCount] = useState(1);
-  const tableType = props.tableType
+
   const defaultColumns = [
     {
-      title: '姓名',
+      title: '名称',
       dataIndex: 'name',
       editable: true,
       align: 'center',
@@ -122,8 +110,18 @@ const AnswerTable = (props) => {
         }} value={record.name} />
     },
     {
-      title: '应急工作职务',
-      dataIndex: 'emergencyWork',
+      title: '数量',
+      dataIndex: 'number',
+      editable: true,
+      align: 'center',
+      render: (text, record, index) =>
+        <Input style={{
+          width: 150,
+        }} value={record.number} />
+    },
+    {
+      title: '规格型号',
+      dataIndex: 'specification',
       editable: true,
       align: 'center',
       maxLength: 64,
@@ -131,11 +129,23 @@ const AnswerTable = (props) => {
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} value={record.emergencyWork} />
+        }} value={record.specification} />
     },
     {
-      title: '职责划分',
-      dataIndex: 'liableDivide',
+      title: '存放地点',
+      dataIndex: 'storageLocation',
+      editable: true,
+      align: 'center',
+      maxLength: 128,
+
+      render: (text, record, index) =>
+        <Input style={{
+          width: 150,
+        }} value={record.storageLocation} />
+    },
+    {
+      title: '维护完好情况或有效期',
+      dataIndex: 'maintainOrValid',
       editable: true,
       align: 'center',
       maxLength: 200,
@@ -143,17 +153,31 @@ const AnswerTable = (props) => {
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} value={record.liableDivide} />
+        }} value={record.maintainOrValid} />
     },
     {
-      title: '电话号码',
-      dataIndex: 'telephone',
+      title: '用途',
+      dataIndex: 'purpose',
       editable: true,
       align: 'center',
+      maxLength: 200,
+
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} value={record.telephone} />
+        }} value={record.purpose} />
+    },
+    {
+      title: '责任人',
+      dataIndex: 'liablePerson',
+      editable: true,
+      align: 'center',
+      maxLength: 64,
+
+      render: (text, record, index) =>
+        <Input style={{
+          width: 150,
+        }} value={record.liablePerson} />
     },
     {
       title: '备注',
@@ -184,11 +208,13 @@ const AnswerTable = (props) => {
     const newData = {
       key: count,
       name: '',
+      number: '',
+      specification: '',
+      storageLocation: '',
+      maintainOrValid: '',
+      purpose: '',
+      liablePerson: '',
       remark: '',
-      liableDivide: '',
-      telephone: '',
-      emergencyWork: '',
-      type: tableType
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1)
@@ -197,11 +223,7 @@ const AnswerTable = (props) => {
   const handleDelete = (key) => {
     const newData = dataSource.filter((item) => item.key !== key);
     setDataSource(newData);
-    newData.map(item => {
-      item.type = tableType
-      return item
-    })
-    props.setTableData(newData, tableType)
+    props.setTableData(newData)
   };
   const handleSave = (row) => {
     const newData = [...dataSource];
@@ -209,11 +231,7 @@ const AnswerTable = (props) => {
     const item = newData[index];
     newData.splice(index, 1, { ...item, ...row });
     setDataSource(newData);
-    newData.map(item => {
-      item.type = tableType
-      return item
-    })
-    props.setTableData(newData, tableType)
+    props.setTableData(newData)
   };
 
   const components = {
@@ -234,6 +252,7 @@ const AnswerTable = (props) => {
         dataIndex: col.dataIndex,
         title: col.title,
         index,
+        maxLength: col.maxLength,
         handleSave,
       }),
     };

@@ -196,3 +196,18 @@ export const saveFireEquipmentForm = (entCode, data) => {
     data
   })
 }
+
+// 职业危害管理登记表 getOutfitForm, saveOutfitForm
+export const getOutfitForm = (entCode) => {
+  return http.request({
+    url: `/front/enterprise/table/tableEnterpriseMedicalResourcesRegister/info/${entCode}`,
+  })
+}
+// 保存saveSourceForm
+export const saveOutfitForm = (data) => {
+  return http.request({
+    url: `/front/enterprise/table/tableEnterpriseMedicalResourcesRegister/saveOrUpdate`,
+    method: 'post',
+    data
+  })
+}

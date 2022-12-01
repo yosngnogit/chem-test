@@ -46,7 +46,6 @@ let AccidenttForm = (props, ref) => {
   const onFinish = async (values) => {
     try {
       let paramsArray = []
-      console.log(1111111, values)
       paramsArray = [...values.AnswerTable1, ...values.AnswerTable2]
       if (saveLoading) return
       paramsArray = paramsArray.filter(v => v.type !== '')
@@ -74,7 +73,6 @@ let AccidenttForm = (props, ref) => {
       AnswerTable1: [],
       AnswerTable2: [],
     }
-    console.log(personDistributionSituation)
     if (personDistributionSituation.length === 0) {
       AnswerTable.push(
         {
@@ -120,20 +118,16 @@ let AccidenttForm = (props, ref) => {
         return item
       })
     }
-    console.log(
-      params)
     form.setFieldsValue(params)
   }
   const onFinishFailed = () => {
     message.warning('请检查并完成必填项');
   }
   const setTableData = (data, type) => {
-    console.log(data, tableObj[type])
     form.setFieldValue(
       tableObj[type], data
     )
   }
-
   const onCallback = () => {
     form.submit()
   }
