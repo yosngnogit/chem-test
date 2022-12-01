@@ -1,9 +1,13 @@
-import { Button, Form, Input, Table, Select } from 'antd';
+import { Button, Form, Input, Table, Select, DatePicker } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   PlusOutlined
 } from '@ant-design/icons';
 // import 'moment/locale/zh-cn';
+import { positiveIntegerReg, positiveIntegerRegPoint } from '@/utils/reg'
+import locale from 'antd/es/date-picker/locale/zh_CN';
+
+
 const EditableContext = React.createContext(null);
 const options = [
   {
@@ -33,17 +37,20 @@ const EditableCell = ({
   dataIndex,
   record,
   handleSave,
+  maxLength,
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false);
   const inputRef = useRef(null);
   const selectRef = useRef(null);
   const form = useContext(EditableContext);
+  const timeRef = useRef(null);
+  const [timeOpen, setTimeOpen] = useState(true);
   const [status, setStatus] = useState('')
   useEffect(() => {
     if (editing) {
-      if (dataIndex === 'holdCertificate') {
-        selectRef.current.focus();
+      if (dataIndex === 'datetime') {
+        timeRef.current.focus();
 
       } else {
         inputRef.current.focus();
@@ -66,45 +73,35 @@ const EditableCell = ({
     } catch (errInfo) {
     }
   };
+  const changeTime = (val) => {
+    setTimeOpen(val)
+  }
   let childNode = children;
   if (editable) {
     childNode = editing ? (
       <Form.Item name={dataIndex} style={{ margin: 0 }}>
         {
-          dataIndex === 'holdCertificate' ?
-            <Select
+          dataIndex === 'datetime' ?
+            <DatePicker
+              ref={timeRef}
+              locale={locale}
               autoFocus={true}
-              open={editing}
-              onBlur={save}
-              ref={selectRef}
-              style={{
-                width: 150,
-              }}
-            >{
-                options.map((item, index) => {
-                  return <Select.Option key={index} value={item.value}>{item.label}</Select.Option>
-                })
-              }
-            </Select>
+              open={timeOpen}
+              style={{ width: 150 }}
+              onChange={(e) => onTimeChange(e, dataIndex, index)}
+              onOpenChange={changeTime}
+            />
             :
-            (
-              dataIndex === 'personNumber' ? <Input style={{
-                width: 150,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                onChange={(e) => onInputChange(e, dataIndex)}
-                placeholder='请输入正整数'
-                status={status}
-              /> : <Input style={{
-                width: 150,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                maxLength='64'
-                onChange={(e) => onInputChange(e, dataIndex)}
-              />
-            )
+            <Input style={{
+              width: 150,
+            }} ref={inputRef}
+              onPressEnter={save}
+              onBlur={save}
+              maxLength={maxLength}
+              status={status}
+              onChange={(e) => onInputChange(e, dataIndex)}
+            />
+
         }
       </Form.Item>
     ) : (
@@ -114,16 +111,43 @@ const EditableCell = ({
     );
   }
   const onInputChange = (e, type) => {
-    if (type === 'personNumber') {
-      const reg = /^[1-9]([0-9])*$/;
+    if (type === 'investment') {
       let inputValue = e.target.value
-      if (reg.test(inputValue) || inputValue === '') {
+      if (positiveIntegerRegPoint.test(inputValue) || inputValue === '') {
         setStatus('')
         form.setFieldValue(type, inputValue)
       } else {
-        setStatus('error')
-        form.setFieldValue(type, '')
+        let errorLength = ''
+        if (inputValue.split('.')[1]) {
+          errorLength = inputValue.split('.')[1].length
+        }
+        if (errorLength === 3) {
+          setStatus('')
+        } else {
+          setStatus('error')
+        }
+        form.setFieldValue(type, dealInputVal(inputValue))
       }
+    }
+  }
+  const dealInputVal = (value) => {
+    value = value.replace(/^0*(0\.|[1-9])/, "$1");
+    value = value.replace(/[^\d.]/g, ""); // 清除"数字"和"."以外的字符
+    value = value.replace(/^\./g, ""); // 验证第一个字符是数字而不是字符
+    value = value.replace(/\.{1,}/g, "."); // 只保留第一个.清除多余的
+    value = value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+    value = value.replace(/^(\-)*(\d*)\.(\d\d).*$/, "$1$2.$3"); // 只能输入两个小数
+    value =
+      value.indexOf(".") > 0
+        ? value.split(".")[0].substring(0, 10) + "." + value.split(".")[1]
+        : value.substring(0, 10);
+    return value;
+  }
+  const onTimeChange = async (e, type, ind) => {
+    try {
+      const values = await form.validateFields();
+      handleSave({ ...record, ...values });
+    } catch (errInfo) {
     }
   }
   return <td {...restProps}>{childNode}</td>;
@@ -143,94 +167,81 @@ const AnswerTable = (props) => {
     //     <span>{index + 1}</span>
     // },
     {
-      title: '安全设备设施名称',
-      dataIndex: 'mainWorkTypeName',
+      title: '时间',
+      dataIndex: 'datetime',
+      editable: true,
+      align: 'center',
+      render: (text, record, index) =>
+        <DatePicker
+          style={{ width: 150 }}
+          value={record.datetime} />
+    },
+    {
+      title: '单位',
+      dataIndex: 'unit',
+      editable: true,
+      align: 'center',
+      maxLength: 128,
+      render: (text, record, index) =>
+        <Input style={{
+          width: 150,
+        }} value={record.unit} />
+    },
+    {
+      title: '项目名称',
+      dataIndex: 'projectName',
+      editable: true,
+      align: 'center',
+      maxLength: 128,
+      render: (text, record, index) =>
+        <Input style={{
+          width: 150,
+        }} value={record.projectName} />
+    },
+    {
+      title: '项目内容',
+      dataIndex: 'projectContent',
+      editable: true,
+      align: 'center',
+      maxLength: 200,
+      render: (text, record, index) =>
+        <Input style={{
+          width: 150,
+        }} value={record.projectContent} />
+    },
+    {
+      title: '资金投入（万元）',
+      dataIndex: 'investment',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} value={record.mainWorkTypeName} />
+        }} value={record.investment} />
     },
     {
-      title: '规格、型号',
-      dataIndex: 'personNumber',
+      title: '验证人',
+      dataIndex: 'checkPreson',
       editable: true,
       align: 'center',
+      maxLength: 64,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.checkPreson} />
     },
     {
-      title: '制造单位',
-      dataIndex: 'holdCertificate',
+      title: '备注',
+      dataIndex: 'remark',
       editable: true,
       align: 'center',
-      render: (text, record, index) =>
-        <Select
-          value={record.holdCertificate}
-          style={{
-            width: 150,
-          }}
-        >
-          {
-            options.map((item, index) => {
-              return <Select.Option key={index} value={item.value}>{item.label}</Select.Option>
-            })
-          }
-        </Select>
-    },
-    {
-      title: '出厂日期',
-      dataIndex: 'personNumber',
-      editable: true,
-      align: 'center',
+      maxLength: 200,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.remark} />
     },
-    {
-      title: '购置时间',
-      dataIndex: 'personNumber',
-      editable: true,
-      align: 'center',
-      render: (text, record, index) =>
-        <Input style={{
-          width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
-    },
-    {
-      title: '管理负责人',
-      dataIndex: 'personNumber',
-      editable: true,
-      align: 'center',
-      render: (text, record, index) =>
-        <Input style={{
-          width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
-    },
-    {
-      title: '检测、维修、保养时间',
-      dataIndex: 'personNumber',
-      editable: true,
-      align: 'center',
-      render: (text, record, index) =>
-        <Input style={{
-          width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
-    },
-    {
-      title: '检测、维修、保养及检查情况',
-      dataIndex: 'personNumber',
-      editable: true,
-      align: 'center',
-      render: (text, record, index) =>
-        <Input style={{
-          width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
-    },
+
     {
       title: '操作',
       dataIndex: '',
@@ -247,9 +258,13 @@ const AnswerTable = (props) => {
   const handleAdd = () => {
     const newData = {
       key: count,
-      mainWorkTypeName: '',
-      personNumber: '',
-      holdCertificate: '',
+      datetime: '',
+      unit: '',
+      projectName: '',
+      projectContent: '',
+      investment: '',
+      checkPreson: '',
+      remark: '',
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1)
@@ -286,6 +301,7 @@ const AnswerTable = (props) => {
         editable: col.editable,
         dataIndex: col.dataIndex,
         title: col.title,
+        maxLength: col.maxLength,
         index,
         handleSave,
       }),

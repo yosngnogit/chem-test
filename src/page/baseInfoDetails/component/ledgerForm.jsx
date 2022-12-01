@@ -64,10 +64,12 @@ let AccidenttForm = (props, ref) => {
       if (saveLoading) return
       setSaveLoading(true)
 
-      setSaveLoading(false)
       await saveLedgerForm(getCookie('entCode'), timeArray).then(res => {
+        setSaveLoading(false)
         if (res.code === 0) message.success('保存成功'); setIsEdit(true)
       }).catch(err => {
+        setSaveLoading(false)
+        setIsEdit(true)
         throw err
       })
     } catch (err) {
@@ -114,30 +116,12 @@ let AccidenttForm = (props, ref) => {
   const onFinishFailed = () => {
     message.warning('请检查并完成必填项');
   }
-  const safeChange = (value) => {
-    const flag = value.toString().indexOf('其他') > -1 ? true : false
-    if (flag) {
-      setShowSafeInput(true)
-    } else {
-      setShowSafeInput(false)
-    }
-  }
-  const onSafeInputBlur = (e) => {
-    setOtherSafe(e.target.value)
-  }
+
   const setTableData = (data) => {
     form.setFieldsValue({
       personDistributionSituation: data
     })
   }
-  const formItemLayout = {
-    labelCol: {
-      span: 10,
-    },
-    wrapperCol: {
-      span: 16,
-    },
-  };
   const onCallback = () => {
     form.submit()
   }

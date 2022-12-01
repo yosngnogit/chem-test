@@ -73,7 +73,7 @@ const EditableCell = ({
             locale={locale}
             autoFocus={true}
             open={timeOpen}
-            style={{ width: 180 }}
+            style={{ width: 150 }}
             onChange={(e) => onTimeChange(e, dataIndex, index)}
             onOpenChange={changeTime}
           />

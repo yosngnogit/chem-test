@@ -140,3 +140,31 @@ export const saveLedgerForm = (entCode, data) => {
     data
   })
 }
+// 职业危害管理登记表 getHarmForm, saveHarmForm
+export const getHarmForm = (entCode) => {
+  return http.request({
+    url: `/front/enterprise/table/tableOccupationalHazardManageRegister/info/${entCode}`,
+  })
+}
+// 保存saveSourceForm
+export const saveHarmForm = (entCode, data) => {
+  return http.request({
+    url: `/front/enterprise/table/tableOccupationalHazardManageRegister/saveOrUpdate?entCode=${entCode}`,
+    method: 'post',
+    data
+  })
+}
+// 职业危害管理登记表 getInputForm, saveInputForm
+export const getInputForm = (entCode) => {
+  return http.request({
+    url: `/front/enterprise/table/tableSafeProductionInputRegister/info/${entCode}`,
+  })
+}
+// 保存saveSourceForm
+export const saveInputForm = (entCode, data) => {
+  return http.request({
+    url: `/front/enterprise/table/tableSafeProductionInputRegister/saveOrUpdate?entCode=${entCode}`,
+    method: 'post',
+    data
+  })
+}

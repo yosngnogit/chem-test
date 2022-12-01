@@ -1,19 +1,18 @@
-import { Button, Form, Input, Table, Select } from 'antd';
+import { Button, Form, Input, Table, Select, message } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   PlusOutlined
 } from '@ant-design/icons';
 // import 'moment/locale/zh-cn';
+import { positiveIntegerReg } from '@/utils/reg'
+
 const EditableContext = React.createContext(null);
-const options = [
-  {
-    label: '是',
-    value: true
-  },
-  {
-    label: '否',
-    value: false
-  }
+const hazardCategoryOptions = [
+  '粉尘类', '放射性物质类', '化学物质类', '物理类', '生物类', '其他类'
+]
+const occupationalDiseasesCategoryOptions = [
+  '职业性尘肺病及其他呼吸系统疾病', '职业性皮肤病', '职业性眼病', '职业性耳鼻喉口腔疾病', '职业性化学中毒',
+  '物理因素所致职业病', '职业性放射性疾病', '职业性传染病', '职业性肿瘤', '其他职业病'
 ]
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
@@ -32,6 +31,7 @@ const EditableCell = ({
   children,
   dataIndex,
   record,
+  maxLength,
   handleSave,
   ...restProps
 }) => {
@@ -42,10 +42,7 @@ const EditableCell = ({
   const [status, setStatus] = useState('')
   useEffect(() => {
     if (editing) {
-      if (dataIndex === 'holdCertificate') {
-        selectRef.current.focus();
-
-      } else {
+      if (dataIndex === 'place' || dataIndex === 'contactNumber' || dataIndex === 'remark') {
         inputRef.current.focus();
       }
     }
@@ -71,39 +68,60 @@ const EditableCell = ({
     childNode = editing ? (
       <Form.Item name={dataIndex} style={{ margin: 0 }}>
         {
-          dataIndex === 'holdCertificate' ?
+          dataIndex === 'hazardCategory' ?
             <Select
               autoFocus={true}
               open={editing}
-              onBlur={save}
+              onChange={save}
               ref={selectRef}
               style={{
                 width: 150,
               }}
             >{
-                options.map((item, index) => {
-                  return <Select.Option key={index} value={item.value}>{item.label}</Select.Option>
+                hazardCategoryOptions.map((item, index) => {
+                  return <Select.Option key={index} value={item}>{item}</Select.Option>
                 })
               }
             </Select>
             :
             (
-              dataIndex === 'personNumber' ? <Input style={{
-                width: 150,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                onChange={(e) => onInputChange(e, dataIndex)}
-                placeholder='请输入正整数'
-                status={status}
-              /> : <Input style={{
-                width: 150,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={save}
-                maxLength='64'
-                onChange={(e) => onInputChange(e, dataIndex)}
-              />
+              dataIndex === 'occupationalDiseasesCategory' ? <Select
+                autoFocus={true}
+                open={editing}
+                onChange={save}
+                ref={selectRef}
+                style={{
+                  width: 200,
+                }}
+              >{
+                  occupationalDiseasesCategoryOptions.map((item, index) => {
+                    return <Select.Option key={index} value={item}>{item}</Select.Option>
+                  })
+                }
+              </Select>
+                : (
+                  dataIndex === 'checkInspection' ? <Select
+                    autoFocus={true}
+                    open={editing}
+                    onChange={save}
+                    ref={selectRef}
+                    style={{
+                      width: 150,
+                    }}
+                  >
+                    <Select.Option key='1' value='已检测'>已检测</Select.Option>
+                    <Select.Option key='2' value='未检测'>未检测</Select.Option>
+                  </Select> : <Input style={{
+                    width: 150,
+                  }} ref={inputRef}
+                    onPressEnter={save}
+                    addonAfter={dataIndex === 'contactNumber' ? '人' : ''}
+                    onBlur={save}
+                    maxLength={maxLength}
+                    status={status}
+                    onChange={(e) => onInputChange(e, dataIndex)}
+                  />
+                )
             )
         }
       </Form.Item>
@@ -114,14 +132,17 @@ const EditableCell = ({
     );
   }
   const onInputChange = (e, type) => {
-    if (type === 'personNumber') {
-      const reg = /^[1-9]([0-9])*$/;
+    if (type === 'contactNumber') {
       let inputValue = e.target.value
-      if (reg.test(inputValue) || inputValue === '') {
+      if (positiveIntegerReg.test(inputValue) || inputValue === '') {
         setStatus('')
         form.setFieldValue(type, inputValue)
       } else {
         setStatus('error')
+        if (inputValue.includes('.') && inputValue.length === 2) {
+          message.warning('请输入正整数！');
+        } else {
+        }
         form.setFieldValue(type, '')
       }
     }
@@ -134,82 +155,91 @@ const AnswerTable = (props) => {
   const [count, setCount] = useState(1);
 
   const defaultColumns = [
-    // {
-    //   title: '序号',
-    //   dataIndex: '',
-    //   align: 'center',
-    //   width: 80,
-    //   render: (text, record, index) =>
-    //     <span>{index + 1}</span>
-    // },
     {
       title: '场所（岗位）',
-      dataIndex: 'mainWorkTypeName',
+      dataIndex: 'place',
       editable: true,
       align: 'center',
+      maxLength: 64,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} value={record.mainWorkTypeName} />
+        }} value={record.place} />
     },
     {
       title: '危害种类',
-      dataIndex: 'personNumber',
-      editable: true,
-      align: 'center',
-      render: (text, record, index) =>
-        <Input style={{
-          width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
-    },
-    {
-      title: '职业病种类',
-      dataIndex: 'holdCertificate',
+      dataIndex: 'hazardCategory',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Select
-          value={record.holdCertificate}
+          value={record.hazardCategory}
           style={{
             width: 150,
           }}
         >
           {
-            options.map((item, index) => {
-              return <Select.Option key={index} value={item.value}>{item.label}</Select.Option>
+            hazardCategoryOptions.map((item, index) => {
+              return <Select.Option key={index} value={item}>{item}</Select.Option>
+            })
+          }
+        </Select>
+    },
+    {
+      title: '职业病种类',
+      dataIndex: 'occupationalDiseasesCategory',
+      editable: true,
+      align: 'center',
+      render: (text, record, index) =>
+        <Select
+          value={record.occupationalDiseasesCategory}
+          style={{
+            width: 200,
+          }}
+        >
+          {
+            occupationalDiseasesCategoryOptions.map((item, index) => {
+              return <Select.Option key={index} value={item}>{item}</Select.Option>
             })
           }
         </Select>
     },
     {
       title: '检测情况',
-      dataIndex: 'personNumber',
+      dataIndex: 'checkInspection',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
-        <Input style={{
-          width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        <Select
+          value={record.checkInspection}
+          style={{
+            width: 150,
+          }}
+        >
+          <Select.Option key='1' value='已检测'>已检测</Select.Option>
+          <Select.Option key='2' value='未检测'>未检测</Select.Option>
+        </Select>
     },
     {
       title: '接触人',
-      dataIndex: 'personNumber',
+      dataIndex: 'contactNumber',
       editable: true,
       align: 'center',
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} addonAfter='人' value={record.contactNumber} />
     },
     {
       title: '备注',
-      dataIndex: 'personNumber',
+      dataIndex: 'remark',
       editable: true,
       align: 'center',
+      maxLength: 200,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} placeholder='请输入正整数' value={record.personNumber} />
+        }} value={record.remark} />
     },
     {
       title: '操作',
@@ -227,9 +257,12 @@ const AnswerTable = (props) => {
   const handleAdd = () => {
     const newData = {
       key: count,
-      mainWorkTypeName: '',
-      personNumber: '',
-      holdCertificate: '',
+      place: '',
+      hazardCategory: '',
+      occupationalDiseasesCategory: '',
+      checkInspection: '',
+      contactNumber: '',
+      remark: ''
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1)
@@ -267,6 +300,7 @@ const AnswerTable = (props) => {
         dataIndex: col.dataIndex,
         title: col.title,
         index,
+        maxLength: col.maxLength,
         handleSave,
       }),
     };
