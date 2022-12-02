@@ -49,7 +49,7 @@ let AccidenttForm = (props, ref) => {
     try {
       if (saveLoading) return
       setSaveLoading(true)
-      let { regionList, economicType, tableRescueTeamAddressDetailVoList, tableMedicalEquipmentDetailVoList } = values
+      let { regionList, economicType, tableRescueTeamAddressDetail, tableMedicalEquipmentDetail } = values
       let params = {
         entCode: getCookie('entCode'),
         ...values,
@@ -57,8 +57,8 @@ let AccidenttForm = (props, ref) => {
         provinceCode: regionList[0],
         city: regionList[1],
         area: regionList[2],
-        tableRescueTeamAddressDetailVoList: tableRescueTeamAddressDetailVoList || [],
-        tableMedicalEquipmentDetailVoList: tableMedicalEquipmentDetailVoList || []
+        tableRescueTeamAddressDetail: tableRescueTeamAddressDetail || [],
+        tableMedicalEquipmentDetail: tableMedicalEquipmentDetail || []
       }
 
       await saveOutfitForm(params).then(res => {
@@ -87,8 +87,8 @@ let AccidenttForm = (props, ref) => {
       area,
       address,
       telephone,
-      tableRescueTeamAddressDetailVoList,
-      tableMedicalEquipmentDetailVoList
+      tableRescueTeamAddressDetail,
+      tableMedicalEquipmentDetail
     } = res.data
 
     let regionList = []
@@ -101,11 +101,11 @@ let AccidenttForm = (props, ref) => {
       address,
       telephone
     }
-    // console.log(tableRescueTeamAddressDetailVoList)
-    if (!tableRescueTeamAddressDetailVoList) {
-      // console.log(params.tableRescueTeamAddressDetailVoList)
-      tableRescueTeamAddressDetailVoList = []
-      tableRescueTeamAddressDetailVoList.push(
+    // console.log(tableRescueTeamAddressDetail)
+    if (!tableRescueTeamAddressDetail) {
+      // console.log(params.tableRescueTeamAddressDetail)
+      tableRescueTeamAddressDetail = []
+      tableRescueTeamAddressDetail.push(
         {
           key: Math.random(),
           name: '',
@@ -116,17 +116,17 @@ let AccidenttForm = (props, ref) => {
           remark: ''
         }
       )
-      params.tableRescueTeamAddressDetailVoList = tableRescueTeamAddressDetailVoList
+      params.tableRescueTeamAddressDetail = tableRescueTeamAddressDetail
     } else {
-      params.tableRescueTeamAddressDetailVoList = tableRescueTeamAddressDetailVoList.map(item => {
+      params.tableRescueTeamAddressDetail = tableRescueTeamAddressDetail.map(item => {
         item.key = Math.random()
         return item
       })
     }
-    if (!tableMedicalEquipmentDetailVoList) {
-      tableMedicalEquipmentDetailVoList = []
-      // console.log(params.tableRescueTeamAddressDetailVoList)
-      tableMedicalEquipmentDetailVoList.push(
+    if (!tableMedicalEquipmentDetail) {
+      tableMedicalEquipmentDetail = []
+      // console.log(params.tableRescueTeamAddressDetail)
+      tableMedicalEquipmentDetail.push(
         {
           key: Math.random(),
           name: '',
@@ -139,9 +139,9 @@ let AccidenttForm = (props, ref) => {
           remark: '',
         }
       )
-      params.tableMedicalEquipmentDetailVoList = tableMedicalEquipmentDetailVoList
+      params.tableMedicalEquipmentDetail = tableMedicalEquipmentDetail
     } else {
-      params.tableMedicalEquipmentDetailVoList = tableMedicalEquipmentDetailVoList.map(item => {
+      params.tableMedicalEquipmentDetail = tableMedicalEquipmentDetail.map(item => {
         item.key = Math.random()
         return item
       })
@@ -154,12 +154,12 @@ let AccidenttForm = (props, ref) => {
 
   const setTableData1 = (data) => {
     form.setFieldsValue({
-      tableRescueTeamAddressDetailVoList: data
+      tableRescueTeamAddressDetail: data
     })
   }
   const setTableData2 = (data) => {
     form.setFieldsValue({
-      tableMedicalEquipmentDetailVoList: data
+      tableMedicalEquipmentDetail: data
     })
   }
   const formItemLayout = {
@@ -239,7 +239,7 @@ let AccidenttForm = (props, ref) => {
             disabled={isEdit}
             className='base-form-add'
           >
-            <Form.Item name="tableRescueTeamAddressDetailVoList" valuePropName='dataSource'
+            <Form.Item name="tableRescueTeamAddressDetail" valuePropName='dataSource'
             >
               <AnswerTable1 setTableData={setTableData1} />
             </Form.Item>
@@ -250,7 +250,7 @@ let AccidenttForm = (props, ref) => {
             disabled={isEdit}
             className='base-form-add'
           >
-            <Form.Item name="tableMedicalEquipmentDetailVoList" valuePropName='dataSource'
+            <Form.Item name="tableMedicalEquipmentDetail" valuePropName='dataSource'
             >
               <AnswerTable2 setTableData={setTableData2} />
             </Form.Item>

@@ -39,13 +39,13 @@ let ProductionSafetyForm = (props, ref) => {
   }, [isEdit])
   const onFinish = async (values) => {
     try {
-      const timeArray = JSON.parse(JSON.stringify([...values.tableMechanismMemberDetailsFormList]))
+      const timeArray = JSON.parse(JSON.stringify([...values.tableMechanismMemberDetails]))
       timeArray.forEach(item => {
         if (item.appointmentTime) {
           item.appointmentTime = moment(item.appointmentTime).format('YYYY-MM-DD')
         }
       })
-      values.tableMechanismMemberDetailsFormList = timeArray
+      values.tableMechanismMemberDetails = timeArray
       if (saveLoading) return
       setSaveLoading(true)
       let { unitName,
@@ -57,7 +57,7 @@ let ProductionSafetyForm = (props, ref) => {
         teamNumber,
         workersNumber,
         safetyOfficerNumber,
-        tableMechanismMemberDetailsFormList } = values
+        tableMechanismMemberDetails } = values
       let params = {
         entCode: getCookie('entCode'),
         unitName,
@@ -69,7 +69,7 @@ let ProductionSafetyForm = (props, ref) => {
         teamNumber,
         workersNumber,
         safetyOfficerNumber,
-        tableMechanismMemberDetailsFormList
+        tableMechanismMemberDetails
       }
       await saveProductionSafetyForm(params).then(res => {
         if (res.code === 0) message.success('保存成功'); setIsEdit(true)
@@ -101,7 +101,7 @@ let ProductionSafetyForm = (props, ref) => {
         teamNumber,
         workersNumber,
         safetyOfficerNumber,
-        tableMechanismMemberDetailsFormList
+        tableMechanismMemberDetails
       } = res.data
       let params = {
         unitName,
@@ -113,12 +113,12 @@ let ProductionSafetyForm = (props, ref) => {
         teamNumber,
         workersNumber,
         safetyOfficerNumber,
-        tableMechanismMemberDetailsFormList
+        tableMechanismMemberDetails
       }
-      if (!tableMechanismMemberDetailsFormList) {
+      if (!tableMechanismMemberDetails) {
         // console.log(params.personDistributionSituation)
-        tableMechanismMemberDetailsFormList = []
-        tableMechanismMemberDetailsFormList.push(
+        tableMechanismMemberDetails = []
+        tableMechanismMemberDetails.push(
           {
             key: Math.random(),
             appointmentTime: '',
@@ -129,9 +129,9 @@ let ProductionSafetyForm = (props, ref) => {
             remark: ''
           }
         )
-        params.tableMechanismMemberDetailsFormList = tableMechanismMemberDetailsFormList
+        params.tableMechanismMemberDetails = tableMechanismMemberDetails
       } else {
-        params.tableMechanismMemberDetailsFormList = tableMechanismMemberDetailsFormList.map(item => {
+        params.tableMechanismMemberDetails = tableMechanismMemberDetails.map(item => {
           item.key = Math.random()
           if (item.appointmentTime) item.appointmentTime = (moment(item.appointmentTime, 'YYYY-MM-DD'))
           return item
@@ -149,7 +149,7 @@ let ProductionSafetyForm = (props, ref) => {
   }
   const setTableData = (data) => {
     form.setFieldsValue({
-      tableMechanismMemberDetailsFormList: data
+      tableMechanismMemberDetails: data
     })
   }
   const formItemLayout = {
@@ -251,7 +251,7 @@ let ProductionSafetyForm = (props, ref) => {
             disabled={isEdit}
             className='base-form-add'
           >
-            <Form.Item name="tableMechanismMemberDetailsFormList" valuePropName='dataSource'
+            <Form.Item name="tableMechanismMemberDetails" valuePropName='dataSource'
             >
               <AnswerTable setTableData={setTableData} />
             </Form.Item>

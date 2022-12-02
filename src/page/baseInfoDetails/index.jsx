@@ -155,7 +155,8 @@ function BaseInfoDetails(props) {
     setComponentEdit(data)
   }
   const onBack = () => {
-    props.history.go(-1)
+    // props.history.go(-1)
+    props.history.push('/answerEntrance')
     // setComponentType(componentName)
     refbase.current.onCallback();
 
@@ -214,11 +215,9 @@ function BaseInfoDetails(props) {
                   onClick={() => searchForm(i, index)}>
                   <Tooltip title={i.name}>
                     <p>
-
                       <span>*</span> {i.name}
                     </p>
                   </Tooltip>
-
                   <div className='icons'>
                     {
                       i.integrity ?
@@ -235,12 +234,6 @@ function BaseInfoDetails(props) {
                     }
                     <div className='right-icon'>
                     </div>
-                    {/* <Image
-                      width={10}
-                      preview={false}
-                      src={require('@/assets/img/baseInfo/Vectorinfo-right.png')}
-                    /> */}
-
                   </div>
                 </li>
               })
