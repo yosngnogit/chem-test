@@ -4,15 +4,11 @@ import React, {
 } from 'react'
 import { RightOutlined } from '@ant-design/icons';
 import { Collapse, Form, Input, Select, DatePicker, Checkbox, Radio, Space, Cascader, Spin, message } from 'antd';
-// import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
-import { getRegionTree, getDictListByName } from '@/api/common'
-import { positiveIntegerReg, positiveIntegerRegPoint, cardNumberRge } from '@/utils/reg'
 
 import { getFireEquipmentForm, saveFireEquipmentForm } from '@/api/info'
 import AnswerTable from './fireEquipmentFormTable'
 
-import moment from 'moment';
 import '.././index.less'
 let AccidenttForm = (props, ref) => {
   const { Panel } = Collapse;
@@ -47,13 +43,11 @@ let AccidenttForm = (props, ref) => {
     try {
       let paramsArray = []
       paramsArray = [...values.AnswerTable1, ...values.AnswerTable2]
-      if (saveLoading) return
       paramsArray = paramsArray.filter(v => v.type !== '')
       setSaveLoading(true)
       await saveFireEquipmentForm(getCookie('entCode'), paramsArray).then(res => {
         if (res.code === 0) message.success('保存成功'); setIsEdit(true)
         setSaveLoading(false)
-
       }).catch(err => {
         setSaveLoading(false)
         setIsEdit(true)
@@ -92,29 +86,7 @@ let AccidenttForm = (props, ref) => {
       personDistributionSituation.map(item => {
         item.key = Math.random()
         if (item.type === 'emergency') params.AnswerTable1.push(item)
-        else params.AnswerTable1.push({
-          key: Math.random(),
-          name: '',
-          number: '',
-          specification: '',
-          storageLocation: '',
-          maintainOrValid: '',
-          purpose: '',
-          liablePerson: '',
-          type: 'emergency'
-        })
         if (item.type === 'firecontrol') params.AnswerTable2.push(item)
-        else params.AnswerTable2.push({
-          key: Math.random(),
-          name: '',
-          number: '',
-          specification: '',
-          storageLocation: '',
-          maintainOrValid: '',
-          purpose: '',
-          liablePerson: '',
-          type: 'firecontrol'
-        })
         return item
       })
     }
@@ -124,6 +96,10 @@ let AccidenttForm = (props, ref) => {
     message.warning('请检查并完成必填项');
   }
   const setTableData = (data, type) => {
+    data.map(item => {
+      item.type = type
+      return item
+    })
     form.setFieldValue(
       tableObj[type], data
     )

@@ -17,15 +17,8 @@ import '.././index.less'
 
 let ProductionSafetyForm = (props, ref) => {
   const { Panel } = Collapse;
-  const { Option } = Select;
-  const { TextArea } = Input;
   const [form] = Form.useForm()
-  const [id, setId] = useState('')
   const [saveLoading, setSaveLoading] = useState(false)
-  const [showSafeInput, setShowSafeInput] = useState(false)
-  const [economicTypeList, setEconomicType] = useState([])
-  const [regionTree, setRegionTree] = useState([])
-  const [otherSafe, setOtherSafe] = useState('')
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(true);
   useEffect(() => {
@@ -46,13 +39,13 @@ let ProductionSafetyForm = (props, ref) => {
   }, [isEdit])
   const onFinish = async (values) => {
     try {
-      const timeArray = JSON.parse(JSON.stringify([...values.tableMechanismMemberDetailsVoList]))
+      const timeArray = JSON.parse(JSON.stringify([...values.tableMechanismMemberDetailsFormList]))
       timeArray.forEach(item => {
         if (item.appointmentTime) {
           item.appointmentTime = moment(item.appointmentTime).format('YYYY-MM-DD')
         }
       })
-      values.tableMechanismMemberDetailsVoList = timeArray
+      values.tableMechanismMemberDetailsFormList = timeArray
       if (saveLoading) return
       setSaveLoading(true)
       let { unitName,
@@ -64,7 +57,7 @@ let ProductionSafetyForm = (props, ref) => {
         teamNumber,
         workersNumber,
         safetyOfficerNumber,
-        tableMechanismMemberDetailsVoList } = values
+        tableMechanismMemberDetailsFormList } = values
       let params = {
         entCode: getCookie('entCode'),
         unitName,
@@ -76,7 +69,7 @@ let ProductionSafetyForm = (props, ref) => {
         teamNumber,
         workersNumber,
         safetyOfficerNumber,
-        tableMechanismMemberDetailsVoList
+        tableMechanismMemberDetailsFormList
       }
       await saveProductionSafetyForm(params).then(res => {
         if (res.code === 0) message.success('保存成功'); setIsEdit(true)
@@ -108,7 +101,7 @@ let ProductionSafetyForm = (props, ref) => {
         teamNumber,
         workersNumber,
         safetyOfficerNumber,
-        tableMechanismMemberDetailsVoList
+        tableMechanismMemberDetailsFormList
       } = res.data
       let params = {
         unitName,
@@ -120,12 +113,12 @@ let ProductionSafetyForm = (props, ref) => {
         teamNumber,
         workersNumber,
         safetyOfficerNumber,
-        tableMechanismMemberDetailsVoList
+        tableMechanismMemberDetailsFormList
       }
-      if (!tableMechanismMemberDetailsVoList) {
+      if (!tableMechanismMemberDetailsFormList) {
         // console.log(params.personDistributionSituation)
-        tableMechanismMemberDetailsVoList = []
-        tableMechanismMemberDetailsVoList.push(
+        tableMechanismMemberDetailsFormList = []
+        tableMechanismMemberDetailsFormList.push(
           {
             key: Math.random(),
             appointmentTime: '',
@@ -136,9 +129,9 @@ let ProductionSafetyForm = (props, ref) => {
             remark: ''
           }
         )
-        params.tableMechanismMemberDetailsVoList = tableMechanismMemberDetailsVoList
+        params.tableMechanismMemberDetailsFormList = tableMechanismMemberDetailsFormList
       } else {
-        params.tableMechanismMemberDetailsVoList = tableMechanismMemberDetailsVoList.map(item => {
+        params.tableMechanismMemberDetailsFormList = tableMechanismMemberDetailsFormList.map(item => {
           item.key = Math.random()
           if (item.appointmentTime) item.appointmentTime = (moment(item.appointmentTime, 'YYYY-MM-DD'))
           return item
@@ -156,7 +149,7 @@ let ProductionSafetyForm = (props, ref) => {
   }
   const setTableData = (data) => {
     form.setFieldsValue({
-      tableMechanismMemberDetailsVoList: data
+      tableMechanismMemberDetailsFormList: data
     })
   }
   const formItemLayout = {
@@ -258,7 +251,7 @@ let ProductionSafetyForm = (props, ref) => {
             disabled={isEdit}
             className='base-form-add'
           >
-            <Form.Item name="tableMechanismMemberDetailsVoList" valuePropName='dataSource'
+            <Form.Item name="tableMechanismMemberDetailsFormList" valuePropName='dataSource'
             >
               <AnswerTable setTableData={setTableData} />
             </Form.Item>

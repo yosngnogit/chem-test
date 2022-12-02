@@ -225,10 +225,10 @@ const AnswerTable = (props) => {
   const handleDelete = (key) => {
     const newData = dataSource.filter((item) => item.key !== key);
     setDataSource(newData);
-    newData.map(item => {
-      item.type = tableType
-      return item
-    })
+    // newData.map(item => {
+    //   item.type = tableType
+    //   return item
+    // })
     props.setTableData(newData, tableType)
   };
   const handleSave = (row) => {
@@ -237,10 +237,10 @@ const AnswerTable = (props) => {
     const item = newData[index];
     newData.splice(index, 1, { ...item, ...row });
     setDataSource(newData);
-    newData.map(item => {
-      item.type = tableType
-      return item
-    })
+    // newData.map(item => {
+    //   item.type = tableType
+    //   return item
+    // })
     props.setTableData(newData, tableType)
   };
 

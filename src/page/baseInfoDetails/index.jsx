@@ -116,8 +116,7 @@ function BaseInfoDetails(props) {
       btnList.sort((a, b) => {
         return a.type - b.type;
       })
-      console.log(btnList)
-
+      setBaseList(btnList)
     }).catch(err => {
     })
   }, [])
@@ -222,7 +221,7 @@ function BaseInfoDetails(props) {
 
                   <div className='icons'>
                     {
-                      i.status ?
+                      i.integrity ?
                         <Image
                           width={18}
                           preview={false}

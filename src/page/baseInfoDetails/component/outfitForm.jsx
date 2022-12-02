@@ -3,7 +3,7 @@ import React, {
   useImperativeHandle,
 } from 'react'
 import { RightOutlined } from '@ant-design/icons';
-import { Collapse, Form, Input, Select, DatePicker, Checkbox, Radio, Space, Cascader, Spin, message } from 'antd';
+import { Collapse, Form, Input, Cascader, Spin, message } from 'antd';
 // import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
 import { getRegionTree } from '@/api/common'
@@ -80,7 +80,7 @@ let AccidenttForm = (props, ref) => {
   }
   const initBaseInfo = async () => {
     let res = await getOutfitForm(getCookie('entCode'))
-    console.log(res)
+    // console.log(res)
     let {
       provinceCode,
       city,

@@ -142,7 +142,7 @@ const AnswerTable = (props) => {
       dataIndex: 'name',
       editable: true,
       align: 'center',
-      maxLength:64,
+      maxLength: 64,
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -172,7 +172,7 @@ const AnswerTable = (props) => {
       dataIndex: 'rescueWorkPost',
       editable: true,
       align: 'center',
-      maxLength:64,
+      maxLength: 64,
 
       render: (text, record, index) =>
         <Input style={{
@@ -194,7 +194,7 @@ const AnswerTable = (props) => {
       dataIndex: 'liableDivide',
       editable: true,
       align: 'center',
-      maxLength:200,
+      maxLength: 200,
 
       render: (text, record, index) =>
         <Input style={{
@@ -206,7 +206,7 @@ const AnswerTable = (props) => {
       dataIndex: 'remark',
       editable: true,
       align: 'center',
-      maxLength:200,
+      maxLength: 200,
       render: (text, record, index) =>
         <Input style={{
           width: 150,

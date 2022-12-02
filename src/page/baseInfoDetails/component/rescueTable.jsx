@@ -5,6 +5,7 @@ import {
 } from '@ant-design/icons';
 // import 'moment/locale/zh-cn';
 import { tellReg } from '@/utils/reg'
+const deleteList = []
 
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
@@ -106,9 +107,10 @@ const EditableCell = ({
 
 const AnswerTable = (props) => {
   const [dataSource, setDataSource] = useState(props.dataSource);
-
+  // const [deleteList, setDeleteList] = useState([]);
   const [count, setCount] = useState(1);
   const tableType = props.tableType
+  // const deleteList = []
   const defaultColumns = [
     {
       title: '姓名',
@@ -161,7 +163,6 @@ const AnswerTable = (props) => {
       editable: true,
       align: 'center',
       maxLength: 200,
-
       render: (text, record, index) =>
         <Input style={{
           width: 150,
@@ -172,9 +173,9 @@ const AnswerTable = (props) => {
       dataIndex: '',
       align: 'center',
       width: 70,
-      render: (_, record, index) =>
+      render: (text, record, index) =>
         dataSource.length > 1 ?
-          <Button type="link" danger onClick={() => handleDelete(record.key)}> 删除 </Button>
+          <Button type="link" danger onClick={() => handleDelete(text, record.key)}> 删除 </Button>
           : <div style={{
             width: 70,
           }}></div>,
@@ -188,20 +189,20 @@ const AnswerTable = (props) => {
       liableDivide: '',
       telephone: '',
       emergencyWork: '',
-      type: tableType
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1)
   };
 
-  const handleDelete = (key) => {
+  const handleDelete = (row, key) => {
+    // console.log(row)
+    if (row.id) deleteList.push(row.id)
+    // const deleteInnerList = dataSource.filter((item) => item.id === row.id);
     const newData = dataSource.filter((item) => item.key !== key);
+    // setDeleteList(val => [...val, ...deleteInnerList])
     setDataSource(newData);
-    newData.map(item => {
-      item.type = tableType
-      return item
-    })
-    props.setTableData(newData, tableType)
+    Array.from(new Set(deleteList))
+    props.setTableData(newData, tableType, deleteList)
   };
   const handleSave = (row) => {
     const newData = [...dataSource];

@@ -11,6 +11,9 @@ import { positiveIntegerReg, positiveIntegerRegPoint, cardNumberRge } from '@/ut
 
 import { getRescueForm, saveRescueForm } from '@/api/info'
 import AnswerTable from './rescueTable'
+// import AnswerTable2 from './rescueTable2'
+// import AnswerTable3 from './rescueTable3'
+// import AnswerTable4 from './rescueTable4'
 
 import moment from 'moment';
 import '.././index.less'
@@ -47,13 +50,13 @@ let AccidenttForm = (props, ref) => {
 
   const onFinish = async (values) => {
     try {
+      setSaveLoading(true)
+
       let paramsArray = []
       paramsArray = [...values.AnswerTable1, ...values.AnswerTable2, ...values.AnswerTable3, ...values.AnswerTable4]
-      if (saveLoading) return
-      console.log(paramsArray)
-      paramsArray = paramsArray.filter(v => v.type !== '')
-      setSaveLoading(true)
-      await saveRescueForm(getCookie('entCode'), paramsArray).then(res => {
+      let paramsInner = paramsArray.filter(v => v.type !== '')
+      console.log(paramsInner)
+      await saveRescueForm(getCookie('entCode'), paramsInner).then(res => {
         if (res.code === 0) message.success('保存成功'); setIsEdit(true)
         setSaveLoading(false)
       }).catch(err => {
@@ -77,7 +80,6 @@ let AccidenttForm = (props, ref) => {
       AnswerTable3: [],
       AnswerTable4: []
     }
-    // console.log(personDistributionSituation)
     if (personDistributionSituation.length === 0) {
       AnswerTable.push(
         {
@@ -87,70 +89,49 @@ let AccidenttForm = (props, ref) => {
           post: '',
           liableDivide: '',
           telephone: '',
-          type: ''
         }
       )
-      params.AnswerTable1 = params.AnswerTable2 = params.AnswerTable3 = params.AnswerTable4 = AnswerTable
+      params.AnswerTable1 = AnswerTable
+      params.AnswerTable2 = AnswerTable
+      params.AnswerTable3 = AnswerTable
+      params.AnswerTable4 = AnswerTable
     } else {
+      let innerTable1 = []
+      let innerTable2 = []
+      let innerTable3 = []
+      let innerTable4 = []
       personDistributionSituation.map(item => {
         item.key = Math.random()
-        if (item.type === 'leader') params.AnswerTable1.push(item)
-        else params.AnswerTable1.push({
-          key: Math.random(),
-          name: '',
-          number: '',
-          specification: '',
-          storageLocation: '',
-          maintainOrValid: '',
-          purpose: '',
-          liablePerson: '',
-          type: 'leader'
-        })
-        if (item.type === 'expert') params.AnswerTable2.push(item)
-        else params.AnswerTable2.push({
-          key: Math.random(),
-          name: '',
-          number: '',
-          specification: '',
-          storageLocation: '',
-          maintainOrValid: '',
-          purpose: '',
-          liablePerson: '',
-          type: 'expert'
-        })
-        if (item.type === 'office') params.AnswerTable3.push(item)
-        else params.AnswerTable3.push({
-          key: Math.random(),
-          name: '',
-          number: '',
-          specification: '',
-          storageLocation: '',
-          maintainOrValid: '',
-          purpose: '',
-          liablePerson: '',
-          type: 'office'
-        })
-        if (item.type === 'pluralismt') params.AnswerTable4.push(item)
-        else params.AnswerTable4.push({
-          key: Math.random(),
-          name: '',
-          number: '',
-          specification: '',
-          storageLocation: '',
-          maintainOrValid: '',
-          purpose: '',
-          liablePerson: '',
-          type: 'pluralismt'
-        })
+        if (item.type === 'leader') {
+          innerTable1.push(item)
+        }
+        if (item.type === 'expert') {
+          innerTable2.push(item)
+        }
+        if (item.type === 'office') {
+          console.log(item)
+          innerTable3.push(item)
+        }
+        if (item.type === 'pluralismt') {
+          innerTable4.push(item)
+        }
         return item
       })
+      params.AnswerTable1 = innerTable1
+      params.AnswerTable2 = innerTable2
+      params.AnswerTable3 = innerTable3
+      params.AnswerTable4 = innerTable4
     }
     form.setFieldsValue(params)
   }
   const onFinishFailed = () => {
     message.warning('请检查并完成必填项');
   }
-  const setTableData = (data, type) => {
+  const setTableData = (data, type, deleteList) => {
+    data.map(item => {
+      item.type = type
+      return item
+    })
     form.setFieldValue(
       tableObj[type], data
     )
