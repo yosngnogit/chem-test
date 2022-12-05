@@ -22,6 +22,7 @@ let AccidenttForm = (props, ref) => {
   const [regionTree, setRegionTree] = useState([])
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(true);
+  const [id, setId] = useState('')
   useEffect(() => {
     setLoading(true)
     Promise.all([
@@ -54,6 +55,7 @@ let AccidenttForm = (props, ref) => {
         entCode: getCookie('entCode'),
         ...values,
         economicType,
+        id,
         provinceCode: regionList[0],
         city: regionList[1],
         area: regionList[2],
@@ -80,25 +82,27 @@ let AccidenttForm = (props, ref) => {
   }
   const initBaseInfo = async () => {
     let res = await getOutfitForm(getCookie('entCode'))
-    // console.log(res)
+    console.log(res)
     let {
+      id,
       provinceCode,
       city,
       area,
-      address,
+      rescueTeamAddress,
       telephone,
       tableRescueTeamAddressDetail,
       tableMedicalEquipmentDetail
     } = res.data
+    setId(id)
+
 
     let regionList = []
     if (provinceCode) regionList.push(provinceCode)
     if (city) regionList.push(city)
     if (area) regionList.push(area)
-    console.log(regionList)
     let params = {
       regionList,
-      address,
+      rescueTeamAddress,
       telephone
     }
     // console.log(tableRescueTeamAddressDetail)
@@ -220,7 +224,7 @@ let AccidenttForm = (props, ref) => {
               </Cascader>
             </Form.Item>
 
-            <Form.Item label="详细地址" name='address'
+            <Form.Item label="详细地址" name='rescueTeamAddress'
               rules={[{ required: true }]}>
               <Input placeholder='请输入详细地址' maxLength='128' />
             </Form.Item>

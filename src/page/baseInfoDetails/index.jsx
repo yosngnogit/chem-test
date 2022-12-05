@@ -123,8 +123,6 @@ function BaseInfoDetails(props) {
 
 
   const searchForm = (e, index) => {
-    // setParkData(parkObj[e.cityCode])
-    // console.log(e)
     if (componentEdit) {
       confirm({
         style: { top: '30%' },

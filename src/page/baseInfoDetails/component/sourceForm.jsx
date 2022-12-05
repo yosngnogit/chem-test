@@ -54,7 +54,6 @@ let SourceForm = (props, ref) => {
       form.setFieldsValue({
         tableDangerSourceMonitorManageRegister: res.data
       })
-      console.log(1)
       setLoading(false)
 
     } catch (err) {
