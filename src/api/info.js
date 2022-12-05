@@ -7,7 +7,7 @@ export const getInfo = (entCode) => {
   })
 }
 // 企业基本信息列表
-export const getComponyList = (entCode) => {
+export const getFormList = (entCode) => {
   return http.request({
     url: `/front/enterprise/table/tableList/info/${entCode}`,
   })

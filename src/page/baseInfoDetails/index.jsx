@@ -1,12 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { Modal, Form, Input, Select, DatePicker, Checkbox, Radio, Space, Cascader, Spin, message, Tooltip } from 'antd';
+import { Modal, Tooltip, Image } from 'antd';
 import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
-import { getComponyList } from '@/api/info'
-
-
-import { Image } from 'antd';
-
+import { getFormList } from '@/api/info'
 import './index.less'
 import BaseForm from './component/baseForm';
 import SourceForm from './component/sourceForm'
@@ -107,7 +103,7 @@ function BaseInfoDetails(props) {
 
   useEffect(() => {
     // console.log(getCookie('entCode'))
-    getComponyList(1).then(res => {
+    getFormList(1).then(res => {
       let btnList = res.data
       btnList.map(item => {
         item.componentName = setComponentType(item.type)
@@ -120,8 +116,6 @@ function BaseInfoDetails(props) {
     }).catch(err => {
     })
   }, [])
-
-
   const searchForm = (e, index) => {
     if (componentEdit) {
       confirm({
@@ -153,11 +147,8 @@ function BaseInfoDetails(props) {
     setComponentEdit(data)
   }
   const onBack = () => {
-    // props.history.go(-1)
     props.history.push('/answerEntrance')
-    // setComponentType(componentName)
     refbase.current.onCallback();
-
   }
   const setComponentType = (param) => {
     switch (param) {
@@ -279,17 +270,18 @@ function BaseInfoDetails(props) {
           {
             componentName === 'OutfitForm' ? <OutfitForm setEdit={setEdit} ref={refbase} /> : ''
           }
+          {/* {
+            componentName === 'OutfitForm' ? BaseHeader(OutfitForm) : ''
+          } */}
 
         </div>
-
+        <div>
+        </div>
       </div>
     </div>
   )
 }
-// function BaseHeader(text) {
-//   return <div className="info-title">
-//     <span className='info-span'>*</span>
-//     <p>{text}</p>
-//   </div>
+// function BaseHeader(Text) {
+//   return <Text></Text>
 // }
 export default withRouter(BaseInfoDetails)
