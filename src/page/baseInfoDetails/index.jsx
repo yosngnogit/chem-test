@@ -107,6 +107,7 @@ function BaseInfoDetails(props) {
       let btnList = res.data
       btnList.map(item => {
         item.componentName = setComponentType(item.type)
+        item.name = setName(item.type)
         return item
       })
       btnList.sort((a, b) => {
@@ -150,6 +151,40 @@ function BaseInfoDetails(props) {
     props.history.push('/answerEntrance')
     refbase.current.onCallback();
   }
+  const setName = (param) => {
+    switch (param) {
+      case 1:
+        return '企业基本情况表'
+      case 2:
+        return '危险源（点）监控管理登记表'
+      case 3:
+        return '安全生产组织机构登记表'
+      case 4:
+        return '企业主要负责人、安全管理人员安全生产管理资格培训取证记录'
+      case 5:
+        return '特种作业人员培训、考核、持证登记表'
+      case 6:
+        return '特种设备登记表'
+      case 7:
+        return '生产安全事故统计表'
+      case 8:
+        return '消防器材、防护配置情况登记表'
+      case 9:
+        return '安全设备设施登记使用管理台账'
+      case 10:
+        return '职业危害管理登记表'
+      case 11:
+        return '安全生产投入登记表'
+      case 12:
+        return '企业应急救援管理机构、人员统计表'
+      case 13:
+        return '企业消防设施器材、应急救援器材装备登记表'
+      case 14:
+        return '企业医疗救护组织、人员、装备和药物登记表'
+      default:
+        console.log('default')
+    }
+  }
   const setComponentType = (param) => {
     switch (param) {
       case 1:
@@ -184,6 +219,7 @@ function BaseInfoDetails(props) {
         console.log('default')
     }
   }
+
   return (
     <div className='baseInfoDetails'>
       <div className='background'>
@@ -228,6 +264,15 @@ function BaseInfoDetails(props) {
               })
             }
           </ul>
+          {/* {
+            baseList.map(item => {
+              return <div>
+                {
+                  componentName === item.componentName ? BaseComponent(item.componentName, setEdit, refbase) : ''
+                }
+              </div>
+            })
+          } */}
           {
             componentName === 'BaseForm' ? <BaseForm setEdit={setEdit} ref={refbase} /> : ''
           }
@@ -270,10 +315,6 @@ function BaseInfoDetails(props) {
           {
             componentName === 'OutfitForm' ? <OutfitForm setEdit={setEdit} ref={refbase} /> : ''
           }
-          {/* {
-            componentName === 'OutfitForm' ? BaseHeader(OutfitForm) : ''
-          } */}
-
         </div>
         <div>
         </div>
@@ -281,7 +322,4 @@ function BaseInfoDetails(props) {
     </div>
   )
 }
-// function BaseHeader(Text) {
-//   return <Text></Text>
-// }
 export default withRouter(BaseInfoDetails)

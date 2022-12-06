@@ -3,10 +3,12 @@ import React, {
   useImperativeHandle,
 } from 'react'
 import { RightOutlined } from '@ant-design/icons';
-import { Collapse, Form, Input, Cascader, Spin, message } from 'antd';
+import { Collapse, Form, Input, Cascader, Spin, message, Upload } from 'antd';
 // import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
-import { getRegionTree } from '@/api/common'
+import { getRegionTree, downloadTemp } from '@/api/common'
+import { uploadApi, baseURL } from "@/config"
+
 import { tellReg } from '@/utils/reg'
 
 import { getOutfitForm, saveOutfitForm } from '@/api/info'
@@ -23,6 +25,8 @@ let AccidenttForm = (props, ref) => {
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(true);
   const [id, setId] = useState('')
+  const [type, setType] = useState('')
+
   useEffect(() => {
     setLoading(true)
     Promise.all([
@@ -205,6 +209,50 @@ let AccidenttForm = (props, ref) => {
       }}
     >保存</div>
   );
+  const uploadProps = {
+    name: 'file',
+    action: uploadApi + `/help/enterprise/table/importExcel`,
+    headers: {
+      authorization: 'Bearer' + '' + getCookie("access_token"),
+      ContentType: 'multipart/form-data'
+    },
+    data: {
+      entCode: getCookie('entCode'),
+      type: type
+    },
+    showUploadList: false,
+    accept: '.xls,.xlsx',
+    beforeUpload: (file) => {
+      let isXls = file.name.split('.')[1]
+      let extension = ['xls', 'xlsx', 'jpeg', 'XLS', 'XLSX'].includes(isXls);
+      if (!extension) {
+        message.error('请上传正确的表格数据!')
+        return false;
+      }
+    },
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+      }
+      if (info.file.status === 'done') {
+        if (info.file.response.code === 0) {
+          message.success(`${info.file.name} 上传成功！`);
+          initBaseInfo()
+        } else {
+          message.warning(`${info.file.response.message} !`);
+        }
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} 上传失败！`);
+      }
+    },
+  };
+  // const onDownload = (type) => {
+  //   downloadTemp(getCookie('entCode'), type).then(res => {
+  //     console.log(res)
+  //   })
+  // }
+  const onDownload = (type) => {
+    window.open(`${baseURL}/help/enterprise/table/exportWord/enterpriseBaseInfo?entCode=${getCookie('entCode')}&exportType=${type}&access_token=${getCookie("access_token")}`)
+  }
   return (
     <Spin spinning={loading}>
       <Collapse
@@ -239,6 +287,14 @@ let AccidenttForm = (props, ref) => {
           </Form>
         </Panel>
         <Panel header={BaseHeader('医疗救护组人员')} key="2" forceRender>
+          <div className='form-tip-btns'>
+            <button className="dowload" onClick={() => onDownload('18')} disabled={isEdit}>下载模板</button>
+            <Upload {...uploadProps} disabled={isEdit}>
+              <div className="import" onClick={() => setType('18')}>导入</div>
+            </Upload>
+            <button className="export" onClick={() => onDownload('18')} disabled={isEdit}>导出</button>
+
+          </div>
           <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
             disabled={isEdit}
             className='base-form-add'
@@ -250,6 +306,14 @@ let AccidenttForm = (props, ref) => {
           </Form>
         </Panel>
         <Panel header={BaseHeader('医疗装备和药物')} key="3" forceRender>
+          <div className='form-tip-btns'>
+            <button className="dowload" onClick={() => onDownload('19')} disabled={isEdit}>下载模板</button>
+            <Upload {...uploadProps} disabled={isEdit}>
+              <div className="import" onClick={() => setType('19')}>导入</div>
+            </Upload>
+            <button className="export" onClick={() => onDownload('19')} disabled={isEdit}>导出</button>
+
+          </div>
           <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
             disabled={isEdit}
             className='base-form-add'

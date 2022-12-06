@@ -6,11 +6,11 @@ import { RightOutlined } from '@ant-design/icons';
 import { Collapse, Form, Input, Select, DatePicker, Checkbox, Radio, Space, Cascader, Spin, message, Upload } from 'antd';
 // import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
-import { getRegionTree, getDictListByName } from '@/api/common'
+import { getRegionTree, getDictListByName, downloadTemp } from '@/api/common'
 import { positiveIntegerReg, positiveIntegerRegPoint, cardNumberRge } from '@/utils/reg'
 
 import { getBaseInfo, saveUpdate } from '@/api/info'
-import { uploadApi } from "@/config"
+import { baseURL, uploadApi } from "@/config"
 
 import AnswerTable from './baseTable'
 import BaseProductTable from './baseProductTable'
@@ -437,26 +437,35 @@ let BaseForm = (props, ref) => {
     showUploadList: false,
     accept: '.xls,.xlsx',
     beforeUpload: (file) => {
-      console.log(file)
-      // const isPNG = file.type === 'image/png';
-      // if (!isPNG) {
-      //   message.error(`${file.name} is not a png file`);
-      // }
-      // return isPNG || Upload.LIST_IGNORE;
+      let isXls = file.name.split('.')[1]
+      let extension = ['xls', 'xlsx', 'jpeg', 'XLS', 'XLSX'].includes(isXls);
+      if (!extension) {
+        message.error('请上传正确的表格数据!')
+        return false;
+      }
     },
     onChange(info) {
-      console.log(info)
-      // if (info.file.status !== 'uploading') {
-      //   console.log(info.file, info.fileList);
-      // }
-      // if (info.file.status === 'done') {
-      //   message.success(`${info.file.name} file uploaded successfully`);
-      // } else if (info.file.status === 'error') {
-      //   message.error(`${info.file.name} file upload failed.`);
-      // }
+      if (info.file.status !== 'uploading') {
+        // console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        if (info.file.response.code === 0) {
+          message.success(`${info.file.name} 上传成功！`);
+          initBaseInfo()
+        } else {
+          message.warning(`${info.file.response.message} !`);
+        }
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} 上传失败！`);
+      }
     },
   };
+  const onDownload = () => {
+    window.open(`${baseURL}/help/enterprise/table/exportWord/enterpriseBaseInfo?entCode=${entCode}&exportType=1&access_token=${token}`)
+  }
+  const onDownloadTemp = () => {
 
+  }
   return (
     <Spin spinning={loading}>
       <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'
@@ -790,12 +799,11 @@ let BaseForm = (props, ref) => {
         </Panel>
         <Panel header={BaseHeader('作业人员')} key="12" forceRender>
           <div className='form-tip-btns'>
-            <div className="dowload">下载模板</div>
-            <Upload {...uploadProps} >
-              {/* <Button>Click to Upload</Button> */}
+            <button className="dowload" onClick={onDownloadTemp} disabled={isEdit}>下载模板</button>
+            <Upload {...uploadProps} disabled={isEdit}>
               <div className="import">导入</div>
-
             </Upload>
+            <button className="export" onClick={onDownload} disabled={isEdit}>导出</button>
           </div>
           <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
             wrapperCol={{ span: 24 }}
