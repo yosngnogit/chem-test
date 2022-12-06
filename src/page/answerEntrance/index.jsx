@@ -45,36 +45,89 @@ function AnswerEntrance(props) {
 
   const goCreate = (item) => {
     let innerArray = []
-    listData.map(v => {
-      v.active = false
-    })
-    confirm({
-      bodyClassName: 'pay-confirm',
-      content: '已有测试正在进行中，确定是否新建测试？',
-      okText: '确认',
-      onOk() { goSchedule(item, 'add') },
-      onCancel() {
-        innerArray = JSON.parse(JSON.stringify(listData));
-        // 免费
-        if (item.paperType === '1') {
-          innerArray.forEach(i => {
-            if (i.paperStatus === '0' && i.paperType === '1') {
-              i.active = true
-            }
-            // if (i.paperStatus === '0' && item.paperType === '2') i.payactive = true
-          })
-        }
-        // 付费
-        else {
-          innerArray.forEach(i => {
-            if (i.paperStatus === '0' && i.paperType === '2') {
-              i.active = true
-            }
-          })
-        }
-        setListData(innerArray)
+    if(item.paperType=='2'){
+      if(listData.filter(data=>data.paperType==='2').length==0){
+        confirm({
+          bodyClassName: 'pay-confirm',
+          content: '是否创建新答题？',
+          okText: '确认',
+          onOk() { goSchedule(item, 'add') }})
       }
-    })
+      else{
+        listData.map(v => {
+          v.active = false
+        })
+        confirm({
+          bodyClassName: 'pay-confirm',
+          content: '已有测试正在进行中，确定是否新建测试？',
+          okText: '确认',
+          onOk() { goSchedule(item, 'add') },
+          onCancel() {
+            innerArray = JSON.parse(JSON.stringify(listData));
+            // 免费
+            if (item.paperType === '1') {
+              innerArray.forEach(i => {
+                if (i.paperStatus === '0' && i.paperType === '1') {
+                  i.active = true
+                }
+                // if (i.paperStatus === '0' && item.paperType === '2') i.payactive = true
+              })
+            }
+            // 付费
+            else {
+              innerArray.forEach(i => {
+                if (i.paperStatus === '0' && i.paperType === '2') {
+                  i.active = true
+                }
+              })
+            }
+            setListData(innerArray)
+          }
+        })
+      }
+   } else{
+    if(listData.filter(data=>data.paperType==='1').length==0){
+      confirm({
+        bodyClassName: 'pay-confirm',
+        content: '是否创建新答题？',
+        okText: '确认',
+        onOk() { goSchedule(item, 'add') }})
+     }
+     else{
+      listData.map(v => {
+        v.active = false
+      })
+      confirm({
+        bodyClassName: 'pay-confirm',
+        content: '已有测试正在进行中，确定是否新建测试？',
+        okText: '确认',
+        onOk() { goSchedule(item, 'add') },
+        onCancel() {
+          innerArray = JSON.parse(JSON.stringify(listData));
+          // 免费
+          if (item.paperType === '1') {
+            innerArray.forEach(i => {
+              if (i.paperStatus === '0' && i.paperType === '1') {
+                i.active = true
+              }
+              // if (i.paperStatus === '0' && item.paperType === '2') i.payactive = true
+            })
+          }
+          // 付费
+          else {
+            innerArray.forEach(i => {
+              if (i.paperStatus === '0' && i.paperType === '2') {
+                i.active = true
+              }
+            })
+          }
+          setListData(innerArray)
+        }
+      })
+     }
+   }
+      
+   
   }
 
   const goPay = () => {
