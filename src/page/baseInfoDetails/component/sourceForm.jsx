@@ -6,7 +6,7 @@ import { RightOutlined } from '@ant-design/icons';
 import { Collapse, Form, Spin, message, Upload } from 'antd';
 // import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
-import { downloadTemp } from '@/api/common'
+import { onDownloadTemp } from '@/api/common'
 import { uploadApi, baseURL } from "@/config"
 
 
@@ -144,7 +144,7 @@ let SourceForm = (props, ref) => {
     },
   };
   // const onDownload = () => {
-  //   downloadTemp(entCode, 2).then(res => {
+  //   onDownloadTemp(entCode, 2).then(res => {
   //     console.log(res)
   //   })
   // }
@@ -158,7 +158,8 @@ let SourceForm = (props, ref) => {
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
         <Panel header={BaseHeader('危险源（点）监控管理表')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
           <div className='form-tip-btns'>
-            <button className="dowload" onClick={onDownload} disabled={isEdit}>下载模板</button>
+            <button className="dowload" onClick={() => onDownloadTemp('tdsmmrTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
+
             <Upload {...uploadProps} disabled={isEdit}>
               <div className="import">导入</div>
             </Upload>

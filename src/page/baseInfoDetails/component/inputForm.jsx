@@ -5,7 +5,7 @@ import React, {
 import { RightOutlined } from '@ant-design/icons';
 import { Collapse, Form, Upload, Spin, message } from 'antd';
 
-import { downloadTemp } from '@/api/common'
+import { onDownloadTemp } from '@/api/common'
 import { uploadApi, baseURL } from "@/config"
 import { getCookie } from '@/utils'
 
@@ -172,7 +172,7 @@ let AccidenttForm = (props, ref) => {
     },
   };
   // const onDownload = () => {
-  //   downloadTemp(getCookie('entCode'), 11).then(res => {
+  //   onDownloadTemp(getCookie('entCode'), 11).then(res => {
   //     console.log(res)
   //   })
   // }
@@ -185,7 +185,8 @@ let AccidenttForm = (props, ref) => {
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
         <Panel header={BaseHeader('安全生产投入登记表')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
           <div className='form-tip-btns'>
-            <button className="dowload" onClick={onDownload} disabled={isEdit}>下载模板</button>
+            <button className="dowload" onClick={() => onDownloadTemp('tspirTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
+
             <Upload {...uploadProps} disabled={isEdit}>
               <div className="import">导入</div>
             </Upload>

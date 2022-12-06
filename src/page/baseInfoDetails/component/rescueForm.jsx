@@ -6,7 +6,7 @@ import { RightOutlined } from '@ant-design/icons';
 import { Collapse, Form, Spin, message, Upload } from 'antd';
 // import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
-import { downloadTemp } from '@/api/common'
+import { onDownloadTemp } from '@/api/common'
 import { uploadApi, baseURL } from "@/config"
 
 import { getRescueForm, saveRescueForm } from '@/api/info'
@@ -206,7 +206,7 @@ let AccidenttForm = (props, ref) => {
     },
   };
   // const onDownload = (type) => {
-  //   downloadTemp(getCookie('entCode'), type).then(res => {
+  //   onDownloadTemp(getCookie('entCode'), type).then(res => {
   //     console.log(res)
   //   })
   // }
@@ -222,7 +222,8 @@ let AccidenttForm = (props, ref) => {
             expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
             <Panel header={BaseHeader('应急管理领导小组')} key="8" className='inner-header' forceRender>
               <div className='form-tip-btns'>
-                <button className="dowload" onClick={() => onDownload('12')} disabled={isEdit}>下载模板</button>
+                <button className="dowload" onClick={() => onDownloadTemp('termprTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
+
                 <Upload {...uploadProps} disabled={isEdit}>
                   <div className="import" onClick={() => setType('12')}>导入</div>
                 </Upload>
@@ -240,7 +241,8 @@ let AccidenttForm = (props, ref) => {
             </Panel>
             <Panel header={BaseHeader('应急救援专家')} key="9" className='inner-header' forceRender>
               <div className='form-tip-btns'>
-                <button className="dowload" onClick={() => onDownload('13')} disabled={isEdit}>下载模板</button>
+                <button className="dowload" onClick={() => onDownloadTemp('termprTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
+
                 <Upload {...uploadProps} disabled={isEdit}>
                   <div className="import" onClick={() => setType('13')}>导入</div>
                 </Upload>
@@ -258,7 +260,8 @@ let AccidenttForm = (props, ref) => {
             </Panel>
             <Panel header={BaseHeader('应急救援管理办公室')} key="10" className='inner-header' forceRender>
               <div className='form-tip-btns'>
-                <button className="dowload" onClick={() => onDownload('14')} disabled={isEdit}>下载模板</button>
+                <button className="dowload" onClick={() => onDownloadTemp('termprTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
+
                 <Upload {...uploadProps} disabled={isEdit}>
                   <div className="import" onClick={() => setType('14')}>导入</div>
                 </Upload>
@@ -276,7 +279,8 @@ let AccidenttForm = (props, ref) => {
             </Panel>
             <Panel header={BaseHeader('应急救援兼职队员')} key="11" className='inner-header' forceRender>
               <div className='form-tip-btns'>
-                <button className="dowload" onClick={() => onDownload('15')} disabled={isEdit}>下载模板</button>
+                <button className="dowload" onClick={() => onDownloadTemp('termprTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
+
                 <Upload {...uploadProps} disabled={isEdit}>
                   <div className="import" onClick={() => setType('15')}>导入</div>
                 </Upload>

@@ -6,7 +6,7 @@ import { RightOutlined } from '@ant-design/icons';
 import { Collapse, Form, Upload, Spin, message } from 'antd';
 // import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
-import { downloadTemp } from '@/api/common'
+import { onDownloadTemp } from '@/api/common'
 import { uploadApi, baseURL } from "@/config"
 
 import { getMaterialForm, saveMaterialForm } from '@/api/info'
@@ -162,7 +162,7 @@ let ProductionSafetyForm = (props, ref) => {
     },
   };
   // const onDownload = () => {
-  //   downloadTemp(getCookie('entCode'), 8).then(res => {
+  //   onDownloadTemp(getCookie('entCode'), 8).then(res => {
   //     console.log(res)
   //   })
   // }
@@ -176,7 +176,8 @@ let ProductionSafetyForm = (props, ref) => {
         <Panel header={BaseHeader('消防器材、防护配置情况登记表')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
 
           <div className='form-tip-btns'>
-            <button className="dowload" onClick={onDownload} disabled={isEdit}>下载模板</button>
+            <button className="dowload" onClick={() => onDownloadTemp('tpcrTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
+
             <Upload {...uploadProps} disabled={isEdit}>
               <div className="import">导入</div>
             </Upload>

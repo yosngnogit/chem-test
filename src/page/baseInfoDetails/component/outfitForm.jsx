@@ -6,7 +6,7 @@ import { RightOutlined } from '@ant-design/icons';
 import { Collapse, Form, Input, Cascader, Spin, message, Upload } from 'antd';
 // import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
-import { getRegionTree, downloadTemp } from '@/api/common'
+import { getRegionTree, onDownloadTemp } from '@/api/common'
 import { uploadApi, baseURL } from "@/config"
 
 import { tellReg } from '@/utils/reg'
@@ -246,7 +246,7 @@ let AccidenttForm = (props, ref) => {
     },
   };
   // const onDownload = (type) => {
-  //   downloadTemp(getCookie('entCode'), type).then(res => {
+  //   onDownloadTemp(getCookie('entCode'), type).then(res => {
   //     console.log(res)
   //   })
   // }
@@ -288,7 +288,7 @@ let AccidenttForm = (props, ref) => {
         </Panel>
         <Panel header={BaseHeader('医疗救护组人员')} key="2" forceRender>
           <div className='form-tip-btns'>
-            <button className="dowload" onClick={() => onDownload('18')} disabled={isEdit}>下载模板</button>
+            <button className="dowload" onClick={() => onDownloadTemp('trtadTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
             <Upload {...uploadProps} disabled={isEdit}>
               <div className="import" onClick={() => setType('18')}>导入</div>
             </Upload>
@@ -307,7 +307,7 @@ let AccidenttForm = (props, ref) => {
         </Panel>
         <Panel header={BaseHeader('医疗装备和药物')} key="3" forceRender>
           <div className='form-tip-btns'>
-            <button className="dowload" onClick={() => onDownload('19')} disabled={isEdit}>下载模板</button>
+            <button className="dowload" onClick={() => onDownloadTemp('temrrTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
             <Upload {...uploadProps} disabled={isEdit}>
               <div className="import" onClick={() => setType('19')}>导入</div>
             </Upload>
