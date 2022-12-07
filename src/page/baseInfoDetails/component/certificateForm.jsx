@@ -140,7 +140,7 @@ let ProductionSafetyForm = (props, ref) => {
     action: uploadApi + `/help/enterprise/table/importExcel`,
     headers: {
       Authorization: 'Bearer' + ' ' + getCookie("access_token"),
-      ContentType:'multipart/form-data',
+      
       'X-Requested-With':null,
     },
     data: {

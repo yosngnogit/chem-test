@@ -488,7 +488,7 @@ let BaseForm = (props, ref) => {
     action: uploadApi + `/help/enterprise/table/importExcel`,
     headers: {
       Authorization: 'Bearer' + ' ' + token,
-      'Content-Type':'multipart/form-data',
+      // 'Content-Type':'multipart/form-data',
       'X-Requested-With':null,
       // 'Access-Control-Allow-Origin': '*',
       // 'Access-Control-Allow-Methods': '*',
