@@ -1,4 +1,9 @@
 import http from "../utils/http";
+import { getCookie } from '@/utils'
+
+import { baseURL } from "@/config"
+let token = getCookie("access_token");
+
 
 // 字典
 export const getDictListByName = (name) => {
@@ -31,9 +36,11 @@ export const getRegionTree = () => {
     url: '/front/sys/sysProvince/queryAddressList',
   })
 }
-// 模板导出 downloadTemp
-export const downloadTemp = (entCode, type) => {
+// 模板导出 onDownloadTemp
+export const onDownloadTemp = (code) => {
+  // window.open(`${baseURL}&access_token=${token}`)
   return http.request({
-    url: `/help/enterprise/table/exportWord/enterpriseBaseInfo?entCode=${entCode}&exportType=${type}`,
+    url: `/front/sys/sysDict/selectDictInfoByCode?code=${code}`,
   })
+
 }

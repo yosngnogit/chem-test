@@ -6,7 +6,7 @@ import { RightOutlined } from '@ant-design/icons';
 import { Collapse, Form, Input, Select, DatePicker, Checkbox, Radio, Space, Cascader, Spin, message, Upload } from 'antd';
 // import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
-import { getRegionTree, getDictListByName, downloadTemp } from '@/api/common'
+import { getRegionTree, getDictListByName, onDownloadTemp } from '@/api/common'
 import { positiveIntegerReg, positiveIntegerRegPoint, cardNumberRge } from '@/utils/reg'
 
 import { getBaseInfo, saveUpdate } from '@/api/info'
@@ -463,9 +463,7 @@ let BaseForm = (props, ref) => {
   const onDownload = () => {
     window.open(`${baseURL}/help/enterprise/table/exportWord/enterpriseBaseInfo?entCode=${entCode}&exportType=1&access_token=${token}`)
   }
-  const onDownloadTemp = () => {
 
-  }
   return (
     <Spin spinning={loading}>
       <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'
@@ -799,7 +797,7 @@ let BaseForm = (props, ref) => {
         </Panel>
         <Panel header={BaseHeader('作业人员')} key="12" forceRender>
           <div className='form-tip-btns'>
-            <button className="dowload" onClick={onDownloadTemp} disabled={isEdit}>下载模板</button>
+            <button className="dowload" onClick={() => onDownloadTemp('workerTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
             <Upload {...uploadProps} disabled={isEdit}>
               <div className="import">导入</div>
             </Upload>

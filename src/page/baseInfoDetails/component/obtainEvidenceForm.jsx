@@ -6,8 +6,8 @@ import { RightOutlined } from '@ant-design/icons';
 import { Collapse, Form, Upload, Spin, message } from 'antd';
 // import { withRouter } from "react-router-dom";
 import { getCookie } from '@/utils'
-import { downloadTemp } from '@/api/common'
-import { uploadApi,baseURL } from "@/config"
+import { onDownloadTemp } from '@/api/common'
+import { uploadApi, baseURL } from "@/config"
 
 import { getObtainEvidenceForm, saveObtainEvidenceForm } from '@/api/info'
 import AnswerTable from './obtainEvidenceTable'
@@ -180,7 +180,7 @@ let ProductionSafetyForm = (props, ref) => {
     },
   };
   // const onDownload = () => {
-  //   downloadTemp(getCookie('entCode'), 4).then(res => {
+  //   onDownloadTemp(getCookie('entCode'), 4).then(res => {
   //     console.log(res)
   //   })
   // }
@@ -193,7 +193,7 @@ let ProductionSafetyForm = (props, ref) => {
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
         <Panel header={BaseHeader('企业主要负责人、安全管理人员安全生产管理资格培训取证记录')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
           <div className='form-tip-btns'>
-            <button className="dowload" onClick={onDownload} disabled={isEdit}>下载模板</button>
+            <button className="dowload" onClick={() => onDownloadTemp('tfrTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
             <Upload {...uploadProps} disabled={isEdit}>
               <div className="import">导入</div>
             </Upload>

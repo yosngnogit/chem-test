@@ -5,7 +5,7 @@ import React, {
 import { RightOutlined } from '@ant-design/icons';
 import { Collapse, Form, Upload, Spin, message } from 'antd';
 import { getCookie } from '@/utils'
-import { downloadTemp } from '@/api/common'
+import { onDownloadTemp } from '@/api/common'
 import { uploadApi, baseURL } from "@/config"
 import { getFireEquipmentForm, saveFireEquipmentForm } from '@/api/info'
 import AnswerTable from './fireEquipmentFormTable'
@@ -175,7 +175,7 @@ let AccidenttForm = (props, ref) => {
     },
   };
   // const onDownload = (type) => {
-  //   downloadTemp(getCookie('entCode'), type).then(res => {
+  //   onDownloadTemp(getCookie('entCode'), type).then(res => {
   //     console.log(res)
   //   })
   // }
@@ -191,7 +191,8 @@ let AccidenttForm = (props, ref) => {
             expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
             <Panel header={BaseHeader('应急救援器材装备')} key="8" className='inner-header' forceRender>
               <div className='form-tip-btns'>
-                <button className="dowload" disabled={isEdit}>下载模板</button>
+                <button className="dowload" onClick={() => onDownloadTemp('termerTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
+
                 <Upload {...uploadProps} disabled={isEdit}>
                   <div className="import" onClick={() => setType('16')}>导入</div>
                 </Upload>
@@ -209,7 +210,7 @@ let AccidenttForm = (props, ref) => {
             </Panel>
             <Panel header={BaseHeader('消防设施器材')} key="9" className='inner-header' forceRender>
               <div className='form-tip-btns'>
-                <button className="dowload" onClick={() => onDownload('17')} disabled={isEdit}>下载模板</button>
+                <button className="dowload" onClick={() => onDownloadTemp('termerTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
                 <Upload {...uploadProps} disabled={isEdit}>
                   <div className="import" onClick={() => setType('17')}>导入</div>
                 </Upload>
