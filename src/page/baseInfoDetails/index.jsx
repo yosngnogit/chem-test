@@ -23,7 +23,7 @@ import OutfitForm from './component/outfitForm';
 // import { kdf } from 'crypto-js';
 
 function BaseInfoDetails(props) {
-
+  const entName = getCookie('entName')
   const [baseList, setBaseList] = useState(
     [
       {
@@ -227,7 +227,7 @@ function BaseInfoDetails(props) {
           <p onClick={onBack}>企业基本信息表 / </p><span>{formName}</span>
         </div>
         <div className="baseInfo-header">
-          <p>中控技术股份有限公司</p>
+          <p>{entName}</p>
           <span>开始自诊断前，请先完善企业基本信息</span>
         </div>
         <div className='base-main'>
