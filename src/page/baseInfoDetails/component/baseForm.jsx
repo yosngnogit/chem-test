@@ -41,6 +41,60 @@ let BaseForm = (props, ref) => {
   const [isEdit, setIsEdit] = useState(true);
   useEffect(() => {
     setLoading(true)
+    form.setFieldsValue({
+      personDistributionSituation: [
+        {
+          key: Math.random(),
+          mainWorkTypeName: '',
+          personNumber: '',
+          holdCertificate: '',
+        }
+      ],
+      mainDangerProductName: [
+        {
+          key: Math.random(),
+          name: '',
+          yearYield: '',
+        }
+      ],
+      mainDangerIntermediateName: [
+        {
+          key: Math.random(),
+          name: '',
+          yearYield: '',
+        }
+      ],
+      mainDangerMaterialName: [
+        {
+          key: Math.random(),
+          name: '',
+          yearYield: '',
+        }
+      ],
+      autoControlSituation: [
+        {
+          key: Math.random(),
+          dangerProductDeviceName: '',
+          autoControlUseSituation: '',
+          autoControlAsk: '',//布尔
+          completeRectification: '',//布尔值
+          inRectification: '',//时间
+          notRectification: []//时间段
+        }
+      ],
+      dangerPostTaskPerson: [
+        {
+          key: Math.random(),
+          dangerPostName: '',
+          name: '',
+          education: '',//
+          major: '',//
+          workingSeniority: '',//
+          safeCertificatesCode: ''
+        }
+      ]
+    }
+    )
     Promise.all([
       getDictListByName('ECONOMY_TYPE'),
       getRegionTree(),
@@ -223,6 +277,12 @@ let BaseForm = (props, ref) => {
       dangerLicenseExpire: produce?.issuingDate && moment(danger.valid),
       dangerLicenseNumber: danger?.certificatesCode,
       dangerLicenseArea: danger?.productionManageRange,
+      personDistributionSituation,
+      mainDangerProductName,
+      mainDangerIntermediateName,
+      mainDangerMaterialName,
+      autoControlSituation,
+      dangerPostTaskPerson
     }
     if (personDistributionSituation.length === 0) {
       // console.log(params.personDistributionSituation)

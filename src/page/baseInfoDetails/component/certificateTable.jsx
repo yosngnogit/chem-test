@@ -272,7 +272,7 @@ const AnswerTable = (props) => {
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} value={record.personNumber} />
+        }} value={record.workingSeniority} />
     },
     {
       title: '现任岗位',
@@ -280,11 +280,10 @@ const AnswerTable = (props) => {
       editable: true,
       align: 'center',
       maxLength: 64,
-
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} value={record.personNumber} />
+        }} value={record.currentPosition} />
     },
     {
       title: '从事本岗位年限',
@@ -294,7 +293,7 @@ const AnswerTable = (props) => {
       render: (text, record, index) =>
         <Input style={{
           width: 150,
-        }} value={record.personNumber} />
+        }} value={record.thisPostSeniority} />
     },
     {
       title: '培训时间',
