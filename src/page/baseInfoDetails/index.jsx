@@ -103,7 +103,7 @@ function BaseInfoDetails(props) {
 
   useEffect(() => {
     // console.log(getCookie('entCode'))
-    getFormList(1).then(res => {
+    getFormList(getCookie('entCode')).then(res => {
       let btnList = res.data
       btnList.map(item => {
         item.componentName = setComponentType(item.type)
