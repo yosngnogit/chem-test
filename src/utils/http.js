@@ -15,6 +15,7 @@ const instance = axios.create({
   baseURL,
   timeout: 1000 * 60 * 3,
   withCredentials: true,
+  
 });
 
 /**

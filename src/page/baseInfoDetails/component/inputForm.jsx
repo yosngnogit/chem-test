@@ -140,7 +140,8 @@ let AccidenttForm = (props, ref) => {
     action: uploadApi + `/help/enterprise/table/importExcel`,
     headers: {
       Authorization: 'Bearer' + ' ' + getCookie("access_token"),
-      ContentType: 'multipart/form-data'
+      ContentType:'multipart/form-data',
+      'X-Requested-With':null,
     },
     data: {
       entCode: getCookie('entCode'),
