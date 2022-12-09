@@ -194,7 +194,8 @@ let ProductionSafetyForm = (props, ref) => {
       <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'
         collapsible="header"
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
-        <Panel header={BaseHeader('企业主要负责人、安全管理人员安全生产管理资格培训取证记录', '')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
+       
+        <Panel header={BaseHeader('企业主要负责人、安全管理人员安全生产管理资格培训取证记录', '')} key="1" collapsible='disabled' showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
           <div className='form-tip-btns'>
             <button className="dowload" onClick={() => onDownloadTemp('tfrTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
             <Upload {...uploadProps} disabled={isEdit}>

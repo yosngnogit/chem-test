@@ -186,9 +186,9 @@ let AccidenttForm = (props, ref) => {
   }
   return (
     <Spin spinning={loading}>
-      <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end' collapsible="header"
+      <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
-        <Panel header={BaseHeader('企业消防设施器材、应急救援器材装备登记表', '')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
+        <Panel header={BaseHeader('企业消防设施器材、应急救援器材装备登记表', '')} key="1" collapsible='disabled' showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
           <Collapse expandIconPosition='end' defaultActiveKey={['8']}
             expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
             <Panel header={BaseHeader('', '应急救援器材装备')} key="8" className='inner-header' forceRender>

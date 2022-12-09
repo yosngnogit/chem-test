@@ -1,8 +1,9 @@
-
 .answerEntrance {
-  height:100%;
+  // height: 100%;
   background-color: #fff;
   padding-bottom: 40px;
+  min-height: calc(100vh - 60px);
+
   .header {
     font-size: 17px;
     height: 42px;
@@ -22,6 +23,7 @@
   .answer-main {
     width: 1440px;
     margin: auto;
+
     // background: #F8F8FA;
     .answer-perfect {
       height: 21px;
@@ -31,26 +33,28 @@
       font-size: 16px;
       line-height: 130%;
       padding: 20px 0;
-      box-sizing:content-box;
+      box-sizing: content-box;
       text-align: center;
       justify-content: center;
-      display:flex;
+      display: flex;
       align-items: center;
       background-color: #fff;
-      .answer-perfect-div{
+
+      .answer-perfect-div {
         font-weight: 400;
         font-size: 16px;
         color: #4074FF;
         padding-left: 8px;
         padding-right: 5px;
-        cursor:pointer;
+        cursor: pointer;
       }
     }
-    .answer-tips{
+
+    .answer-tips {
       padding: 12px 8px;
       width: 1440px;
       height: 42px;
-      margin:auto;
+      margin: auto;
       background: #F7F9FF;
       border-width: 1px 0px;
       border-style: solid;
@@ -61,7 +65,8 @@
       font-style: normal;
       font-weight: 400;
       font-size: 14px;
-      span{
+
+      span {
         color: #5C6E7C;
         margin-right: 4px;
       }
@@ -157,30 +162,34 @@
 
       .answer-list {
         li {
-          box-sizing:content-box;
+          box-sizing: content-box;
           padding: 0px 25px 15px;
           gap: 24px;
-        //  width: 1440px;
+          //  width: 1440px;
           height: 75px;
           background: #FFFFFF;
           border-bottom: 1px solid #EEEEEE;
-          position:relative;
+          position: relative;
           margin-bottom: 4px;
           border-radius: 4px;
-          &:last-child{
+
+          &:last-child {
             margin-bottom: 0;
           }
-       
+
         }
-        .active-border{
+
+        .active-border {
           box-shadow: 0px 1px 8px 0px rgba(68, 114, 236, .5);
         }
 
         .list-top {
           display: flex;
           align-items: flex-end;
+
           .list-title-true {
-            width:50px;
+            width: 50px;
+
             p {
               font-family: "SF Pro Display";
               font-style: normal;
@@ -189,8 +198,10 @@
               color: #1f2229;
             }
           }
+
           .list-title-false {
             width: 50px;
+
             p {
               font-family: "SF Pro Display";
               font-style: normal;
@@ -204,68 +215,75 @@
             // height: 19px;
             display: inline-block;
             padding: 4px 7px;
-            gap: 10px;            
-            width: 50px;
-            height: 24px;            
-            background: rgba(1, 73, 152, 0.1);          
-              font-family: 'PingFang SC';
-              font-style: normal;
-              font-weight: 500;
-              font-size: 12px;
-              color: #5C6E7C;          
-          }
-
-          .title-tip-false{
-            display: inline-block;
-            padding: 4px 7px;
-            gap: 10px;           
+            gap: 10px;
             width: 50px;
             height: 24px;
-            background: #4074FF;           
+            background: rgba(1, 73, 152, 0.1);
+            font-family: 'PingFang SC';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 12px;
+            color: #5C6E7C;
+          }
+
+          .title-tip-false {
+            display: inline-block;
+            padding: 4px 7px;
+            gap: 10px;
+            width: 50px;
+            height: 24px;
+            background: #4074FF;
             font-family: 'PingFang SC';
             font-style: normal;
             font-weight: 500;
             font-size: 12px;
             color: #FFFFFF
-          }        
+          }
         }
-       
+
         .list-bottom {
           display: flex;
-           justify-content:flex-start;
+          justify-content: flex-start;
           align-items: center;
           gap: 68px;
-          height:40px;
-          line-height:40px;
+          height: 40px;
+          line-height: 40px;
           margin-top: 3px;
           font-family: 'PingFang SC';
           font-style: normal;
-          font-weight: 400;         
+          font-weight: 400;
           color: #1F2229;
+
           .ant-progress-outer {
-            width: 212px;           
+            width: 212px;
           }
-          .list-bottom-name{
+
+          .list-bottom-name {
             font-size: 16px;
           }
-          .list-bottom-time{
+
+          .list-bottom-time {
             font-size: 12px;
           }
-          .ant-progress-inner{
-          background-color: #DDDDDD;
+
+          .ant-progress-inner {
+            background-color: #DDDDDD;
           }
-        
+
           .list-status {
             font-size: 12px;
             color: #F05E41;
 
           }
-          .list-finish{
-            color:#1F2229;
+
+          .list-finish {
+            color: #1F2229;
             font-size: 12px;
           }
+
           .evaluate {
             margin-left: 68px;
+
             .list-level {
               display: flex;
             }
@@ -274,13 +292,14 @@
               font-size: 13px;
               color: #26A8AB;
               margin-right: 5px;
-              
+
             }
-            .list-price{
+
+            .list-price {
               font-weight: 500;
               font-size: 14px;
               color: #5C6E7C;
-              height:20px;
+              height: 20px;
               line-height: 1.3;
             }
 
@@ -291,30 +310,33 @@
               }
             }
 
-           
 
-           
+
+
           }
-          .list-button{
-            position:absolute;
-            right:0;
+
+          .list-button {
+            position: absolute;
+            right: 0;
             display: flex;
             flex-direction: row;
             justify-content: center;
             align-items: center;
             padding: 0px;
-            gap: 22px;            
+            gap: 22px;
             width: 296px;
             height: 32px;
-          
-          text-align: center;
-            
-            .list-button-look,.list-button-con,.list-button-del{
-              
+
+            text-align: center;
+
+            .list-button-look,
+            .list-button-con,
+            .list-button-del {
+
               gap: 2px;
               width: 84px;
               height: 32px;
-              line-height: 32px;            
+              line-height: 32px;
               background: #4472EC;
               border-radius: 36px;
               font-family: 'PingFang SC';
@@ -324,13 +346,14 @@
               color: #FFFFFF;
               cursor: pointer;
             }
-            .list-button-del{
+
+            .list-button-del {
               background: #fff;
               color: #4074FF;
               border: 1px solid #4074FF;
               border-radius: 36px;
             }
-            
+
           }
 
         }
@@ -360,6 +383,7 @@
     font-family: "SF Pro Text";
   }
 }
+
 .answer-loading {
   height: 100%;
   width: 100%;

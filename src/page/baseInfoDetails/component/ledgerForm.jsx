@@ -195,9 +195,9 @@ let AccidenttForm = (props, ref) => {
   }
   return (
     <Spin spinning={loading}>
-      <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end' collapsible="header"
+      <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end' 
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
-        <Panel header={BaseHeader('安全设备设施登记使用管理台账', '')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
+        <Panel header={BaseHeader('安全设备设施登记使用管理台账', '')} key="1" collapsible='disabled' showArrow={false}  extra={isEdit ? genEditExtra() : genSaveExtra()}>
           <div className='form-tip-btns'>
             <button className="dowload" onClick={() => onDownloadTemp('tseurTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
 
