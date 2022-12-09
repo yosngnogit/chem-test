@@ -11,6 +11,7 @@ import { getCookie } from '@/utils'
 
 import { getInputForm, saveInputForm } from '@/api/info'
 import AnswerTable from './inputTable'
+import BaseHeader from '../../../components/baseHeader';
 
 import moment from 'moment';
 import '.././index.less'
@@ -140,8 +141,8 @@ let AccidenttForm = (props, ref) => {
     action: uploadApi + `/help/enterprise/table/importExcel`,
     headers: {
       Authorization: 'Bearer' + ' ' + getCookie("access_token"),
-      
-      'X-Requested-With':null,
+
+      'X-Requested-With': null,
     },
     data: {
       entCode: getCookie('entCode'),
@@ -183,8 +184,9 @@ let AccidenttForm = (props, ref) => {
   return (
     <Spin spinning={loading}>
       <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'
+        collapsible="header"
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
-        <Panel header={BaseHeader('安全生产投入登记表')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
+        <Panel header={BaseHeader('安全生产投入登记表', '')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
           <div className='form-tip-btns'>
             <button className="dowload" onClick={() => onDownloadTemp('tspirTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
 
@@ -210,10 +212,5 @@ let AccidenttForm = (props, ref) => {
 
   )
 }
-function BaseHeader(text) {
-  return <div className="info-title">
-    <span className='info-span'>*</span>
-    <p>{text}</p>
-  </div>
-}
+
 export default forwardRef(AccidenttForm)

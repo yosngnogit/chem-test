@@ -9,6 +9,7 @@ import { onDownloadTemp } from '@/api/common'
 import { uploadApi, baseURL } from "@/config"
 import { getFireEquipmentForm, saveFireEquipmentForm } from '@/api/info'
 import AnswerTable from './fireEquipmentFormTable'
+import BaseHeader from '../../../components/baseHeader';
 
 import '.././index.less'
 let AccidenttForm = (props, ref) => {
@@ -143,8 +144,8 @@ let AccidenttForm = (props, ref) => {
     action: uploadApi + `/help/enterprise/table/importExcel`,
     headers: {
       Authorization: 'Bearer' + ' ' + getCookie("access_token"),
-      
-      'X-Requested-With':null,
+
+      'X-Requested-With': null,
     },
     data: {
       entCode: getCookie('entCode'),
@@ -185,12 +186,12 @@ let AccidenttForm = (props, ref) => {
   }
   return (
     <Spin spinning={loading}>
-      <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'
+      <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end' collapsible="header"
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
-        <Panel header={BaseHeader('企业消防设施器材、应急救援器材装备登记表')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
+        <Panel header={BaseHeader('企业消防设施器材、应急救援器材装备登记表', '')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
           <Collapse expandIconPosition='end' defaultActiveKey={['8']}
             expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
-            <Panel header={BaseHeader('应急救援器材装备')} key="8" className='inner-header' forceRender>
+            <Panel header={BaseHeader('', '应急救援器材装备')} key="8" className='inner-header' forceRender>
               <div className='form-tip-btns'>
                 <button className="dowload" onClick={() => onDownloadTemp('termerTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
 
@@ -209,7 +210,7 @@ let AccidenttForm = (props, ref) => {
                 </Form.Item>
               </Form>
             </Panel>
-            <Panel header={BaseHeader('消防设施器材')} key="9" className='inner-header' forceRender>
+            <Panel header={BaseHeader('', '消防设施器材')} key="9" className='inner-header' forceRender>
               <div className='form-tip-btns'>
                 <button className="dowload" onClick={() => onDownloadTemp('termerTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
                 <Upload {...uploadProps} disabled={isEdit}>
@@ -235,10 +236,5 @@ let AccidenttForm = (props, ref) => {
 
   )
 }
-function BaseHeader(text) {
-  return <div className="info-title">
-    <span className='info-span'>*</span>
-    <p>{text}</p>
-  </div>
-}
+
 export default forwardRef(AccidenttForm)

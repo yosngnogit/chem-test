@@ -18,6 +18,7 @@ import BaseMidbodyTable from './baseMidbodyTable'
 import BaseMaterialTable from './baseMaterialTable'
 import BaseDeviceTable from './baseDeviceTable'
 import BasePostTable from './basePostTable'
+import BaseHeader from '../../../components/baseHeader';
 
 
 
@@ -489,7 +490,7 @@ let BaseForm = (props, ref) => {
     headers: {
       Authorization: 'Bearer' + ' ' + token,
       // 'Content-Type':'multipart/form-data',
-      'X-Requested-With':null,
+      'X-Requested-With': null,
       // 'Access-Control-Allow-Origin': '*',
       // 'Access-Control-Allow-Methods': '*',
       // 'Access-Control-Allow-Headers': 'content-type,token,id',
@@ -534,8 +535,9 @@ let BaseForm = (props, ref) => {
       <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
         <Panel
-          header={BaseHeader('企业基本情况')}
+          header={BaseHeader('企业基本情况', '')}
           key="1" showArrow={false}
+          collapsible='disabled'
           extra={isEdit ? genEditExtra() : genSaveExtra()}
         >
           <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
@@ -681,10 +683,10 @@ let BaseForm = (props, ref) => {
           </Form>
         </Panel>
         {/* 执照情况 */}
-        <Panel header={BaseHeader('执照情况')} key="2" forceRender>
+        <Panel header={BaseHeader('', '执照情况')} key="2" forceRender>
           <Collapse expandIconPosition='end' defaultActiveKey={['3']}
             expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
-            <Panel header={BaseHeader('企业工商营业执照')} key="3" className='inner-header' forceRender>
+            <Panel header={BaseHeader('', '企业工商营业执照')} key="3" className='inner-header' forceRender>
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 {...formItemLayout}
                 disabled={isEdit}
@@ -722,7 +724,7 @@ let BaseForm = (props, ref) => {
                 </Form.Item>
               </Form>
             </Panel>
-            <Panel header={BaseHeader('生产安全许可证')} key="4" className='inner-header' forceRender>
+            <Panel header={BaseHeader('', '生产安全许可证')} key="4" className='inner-header' forceRender>
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 {...formItemLayout}
                 disabled={isEdit}
@@ -760,7 +762,7 @@ let BaseForm = (props, ref) => {
                 </Form.Item>
               </Form>
             </Panel>
-            <Panel header={BaseHeader('危化品经营许可证')} key="5" className='inner-header' forceRender>
+            <Panel header={BaseHeader('', '危化品经营许可证')} key="5" className='inner-header' forceRender>
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 {...formItemLayout}
                 disabled={isEdit}
@@ -801,7 +803,7 @@ let BaseForm = (props, ref) => {
 
           </Collapse>
         </Panel>
-        <Panel header={BaseHeader('从业人员分布情况')} key="6" forceRender>
+        <Panel header={BaseHeader('', '从业人员分布情况')} key="6" forceRender>
           <p className='form-tip'>注：填写企业主要工种如（电工、电焊工、厂内车辆驾驶员，眼里容器操作工、安全员等）</p>
           <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
             wrapperCol={{ span: 24 }}
@@ -813,10 +815,10 @@ let BaseForm = (props, ref) => {
             </Form.Item>
           </Form>
         </Panel>
-        <Panel header={BaseHeader('主要危险化学品')} key="7" forceRender>
+        <Panel header={BaseHeader('', '主要危险化学品')} key="7" forceRender>
           <Collapse expandIconPosition='end' defaultActiveKey={['8']}
             expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
-            <Panel header={BaseHeader('产品信息')} key="8" className='inner-header' forceRender>
+            <Panel header={BaseHeader('', '产品信息')} key="8" className='inner-header' forceRender>
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 disabled={isEdit}
                 className='base-form-add'>
@@ -826,7 +828,7 @@ let BaseForm = (props, ref) => {
                 </Form.Item>
               </Form>
             </Panel>
-            <Panel header={BaseHeader('中间体信息')} key="9" className='inner-header' forceRender>
+            <Panel header={BaseHeader('', '中间体信息')} key="9" className='inner-header' forceRender>
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 disabled={isEdit}
                 className='base-form-add'>
@@ -836,7 +838,7 @@ let BaseForm = (props, ref) => {
                 </Form.Item>
               </Form>
             </Panel>
-            <Panel header={BaseHeader('主要原料信息')} key="10" className='inner-header' forceRender>
+            <Panel header={BaseHeader('', '主要原料信息')} key="10" className='inner-header' forceRender>
               <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
                 disabled={isEdit}
                 className='base-form-add'>
@@ -849,7 +851,7 @@ let BaseForm = (props, ref) => {
 
           </Collapse>
         </Panel>
-        <Panel header={BaseHeader('高危生产装置自动控制实施情况')} key="11" forceRender>
+        <Panel header={BaseHeader('', '高危生产装置自动控制实施情况')} key="11" forceRender>
           <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
             disabled={isEdit}
             className='base-form-add'>
@@ -860,7 +862,7 @@ let BaseForm = (props, ref) => {
             </Form.Item>
           </Form>
         </Panel>
-        <Panel header={BaseHeader('作业人员')} key="12" forceRender>
+        <Panel header={BaseHeader('', '作业人员')} key="12" forceRender>
           <div className='form-tip-btns'>
             <button className="dowload" onClick={() => onDownloadTemp('workerTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
             <Upload {...uploadProps} disabled={isEdit}>
@@ -880,13 +882,6 @@ let BaseForm = (props, ref) => {
         </Panel>
       </Collapse>
     </Spin>
-
   )
-}
-function BaseHeader(text) {
-  return <div className="info-title">
-    <span className='info-span'>*</span>
-    <p>{text}</p>
-  </div>
 }
 export default forwardRef(BaseForm)

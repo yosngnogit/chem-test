@@ -10,6 +10,7 @@ import { getRegionTree, onDownloadTemp } from '@/api/common'
 import { uploadApi, baseURL } from "@/config"
 
 import { tellReg } from '@/utils/reg'
+import BaseHeader from '../../../components/baseHeader';
 
 import { getOutfitForm, saveOutfitForm } from '@/api/info'
 import AnswerTable1 from './outfitTable1'
@@ -214,8 +215,8 @@ let AccidenttForm = (props, ref) => {
     action: uploadApi + `/help/enterprise/table/importExcel`,
     headers: {
       Authorization: 'Bearer' + ' ' + getCookie("access_token"),
-      
-      'X-Requested-With':null,
+
+      'X-Requested-With': null,
     },
     data: {
       entCode: getCookie('entCode'),
@@ -259,7 +260,8 @@ let AccidenttForm = (props, ref) => {
       <Collapse
         defaultActiveKey={['1', '2']} expandIconPosition='end'
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
-        <Panel header={BaseHeader('企业医疗救护组织、人员、装备和药物登记表')} key="1"
+        <Panel header={BaseHeader('企业医疗救护组织、人员、装备和药物登记表', '')} key="1"
+          collapsible='disabled'
           showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
           <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}
             {...formItemLayout}
@@ -287,7 +289,7 @@ let AccidenttForm = (props, ref) => {
 
           </Form>
         </Panel>
-        <Panel header={BaseHeader('医疗救护组人员')} key="2" forceRender>
+        <Panel header={BaseHeader('', '医疗救护组人员')} key="2" forceRender>
           <div className='form-tip-btns'>
             <button className="dowload" onClick={() => onDownloadTemp('trtadTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
             <Upload {...uploadProps} disabled={isEdit}>
@@ -306,7 +308,7 @@ let AccidenttForm = (props, ref) => {
             </Form.Item>
           </Form>
         </Panel>
-        <Panel header={BaseHeader('医疗装备和药物')} key="3" forceRender>
+        <Panel header={BaseHeader('', '医疗装备和药物')} key="3" forceRender>
           <div className='form-tip-btns'>
             <button className="dowload" onClick={() => onDownloadTemp('temrrTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
             <Upload {...uploadProps} disabled={isEdit}>
@@ -330,10 +332,5 @@ let AccidenttForm = (props, ref) => {
 
   )
 }
-function BaseHeader(text) {
-  return <div className="info-title">
-    <span className='info-span'>*</span>
-    <p>{text}</p>
-  </div>
-}
+
 export default forwardRef(AccidenttForm)

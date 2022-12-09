@@ -20,6 +20,7 @@ import FireEquipmentForm from './component/fireEquipmentForm'
 
 
 import OutfitForm from './component/outfitForm';
+import ColumnGroup from 'antd/lib/table/ColumnGroup';
 // import { kdf } from 'crypto-js';
 
 function BaseInfoDetails(props) {
@@ -146,10 +147,26 @@ function BaseInfoDetails(props) {
   }
   const setEdit = (data) => {
     setComponentEdit(data)
+    if (!data) {
+      getFormList(getCookie('entCode')).then(res => {
+        let btnList = res.data
+        btnList.map(item => {
+          item.componentName = setComponentType(item.type)
+          item.name = setName(item.type)
+          return item
+        })
+        btnList.sort((a, b) => {
+          return a.type - b.type;
+        })
+        setBaseList(btnList)
+      }).catch(err => {
+      })
+    }
   }
   const onBack = () => {
     props.history.push('/answerEntrance')
-    refbase.current.onCallback();
+    // console.log(componentEdit)
+    if (componentEdit) refbase.current.onCallback();
   }
   const setName = (param) => {
     switch (param) {

@@ -12,6 +12,7 @@ import { uploadApi, baseURL } from "@/config"
 
 import { saveSourceForm, getSourceForm } from '@/api/info'
 import AnswerTable from './sourceTable'
+import BaseHeader from '../../../components/baseHeader';
 
 // import moment from 'moment';
 import '.././index.less'
@@ -111,8 +112,8 @@ let SourceForm = (props, ref) => {
     action: uploadApi + `/help/enterprise/table/importExcel`,
     headers: {
       Authorization: 'Bearer' + ' ' + getCookie("access_token"),
-      
-      'X-Requested-With':null,
+
+      'X-Requested-With': null,
     },
     data: {
       entCode: entCode,
@@ -157,7 +158,7 @@ let SourceForm = (props, ref) => {
       <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'
         collapsible="header"
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
-        <Panel header={BaseHeader('危险源（点）监控管理表')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
+        <Panel header={BaseHeader('危险源（点）监控管理表', '')} key="1" showArrow={false} extra={isEdit ? genEditExtra() : genSaveExtra()}>
           <div className='form-tip-btns'>
             <button className="dowload" onClick={() => onDownloadTemp('tdsmmrTemplate').then(res => window.open(res.data))} disabled={isEdit}>下载模板</button>
 
@@ -183,10 +184,5 @@ let SourceForm = (props, ref) => {
     </Spin>
   )
 }
-function BaseHeader(text) {
-  return <div className="info-title">
-    <span className='info-span'>*</span>
-    <p>{text}</p>
-  </div>
-}
+
 export default forwardRef(SourceForm)
