@@ -228,7 +228,7 @@ let ProductionSafetyForm = (props, ref) => {
   }
   return (
     <Spin spinning={loading}>
-      <Collapse defaultActiveKey={['1']} expandIconPosition='end'
+      <Collapse defaultActiveKey={['1', '2']} expandIconPosition='end'
         expandIcon={({ isActive }) => <RightOutlined rotate={isActive ? 270 : 90} />}>
         <Panel header={BaseHeader('安全生产组织机构登记表', '')}
           collapsible='disabled'

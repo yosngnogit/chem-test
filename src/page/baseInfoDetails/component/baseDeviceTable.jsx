@@ -52,7 +52,8 @@ const EditableCell = ({
   const [timeOpen, setTimeOpen] = useState(true);
   useEffect(() => {
     if (editing) {
-      // console.log(dataIndex)
+      // const values =  { ...record  }
+      // console.log(values.completeRectification)
       if (dataIndex === 'notRectification' || dataIndex === 'inRectification') {
         timeRef.current.focus();
       }
@@ -121,6 +122,7 @@ const EditableCell = ({
                   autoFocus={true}
                   open={timeOpen}
                   style={{ width: 250 }}
+                  disabled={record.completeRectification || record.completeRectification === ''}
                   onChange={(e) => onTimeChange(e, dataIndex, index)}
                   onOpenChange={changeTime}
                 /> :
@@ -145,6 +147,7 @@ const EditableCell = ({
                         style={{
                           width: 150,
                         }}
+                        disabled={record.completeRectification || record.completeRectification === ''}
                         locale={locale}
                         autoFocus={true}
                         open={timeOpen}
@@ -348,7 +351,7 @@ const AnswerTable = (props) => {
         dataIndex: col.dataIndex,
         title: col.title,
         index,
-        maxLength:col.maxLength,
+        maxLength: col.maxLength,
         handleSave,
       }),
     };

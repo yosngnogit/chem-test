@@ -35,10 +35,10 @@ let ProductionSafetyForm = (props, ref) => {
           item.birthday = moment(item.birthday).format('YYYY-MM-DD')
         }
         if (item.trainingTime) {
-          item.trainingTime = moment(item.trainingTime).format('YYYY-MM-DD')
+          item.trainingTime = moment(item.trainingTime).format('YYYY-MM-DD HH:mm:ss')
         }
         if (item.reviewTime) {
-          item.reviewTime = moment(item.reviewTime).format('YYYY-MM-DD')
+          item.reviewTime = moment(item.reviewTime).format('YYYY-MM-DD HH:mm:ss')
         }
       })
       if (saveLoading) return
@@ -86,9 +86,9 @@ let ProductionSafetyForm = (props, ref) => {
         item.key = Math.random()
         if (item.birthday) item.birthday = (moment(item.birthday, 'YYYY-MM-DD'))
         else item.birthday = ''
-        if (item.trainingTime) item.trainingTime = (moment(item.trainingTime, 'YYYY-MM-DD'))
+        if (item.trainingTime) item.trainingTime = (moment(item.trainingTime, 'YYYY-MM-DD HH:mm:ss'))
         else item.trainingTime = ''
-        if (item.reviewTime) item.reviewTime = (moment(item.reviewTime, 'YYYY-MM-DD'))
+        if (item.reviewTime) item.reviewTime = (moment(item.reviewTime, 'YYYY-MM-DD HH:mm:ss'))
         else item.reviewTime = ''
         return item
       })

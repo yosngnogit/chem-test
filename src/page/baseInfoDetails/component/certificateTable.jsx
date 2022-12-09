@@ -121,7 +121,7 @@ const EditableCell = ({
             </Select>
             :
             (
-              (dataIndex === 'birthday' || dataIndex === 'trainingTime' || dataIndex === 'reviewTime') ? <DatePicker
+              (dataIndex === 'birthday') ? <DatePicker
                 ref={timeRef}
                 locale={locale}
                 autoFocus={true}
@@ -129,15 +129,27 @@ const EditableCell = ({
                 style={{ width: 150 }}
                 onChange={(e) => onTimeChange(e, dataIndex, index)}
                 onOpenChange={changeTime}
-              /> : <Input style={{
-                width: 150,
-              }} ref={inputRef}
-                onPressEnter={save}
-                onBlur={() => save(dataIndex)}
-                maxLength={maxLength}
-                status={status}
-                onChange={(e) => onInputChange(e, dataIndex)}
-              />
+              /> : (
+                dataIndex === 'trainingTime' || dataIndex === 'reviewTime'
+              ) ? <DatePicker
+                ref={timeRef}
+                locale={locale}
+                autoFocus={true}
+                open={timeOpen}
+                showTime
+                style={{ width: 180 }}
+                onChange={(e) => onTimeChange(e, dataIndex, index)}
+                onOpenChange={changeTime}
+              /> :
+                <Input style={{
+                  width: 150,
+                }} ref={inputRef}
+                  onPressEnter={save}
+                  onBlur={() => save(dataIndex)}
+                  maxLength={maxLength}
+                  status={status}
+                  onChange={(e) => onInputChange(e, dataIndex)}
+                />
             )
         }
       </Form.Item>
@@ -301,8 +313,9 @@ const AnswerTable = (props) => {
       editable: true,
       align: 'center',
       render: (text, record, index) =>
-        <DatePicker style={{
-          width: 150,
+        <DatePicker showTime style={{
+          width: 180,
+
         }} value={record.trainingTime} />
     },
     {
@@ -311,8 +324,8 @@ const AnswerTable = (props) => {
       editable: true,
       align: 'center',
       render: (text, record, index) =>
-        <DatePicker style={{
-          width: 150,
+        <DatePicker showTime style={{
+          width: 180,
         }} value={record.reviewTime} />
     },
     {
