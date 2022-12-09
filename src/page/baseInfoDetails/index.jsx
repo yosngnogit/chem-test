@@ -20,7 +20,7 @@ import FireEquipmentForm from './component/fireEquipmentForm'
 
 
 import OutfitForm from './component/outfitForm';
-import ColumnGroup from 'antd/lib/table/ColumnGroup';
+// import ColumnGroup from 'antd/lib/table/ColumnGroup';
 // import { kdf } from 'crypto-js';
 
 function BaseInfoDetails(props) {
@@ -105,7 +105,7 @@ function BaseInfoDetails(props) {
   useEffect(() => {
     // console.log(getCookie('entCode'))
     getFormList(getCookie('entCode')).then(res => {
-      let btnList = res.data
+      let btnList = res.data.listIntegrity
       btnList.map(item => {
         item.componentName = setComponentType(item.type)
         item.name = setName(item.type)

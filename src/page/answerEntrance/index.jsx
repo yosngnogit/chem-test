@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom'
 import { Modal, Progress, Message, } from 'antd'
 import { getVersionInfo, getRecordInfo, deleteEntPaper, getInfoPerfect, createAnswer } from "../../api/answer";
 import { getCookie } from '@/utils'
+import { getFormList } from '@/api/info'
+
 
 import './index.less'
 
@@ -22,8 +24,12 @@ function AnswerEntrance(props) {
     getRecordInfo(entCode).then(res => {
       setListData(res.data)
     })
-    getInfoPerfect(entCode).then(res => {
-      setInfoPerfect(res.data)
+    // getInfoPerfect(entCode).then(res => {
+
+    // })
+    getFormList(entCode).then(res => {
+      setInfoPerfect(res.data.tableListIntegrity)
+    }).catch(err => {
     })
   }, [])
   const goSchedule = (item, type) => {
@@ -45,15 +51,16 @@ function AnswerEntrance(props) {
 
   const goCreate = (item) => {
     let innerArray = []
-    if(item.paperType=='2'){
-      if(listData.filter(data=>data.paperType==='2').length==0){
+    if (item.paperType == '2') {
+      if (listData.filter(data => data.paperType === '2').length == 0) {
         confirm({
           bodyClassName: 'pay-confirm',
           content: '是否创建新答题？',
           okText: '确认',
-          onOk() { goSchedule(item, 'add') }})
+          onOk() { goSchedule(item, 'add') }
+        })
       }
-      else{
+      else {
         listData.map(v => {
           v.active = false
         })
@@ -85,49 +92,50 @@ function AnswerEntrance(props) {
           }
         })
       }
-   } else{
-    if(listData.filter(data=>data.paperType==='1').length==0){
-      confirm({
-        bodyClassName: 'pay-confirm',
-        content: '是否创建新答题？',
-        okText: '确认',
-        onOk() { goSchedule(item, 'add') }})
-     }
-     else{
-      listData.map(v => {
-        v.active = false
-      })
-      confirm({
-        bodyClassName: 'pay-confirm',
-        content: '已有测试正在进行中，确定是否新建测试？',
-        okText: '确认',
-        onOk() { goSchedule(item, 'add') },
-        onCancel() {
-          innerArray = JSON.parse(JSON.stringify(listData));
-          // 免费
-          if (item.paperType === '1') {
-            innerArray.forEach(i => {
-              if (i.paperStatus === '0' && i.paperType === '1') {
-                i.active = true
-              }
-              // if (i.paperStatus === '0' && item.paperType === '2') i.payactive = true
-            })
+    } else {
+      if (listData.filter(data => data.paperType === '1').length == 0) {
+        confirm({
+          bodyClassName: 'pay-confirm',
+          content: '是否创建新答题？',
+          okText: '确认',
+          onOk() { goSchedule(item, 'add') }
+        })
+      }
+      else {
+        listData.map(v => {
+          v.active = false
+        })
+        confirm({
+          bodyClassName: 'pay-confirm',
+          content: '已有测试正在进行中，确定是否新建测试？',
+          okText: '确认',
+          onOk() { goSchedule(item, 'add') },
+          onCancel() {
+            innerArray = JSON.parse(JSON.stringify(listData));
+            // 免费
+            if (item.paperType === '1') {
+              innerArray.forEach(i => {
+                if (i.paperStatus === '0' && i.paperType === '1') {
+                  i.active = true
+                }
+                // if (i.paperStatus === '0' && item.paperType === '2') i.payactive = true
+              })
+            }
+            // 付费
+            else {
+              innerArray.forEach(i => {
+                if (i.paperStatus === '0' && i.paperType === '2') {
+                  i.active = true
+                }
+              })
+            }
+            setListData(innerArray)
           }
-          // 付费
-          else {
-            innerArray.forEach(i => {
-              if (i.paperStatus === '0' && i.paperType === '2') {
-                i.active = true
-              }
-            })
-          }
-          setListData(innerArray)
-        }
-      })
-     }
-   }
-      
-   
+        })
+      }
+    }
+
+
   }
 
   const goPay = () => {
