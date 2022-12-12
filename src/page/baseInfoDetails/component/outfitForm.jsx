@@ -87,7 +87,7 @@ let AccidenttForm = (props, ref) => {
   }
   const initBaseInfo = async () => {
     let res = await getOutfitForm(getCookie('entCode'))
-    console.log(res)
+    // console.log(res)
     let {
       id,
       provinceCode,

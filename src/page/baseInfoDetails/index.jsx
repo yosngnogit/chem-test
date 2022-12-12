@@ -158,6 +158,7 @@ function BaseInfoDetails(props) {
         btnList.sort((a, b) => {
           return a.type - b.type;
         })
+        // console.log(btnList)
         setBaseList(btnList)
       }).catch(err => {
       })
@@ -241,7 +242,7 @@ function BaseInfoDetails(props) {
     <div className='baseInfoDetails'>
       <div className='background'>
         <div className="haeder-tip">
-          <p onClick={onBack}>企业基本信息表 / </p><span>{formName}</span>
+          <p onClick={onBack}>诊断答题 / </p><span>{formName}</span>
         </div>
         <div className="baseInfo-header">
           <p>{entName}</p>
