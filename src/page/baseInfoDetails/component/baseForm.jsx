@@ -160,7 +160,7 @@ let BaseForm = (props, ref) => {
             certificatesCode: values.businessLicenseNumber,
             productionManageRange: values.businessLicenseArea
           }, {
-            certificatesName: '安全生产许可证',
+            certificatesName: '生产安全许可证',
             issueUnit: values.produceLicenseUnit,
             issuingDate: values.produceLicenseDate.format('YYYY-MM-DD'),
             valid: values.produceLicenseExpire.format('YYYY-MM-DD'),
@@ -241,7 +241,7 @@ let BaseForm = (props, ref) => {
     }
     if (other) { setOtherSafe(other) }
     let business = certificatesSituationMap['企业工商营业执照']
-    let produce = certificatesSituationMap['安全生产许可证']
+    let produce = certificatesSituationMap['生产安全许可证']
     let danger = certificatesSituationMap['危化品经营许可证']
     let regionList = [provinceCode, city, area]
     let params = {
