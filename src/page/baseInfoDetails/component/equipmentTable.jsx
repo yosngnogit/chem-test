@@ -178,7 +178,7 @@ const AnswerTable = (props) => {
       render: (text, record, index) =>
         <DatePicker style={{
           width: 150,
-        }} value={record.trainDate} />
+        }} value={record.startDate} />
     },
     {
       title: '定期检测情况',
