@@ -178,6 +178,9 @@ function Report(props) {
           rotate: 60
         },
       },
+      grid: {
+        bottom: '35%',
+      },
       yAxis: [
         {
           type: "value",
@@ -272,7 +275,7 @@ function Report(props) {
       </div>
       <div id='rendar-echart' className='img-style' style={{ width: '368px', height: '252px', margin: 'auto' }}>
       </div>
-      {free === '2' ? <div className="active-echart" id='active-echart' style={{ width: '600px', height: '300px', margin: 'auto' }}>
+      {free === '2' ? <div className="active-echart" id='active-echart' style={{ width: '600px', height: '350px', margin: 'auto' }}>
       </div> : ''}
       <ReportDetail />
 
