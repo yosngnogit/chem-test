@@ -8,7 +8,7 @@ import { decrypt } from '@/utils/aes';
 import { Button } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
 import ReportDetail from './components/reportDetail'
-111111
+
 
 
 function Report(props) {
