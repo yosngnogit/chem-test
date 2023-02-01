@@ -4,7 +4,7 @@ import { report } from '@/api/report'
 import { withRouter } from 'react-router-dom';
 import { query, getCookie } from '@/utils'
 import './index.less'
-import { decrypt } from '@/utils/aes';
+// import { decrypt } from '@/utils/aes';
 import { Button } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
 import ReportDetail from './components/reportDetail'
